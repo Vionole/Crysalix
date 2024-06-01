@@ -392,6 +392,164 @@ Varble operator+(const Varble& a, const Varble& b)
             return result;
         }
     }
+    else if (a.type == DBL) {
+        if (b.type == NTG) {
+            Varble result(a.data.dbl + b.data.ntg);
+            return result;
+        }
+        else if (b.type == UNTG) {
+            Varble result(a.data.dbl + b.data.untg);
+            return result;
+        }
+        else if (b.type == DBL) {
+            Varble result(a.data.dbl + b.data.dbl);
+            return result;
+        }
+        else if (b.type == CHR) {
+            Varble result(a.data.dbl + b.data.chr);
+            return result;
+        }
+        else if (b.type == UCHR) {
+            Varble result(a.data.dbl + b.data.uchr);
+            return result;
+        }
+        else if (b.type == BLN) {
+            Varble result(a.data.dbl + b.data.bln);
+            return result;
+        }
+        else if (b.type == STR) {
+            Varble result(to_wstring(a.data.dbl) + b.data.str);
+            return result;
+        }
+        else if (b.type == NIL) {
+            Varble result;
+            return result;
+        }
+        else {
+            Varble result;
+            return result;
+        }
+    }
+    else if (a.type == CHR) {
+        if (b.type == NTG) {
+            Varble result(a.data.chr + b.data.ntg);
+            return result;
+        }
+        else if (b.type == UNTG) {
+            Varble result(a.data.chr + b.data.untg);
+            return result;
+        }
+        else if (b.type == DBL) {
+            Varble result(a.data.chr + b.data.dbl);
+            return result;
+        }
+        else if (b.type == CHR) {
+            Varble result(a.data.chr + b.data.chr);
+            return result;
+        }
+        else if (b.type == UCHR) {
+            Varble result(a.data.chr + b.data.uchr);
+            return result;
+        }
+        else if (b.type == BLN) {
+            Varble result(a.data.chr + b.data.bln);
+            return result;
+        }
+        else if (b.type == STR) {
+            Varble result(to_wstring(a.data.chr) + b.data.str);
+            return result;
+        }
+        else if (b.type == NIL) {
+            Varble result;
+            return result;
+        }
+        else {
+            Varble result;
+            return result;
+        }
+    }
+    else if (a.type == UCHR) {
+        if (b.type == NTG) {
+            Varble result(a.data.uchr + b.data.ntg);
+            return result;
+        }
+        else if (b.type == UNTG) {
+            Varble result(a.data.uchr + b.data.untg);
+            return result;
+        }
+        else if (b.type == DBL) {
+            Varble result(a.data.uchr + b.data.dbl);
+            return result;
+        }
+        else if (b.type == CHR) {
+            Varble result(a.data.uchr + b.data.chr);
+            return result;
+        }
+        else if (b.type == UCHR) {
+            Varble result(a.data.uchr + b.data.uchr);
+            return result;
+        }
+        else if (b.type == BLN) {
+            Varble result(a.data.uchr + b.data.bln);
+            return result;
+        }
+        else if (b.type == STR) {
+            Varble result(to_wstring(a.data.uchr) + b.data.str);
+            return result;
+        }
+        else if (b.type == NIL) {
+            Varble result;
+            return result;
+        }
+        else {
+            Varble result;
+            return result;
+        }
+    }
+    else if (a.type == BLN) {
+        if (b.type == NTG) {
+            Varble result(a.data.bln + b.data.ntg);
+            return result;
+        }
+        else if (b.type == UNTG) {
+            Varble result(a.data.bln + b.data.untg);
+            return result;
+        }
+        else if (b.type == DBL) {
+            Varble result(a.data.bln + b.data.dbl);
+            return result;
+        }
+        else if (b.type == CHR) {
+            Varble result(a.data.bln + b.data.chr);
+            return result;
+        }
+        else if (b.type == UCHR) {
+            Varble result(a.data.bln + b.data.uchr);
+            return result;
+        }
+        else if (b.type == BLN) {
+            Varble result(a.data.bln + b.data.bln);
+            return result;
+        }
+        else if (b.type == STR) {
+            if (a.data.bln) {
+                Varble result(L"true" + b.data.str);
+                return result;
+            }
+            else {
+                Varble result(L"false" + b.data.str);
+                return result;
+            }
+        }
+        else if (b.type == NIL) {
+            Varble result;
+            return result;
+        }
+        else {
+            Varble result;
+            return result;
+        }
+    }
     else {
         Varble result;
         return result;

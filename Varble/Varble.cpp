@@ -10,9 +10,9 @@ int main()
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
     _setmode(_fileno(stderr), _O_U16TEXT);
-    wstring var = L"str";
-    Varble v = 10ULL;
-    Varble v2;
+    unsigned long long int var = 123;
+    Varble v = true;
+    Varble v2 = var;
     Varble v3 = 2;
     Varble v4 = v + v2;
 
