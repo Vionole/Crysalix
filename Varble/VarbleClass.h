@@ -59,11 +59,21 @@ public:
     
     Varble(wstring t, int i);
 
+    long long int getInt();
+    unsigned long long int getUInt();
+    long double getDouble();
+    char getChar();
+    unsigned char getUChar();
+    bool getBool();
+    wstring getWStr();
+    vector<Varble> getArr();
+    map<wstring, Varble> getMap();
 
     void print();
     wstring typeOf();
 
     Varble& operator[](int ind);
+    Varble& operator[](Varble v);
 
     friend wostream& operator<< (wostream& os, const Varble& var);
 

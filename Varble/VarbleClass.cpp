@@ -107,6 +107,87 @@ Varble::Varble(wstring t, int i) {
     }
 }
 
+long long int Varble::getInt() {
+    if (this->type == NTG) {
+        return this->data.ntg;
+    }
+    else {
+        throw wstring{ L"Переменная не является знаковой целочисленной" };
+    }
+}
+
+unsigned long long int Varble::getUInt() {
+    if (this->type == UNTG) {
+        return this->data.untg;
+    }
+    else {
+        throw wstring{ L"Переменная не является беззнаковой целочисленной" };
+    }
+}
+
+long double Varble::getDouble() {
+    if (this->type == DBL) {
+        return this->data.dbl;
+    }
+    else {
+        throw wstring{ L"Переменная не является числом с плавающей точкой" };
+    }
+}
+
+char Varble::getChar() {
+    if (this->type == CHR) {
+        return this->data.chr;
+    }
+    else {
+        throw wstring{ L"Переменная не является символьной" };
+    }
+}
+
+unsigned char Varble::getUChar() {
+    if (this->type == UCHR) {
+        return this->data.uchr;
+    }
+    else {
+        throw wstring{ L"Переменная не является беззнаковой символьной" };
+    }
+}
+
+bool Varble::getBool() {
+    if (this->type == BLN) {
+        return this->data.bln;
+    }
+    else {
+        throw wstring{ L"Переменная не является булевой" };
+    }
+}
+
+wstring Varble::getWStr() {
+    if (this->type == STR) {
+        return this->data.str;
+    }
+    else {
+        throw wstring{ L"Переменная не является строкой" };
+    }
+}
+
+vector<Varble> Varble::getArr() {
+    if (this->type == ARR) {
+        return this->arr;
+    }
+    else {
+        throw wstring{ L"Переменная не является массивом" };
+    }
+}
+
+map<wstring, Varble> Varble::getMap() {
+    if (this->type == MAP) {
+        return this->mp;
+    }
+    else {
+        throw wstring{ L"Переменная не является словарем" };
+    }
+}
+
 void Varble::print() {
     switch (this->type) {
     case UNTG:
@@ -199,7 +280,9 @@ wstring Varble::typeOf() {
 Varble& Varble::operator[](int ind) {
     return this->arr[ind];
 }
-
+Varble& Varble::operator[](Varble v) {
+    return this->arr[v.getInt()];
+}
 
 
 
