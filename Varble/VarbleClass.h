@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+#include <vector>
+#include <map>
 using namespace std;
 
 struct Data {
@@ -19,13 +22,18 @@ enum Type {
     UCHR,
     BLN,
     STR,
-    NIL
+    NIL,
+    UNKNOWN,
+    ARR,
+    MAP
 };
 
 class Varble {
 private:
     Data data;
     Type type;
+    vector<Varble> arr;
+    map<wstring, Varble> mp;
 public:
     Varble();
     Varble(unsigned long long int untg);
@@ -48,33 +56,40 @@ public:
 
     Varble(wstring str);
     Varble(const wchar_t* str); 
+    
+    Varble(wstring t, int i);
+
 
     void print();
     wstring typeOf();
+
+    Varble& operator[](int ind);
+
     friend wostream& operator<< (wostream& os, const Varble& var);
 
-    Varble& operator= (Varble& var);
+    Varble& operator= (const Varble& var);
 
-    Varble& operator= (unsigned long long int& var);
-    Varble& operator= (unsigned long int& var);
-    Varble& operator= (unsigned int& var);
-    Varble& operator= (unsigned short int& var);
-    Varble& operator= (long long int& var);
-    Varble& operator= (long int& var);
-    Varble& operator= (int& var);
-    Varble& operator= (short int& var);
+    Varble& operator= (const unsigned long long int& var);
+    Varble& operator= (const unsigned long int& var);
+    Varble& operator= (const unsigned int& var);
+    Varble& operator= (const unsigned short int& var);
+    Varble& operator= (const long long int& var);
+    Varble& operator= (const long int& var);
+    Varble& operator= (const int& var);
+    Varble& operator= (const short int& var);
 
-    Varble& operator= (long double& var);
-    Varble& operator= (double& var);
-    Varble& operator= (float& var);
+    Varble& operator= (const long double& var);
+    Varble& operator= (const double& var);
+    Varble& operator= (const float& var);
 
-    Varble& operator= (char& var);
-    Varble& operator= (unsigned char& var);
+    Varble& operator= (const char& var);
+    Varble& operator= (const unsigned char& var);
 
-    Varble& operator= (bool& var);
+    Varble& operator= (const bool& var);
 
-    Varble& operator= (wstring& var);
+    Varble& operator= (const wstring& var);
     Varble& operator= (const wchar_t* var);
+
 
     friend Varble operator+(const Varble& a, const Varble& b);
 };

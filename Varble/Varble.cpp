@@ -15,7 +15,8 @@ int main()
     Varble v2 = var;
     Varble v3 = 2;
     Varble v4 = v + v2;
-
-    wcout << L"Значение переменной: " << v4 << L" тип: " << v4.typeOf() << endl;
+    Varble v5(L"array", 5);
+    v5[0] = 121;
+    wcout << L"Значение переменной: " << v5[0] << L" тип: " << v5.typeOf() << endl;
     return 0;
 }

@@ -1,5 +1,6 @@
 
 #include <vector>
+#include <map>
 #include <string>
 #include <iostream>
 #include <io.h>
@@ -92,6 +93,20 @@ Varble::Varble(const wchar_t* str) {
     this->data.str = str;
 }
 
+Varble::Varble(wstring t, int i) {
+    if (t == L"array") {
+        this->type = ARR;
+        this->arr = vector<Varble>(i);
+    } 
+    else if (t == L"map" && i == 0) {
+        this->type = MAP;
+        this->mp = map<wstring, Varble>();
+    }
+    else {
+        this->type == UNKNOWN;
+    }
+}
+
 void Varble::print() {
     switch (this->type) {
     case UNTG:
@@ -121,10 +136,15 @@ void Varble::print() {
         wcout << this->data.str;
         break;
     case NIL:
-        wcout << "NULL";
+        wcout << L"NULL";
         break;
+    case ARR:
+        wcout << L"ARRAY";
+        break;
+    case MAP:
+        wcout << L"MAP";
     default:
-        wcout << "UNKNOWN";
+        wcout << L"UNKNOWN";
     }
 }
 
@@ -163,11 +183,25 @@ wstring Varble::typeOf() {
         result = L"NIL";
         return result;
         break;
+    case ARR:
+        result = L"ARR";
+        return result;
+        break;
+    case MAP:
+        result = L"MAP";
+        return result;
     default:
         result = L"UNKNOWN";
         return result;
     }
 }
+
+Varble& Varble::operator[](int ind) {
+    return this->arr[ind];
+}
+
+
+
 
 wostream& operator<< (wostream& wos, const Varble& var)
 {
@@ -201,12 +235,17 @@ wostream& operator<< (wostream& wos, const Varble& var)
     case NIL:
         return wos << L"NIL";
         break;
+    case ARR:
+        return wos << L"ARRAY";
+        break;
+    case MAP:
+        return wos << L"MAP";
     default:
         return wos << L"UNKNOWN";
     }
 }
 
-Varble& Varble::operator= (Varble& var) {
+Varble& Varble::operator= (const Varble& var) {
     this->type = var.type;
     this->data.untg = var.data.untg;
     this->data.ntg = var.data.ntg;
@@ -218,91 +257,91 @@ Varble& Varble::operator= (Varble& var) {
     return *this; 
 }
 
-Varble& Varble::operator= (unsigned long long int& var) {
+Varble& Varble::operator= (const unsigned long long int& var) {
     this->type = UNTG;
     this->data.untg = var;
     return *this;
 }
 
-Varble& Varble::operator= (unsigned long int& var) {
+Varble& Varble::operator= (const unsigned long int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (unsigned int& var) {
+Varble& Varble::operator= (const unsigned int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (unsigned short int& var) {
+Varble& Varble::operator= (const unsigned short int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (long long int& var) {
+Varble& Varble::operator= (const long long int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (long int& var) {
+Varble& Varble::operator= (const long int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (int& var) {
+Varble& Varble::operator= (const int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (short int& var) {
+Varble& Varble::operator= (const short int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (long double& var) {
+Varble& Varble::operator= (const long double& var) {
     this->type = DBL;
     this->data.dbl = var;
     return *this;
 }
 
-Varble& Varble::operator= (double& var) {
+Varble& Varble::operator= (const double& var) {
     this->type = DBL;
     this->data.dbl = (long double)var;
     return *this;
 }
 
-Varble& Varble::operator= (float& var) {
+Varble& Varble::operator= (const float& var) {
     this->type = DBL;
-    this->data.dbl = (long double)var;
+    this->data.dbl = (const long double)var;
     return *this;
 }
 
-Varble& Varble::operator= (char& var) {
+Varble& Varble::operator= (const char& var) {
     this->type = CHR;
     this->data.chr = var;
     return *this;
 }
 
-Varble& Varble::operator= (unsigned char& var) {
+Varble& Varble::operator= (const unsigned char& var) {
     this->type = UCHR;
     this->data.uchr = var;
     return *this;
 }
 
-Varble& Varble::operator= (bool& var) {
+Varble& Varble::operator= (const bool& var) {
     this->type = BLN;
     this->data.bln = var;
     return *this;
 }
 
-Varble& Varble::operator= (wstring& var) {
+Varble& Varble::operator= (const wstring& var) {
     this->type = STR;
     this->data.str = var;
     return *this;
