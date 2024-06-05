@@ -224,10 +224,16 @@ Varble Varble::toNTG() {
         return result;
     }
     else if (this->type == STR) {
-        Varble result;
-        result.type = NTG;
-        result.data.ntg = stoll(this->data.str);
-        return result;
+        try {
+            Varble result;
+            result.type = NTG;
+            result.data.ntg = stoll(this->data.str);
+            return result;
+        }
+        catch (exception& err)
+        {
+            throw wstring{ L"Не удалось привести строку к типу NTG" };
+        }
     }
     else if (this->type == NIL) {
         Varble result = 0;
@@ -242,6 +248,71 @@ Varble Varble::toNTG() {
     }
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу NTG" };
+    }
+}
+
+Varble Varble::toUNTG() {
+    if (this->type == NTG) {
+        Varble result;
+        result.type = UNTG;
+        result.data.untg = (unsigned long long int)this->data.ntg;
+        return result;
+    }
+    else if (this->type == UNTG) {
+        Varble result;
+        result.type = UNTG;
+        result.data.untg = (unsigned long long int)this->data.untg;
+        return result;
+    }
+    else if (this->type == DBL) {
+        Varble result;
+        result.type = UNTG;
+        result.data.untg = (unsigned long long int)this->data.dbl;
+        return result;
+    }
+    else if (this->type == CHR) {
+        Varble result;
+        result.type = UNTG;
+        result.data.untg = (unsigned long long int)this->data.chr;
+        return result;
+    }
+    else if (this->type == UCHR) {
+        Varble result;
+        result.type = UNTG;
+        result.data.untg = (unsigned long long int)this->data.uchr;
+        return result;
+    }
+    else if (this->type == BLN) {
+        Varble result;
+        result.type = UNTG;
+        result.data.untg = (unsigned long long int)this->data.bln;
+        return result;
+    }
+    else if (this->type == STR) {
+        try {
+            Varble result;
+            result.type = UNTG;
+            result.data.untg = stoull(this->data.str);
+            return result;
+        }
+        catch (exception& err)
+        {
+            throw wstring{ L"Не удалось привести строку к типу UNTG" };
+        }
+    }
+    else if (this->type == NIL) {
+        Varble result = 0ULL;
+        return result;
+    }
+    else if (this->type == UNKNOWN) {
+        Varble result = 0ULL;
+        return result;
+    }
+    else if (this->type == ARR) {
+        throw wstring{ L"Невозможно привести массив к типу UNTG" };
+    }
+    else if (this->type == MAP) {
+        throw wstring{ L"Невозможно привести словарь к типу UNTG" };
     }
 }
 

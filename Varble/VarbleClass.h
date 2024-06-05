@@ -70,6 +70,7 @@ public:
     map<wstring, Varble> getMap();
 
     Varble toNTG();
+    Varble toUNTG();
 
 
     void print();
