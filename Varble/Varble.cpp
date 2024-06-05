@@ -12,14 +12,11 @@ int main()
     _setmode(_fileno(stderr), _O_U16TEXT);
 
     try {
+        //unsigned long long int var = 18446744073709551600ULL;
         bool var = true;
-        Varble v = 6;
-        Varble v2 = var;
-        Varble v3 = var;
-        Varble v4 = v + v2;
-        Varble v5(L"array", 5);
-        v5[v] = 121;
-        wcout << L"Значение переменной: " << v5[v] << L" тип: " << v3.typeOf() << endl;
+        Varble v(L"map", 0);
+
+        wcout << L"Значение переменной: " << v.toNTG() << L" тип: " << v.typeOf() << endl;
     }
     catch (const std::wstring& error_message) {
         wcout << error_message << endl;

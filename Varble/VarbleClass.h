@@ -69,6 +69,9 @@ public:
     vector<Varble> getArr();
     map<wstring, Varble> getMap();
 
+    Varble toNTG();
+
+
     void print();
     wstring typeOf();
 

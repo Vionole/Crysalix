@@ -188,6 +188,63 @@ map<wstring, Varble> Varble::getMap() {
     }
 }
 
+Varble Varble::toNTG() {
+    if (this->type == NTG) {
+        Varble result = this->data.ntg;
+        return result;
+    }
+    else if (this->type == UNTG) {
+        Varble result;
+        result.type = NTG;
+        result.data.ntg = (long long int)this->data.untg;
+        return result;
+    }
+    else if (this->type == DBL) {
+        Varble result;
+        result.type = NTG;
+        result.data.ntg = (long long int)this->data.dbl;
+        return result;
+    }
+    else if (this->type == CHR) {
+        Varble result;
+        result.type = NTG;
+        result.data.ntg = (long long int)this->data.chr;
+        return result;
+    }
+    else if (this->type == UCHR) {
+        Varble result;
+        result.type = NTG;
+        result.data.ntg = (long long int)this->data.uchr;
+        return result;
+    }
+    else if (this->type == BLN) {
+        Varble result;
+        result.type = NTG;
+        result.data.ntg = (long long int)this->data.bln;
+        return result;
+    }
+    else if (this->type == STR) {
+        Varble result;
+        result.type = NTG;
+        result.data.ntg = stoll(this->data.str);
+        return result;
+    }
+    else if (this->type == NIL) {
+        Varble result = 0;
+        return result;
+    }
+    else if (this->type == UNKNOWN) {
+        Varble result = 0;
+        return result;
+    }
+    else if (this->type == ARR) {
+        throw wstring{ L"Невозможно привести массив к типу NTG" };
+    }
+    else if (this->type == MAP) {
+        throw wstring{ L"Невозможно привести словарь к типу NTG" };
+    }
+}
+
 void Varble::print() {
     switch (this->type) {
     case UNTG:
