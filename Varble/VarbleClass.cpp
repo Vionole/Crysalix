@@ -597,6 +597,133 @@ Varble Varble::toBLN() {
     }
 }
 
+Varble Varble::toSTR() {
+    if (this->type == NTG) {
+        Varble result;
+        result.type = STR;
+        result.data.str = to_wstring(this->data.ntg);
+        return result;
+    }
+    else if (this->type == UNTG) {
+        Varble result;
+        result.type = STR;
+        result.data.str = to_wstring(this->data.untg);
+        return result;
+    }
+    else if (this->type == DBL) {
+        Varble result;
+        result.type = STR;
+        result.data.str = to_wstring(this->data.dbl);
+        return result;
+    }
+    else if (this->type == CHR) {
+        Varble result;
+        result.type = STR;
+        result.data.str = to_wstring(this->data.chr);
+        return result;
+    }
+    else if (this->type == UCHR) {
+        Varble result;
+        result.type = STR;
+        result.data.str = to_wstring(this->data.uchr);
+        return result;
+    }
+    else if (this->type == BLN) {
+        Varble result;
+        result.type = STR;
+
+        if (this->data.bln) {
+            result.data.str = L"true";
+        }
+        else {
+            result.data.str = L"false";
+        }
+
+        return result;
+    }
+    else if (this->type == STR) {
+        Varble result;
+        result.type = STR;
+        result.data.str = this->data.str;
+        return result;
+    }
+    else if (this->type == NIL) {
+        Varble result = L"";
+        return result;
+    }
+    else if (this->type == UNKNOWN) {
+        Varble result = L"";
+        return result;
+    }
+    else if (this->type == ARR) {
+        throw wstring{ L"Невозможно привести массив к типу STR" };
+    }
+    else if (this->type == MAP) {
+        throw wstring{ L"Невозможно привести словарь к типу STR" };
+    }
+}
+
+Varble Varble::toARR() {
+    if (this->type == NTG) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+        return result;
+    }
+    else if (this->type == UNTG) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+        return result;
+    }
+    else if (this->type == DBL) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+        return result;
+    }
+    else if (this->type == CHR) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+        return result;
+    }
+    else if (this->type == UCHR) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+        return result;
+    }
+    else if (this->type == BLN) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+        return result;
+    }
+    else if (this->type == STR) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+    }
+    else if (this->type == NIL) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+    }
+    else if (this->type == UNKNOWN) {
+        Varble result;
+        result.type = ARR;
+        result.arr.push_back(*this);
+    }
+    else if (this->type == ARR) {
+        return *this;
+    }
+    else if (this->type == MAP) {
+        throw wstring{ L"Невозможно привести словарь к типу ARR" };
+    }
+}
+
+
 void Varble::print() {
     switch (this->type) {
     case UNTG:

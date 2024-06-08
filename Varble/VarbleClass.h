@@ -75,6 +75,8 @@ public:
     Varble toCHR();
     Varble toUCHR();
     Varble toBLN();
+    Varble toSTR();
+    Varble toARR();
 
     void print();
     wstring typeOf();
