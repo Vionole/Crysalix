@@ -704,16 +704,19 @@ Var Var::toARR() {
         Var result;
         result.type = ARR;
         result.arr.push_back(*this);
+        return result;
     }
     else if (this->type == NIL) {
         Var result;
         result.type = ARR;
         result.arr.push_back(*this);
+        return result;
     }
     else if (this->type == UNKNOWN) {
         Var result;
         result.type = ARR;
         result.arr.push_back(*this);
+        return result;
     }
     else if (this->type == ARR) {
         return *this;
@@ -814,10 +817,25 @@ wstring Var::typeOf() {
 }
 
 Var& Var::operator[](int ind) {
-    return this->arr[ind];
+    if (this->type == ARR) {
+        return this->arr.at(ind);
+    }
+    else if (this->type == STR) {
+        wstring str(1, this->data.str.at(ind));
+        Var *chr = new Var(str);
+        return *chr;
+    }
 }
+
 Var& Var::operator[](Var v) {
-    return this->arr[v.getInt()];
+    if (this->type == ARR) {
+        return this->arr.at(v.getInt());
+    }
+    else if (this->type == STR) {
+        wstring str(1, this->data.str.at(v.getInt()));
+        Var* chr = new Var(str);
+        return *chr;
+    }
 }
 
 

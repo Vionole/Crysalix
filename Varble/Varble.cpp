@@ -14,8 +14,10 @@ int main()
     try {
         //unsigned long long int var = 18446744073709551600ULL;
         wstring var = L"abcd";
-        Var v;
-        wcout << L"Значение переменной: " << v << L" тип: " << v.typeOf() << endl;
+        Var v(L"array", 5);
+        Var v2 = 2;
+        v[v2] = L"123abc";
+        wcout << L"Значение переменной: " << v[v2] << L" тип: " << v.typeOf() << endl;
     }
     catch (const std::wstring& error_message) {
         wcout << error_message << endl;
