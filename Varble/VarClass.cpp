@@ -107,6 +107,16 @@ Var::Var(wstring t, int i) {
     }
 }
 
+Var::Var(vector<Var> v) {
+    this->type = ARR;
+    this->arr = v;
+}
+
+Var::Var(map<wstring, Var> m) {
+    this->type = MAP;
+    this->mp = m;
+}
+
 long long int Var::getInt() {
     if (this->type == NTG) {
         return this->data.ntg;
@@ -818,12 +828,24 @@ wstring Var::typeOf() {
 
 Var& Var::operator[](int ind) {
     if (this->type == ARR) {
-        return this->arr.at(ind);
+        try {
+            return this->arr.at(ind);
+        }
+        catch (exception& err)
+        {
+            throw wstring{ L"Индекс находится вне диапазона" };
+        }
     }
     else if (this->type == STR) {
-        wstring str(1, this->data.str.at(ind));
-        Var* chr = new Var(str);
-        return *chr;
+        try {
+            wstring str(1, this->data.str.at(ind));
+            Var* chr = new Var(str);
+            return *chr;
+        }
+        catch (exception& err)
+        {
+            throw wstring{ L"Индекс находится вне диапазона" };
+        }
     }
     else {
         throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
@@ -831,16 +853,38 @@ Var& Var::operator[](int ind) {
 }
 
 Var& Var::operator[](Var v) {
-    if (this->type == ARR) {
-        return this->arr.at(v.getInt());
+    if (v.type == NTG) {
+        if (this->type == ARR) {
+            try {
+                return this->arr.at(v.getInt());
+            }
+            catch (exception& err)
+            {
+                throw wstring{ L"Индекс находится вне диапазона" };
+            }
+        }
+        else if (this->type == STR) {
+            try {
+                wstring str(1, this->data.str.at(v.getInt()));
+                Var* chr = new Var(str);
+                return *chr;
+            }
+            catch (exception& err)
+            {
+                throw wstring{ L"Индекс находится вне диапазона" };
+            }
+        }
+        else {
+            throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+        }
     }
-    else if (this->type == STR) {
-        wstring str(1, this->data.str.at(v.getInt()));
-        Var* chr = new Var(str);
-        return *chr;
-    }
-    else {
-        throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+    else if (v.type == STR) {
+        try {
+            return this->mp.at(v.getWStr());
+        }
+        catch (exception& err) {
+            throw wstring{ L"Индекс словаря не существует" };
+        }
     }
 }
 
@@ -899,7 +943,6 @@ Var Var::slice(int x, int y) {
         throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
     }
 }
-
 Var Var::slice(Var x, Var y) {
     if (this->type == STR) {
         return this->slice(x.getInt(), y.getInt());
@@ -911,7 +954,6 @@ Var Var::slice(Var x, Var y) {
         throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
     }
 }
-
 Var Var::slice(int x, Var y) {
     if (this->type == STR) {
         return this->slice(x, y.getInt());
@@ -923,7 +965,6 @@ Var Var::slice(int x, Var y) {
         throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
     }
 }
-
 Var Var::slice(Var x, int y) {
     if (this->type == STR) {
         return this->slice(x.getInt(), y);
@@ -936,6 +977,12 @@ Var Var::slice(Var x, int y) {
     }
 }
 
+Var Var::in(Var sent) {
+    if(this->type == STR) {
+    }
+    return Var();
+}
+
 Var Var::ltrim() {
     if (this->type == STR) {
         wstring str = this->data.str;
@@ -946,7 +993,6 @@ Var Var::ltrim() {
         throw wstring{ L"Метод ltrim() используетя только для типа STR" };
     }
 }
-
 Var Var::rtrim() {
     if (this->type == STR) {
         wstring str = this->data.str;
@@ -957,7 +1003,6 @@ Var Var::rtrim() {
         throw wstring{ L"Метод rtrim() используетя только для типа STR" };
     }
 }
-
 Var Var::trim() {
     if (this->type == STR) {
         wstring str = this->data.str;
@@ -969,6 +1014,39 @@ Var Var::trim() {
         throw wstring{ L"Метод trim() используетя только для типа STR" };
     }
 }
+
+Var Var::split(Var delim) {
+    if (this->type == STR) {
+        vector<Var> tokens;
+        size_t pos = 0;
+        wstring str = this->data.str;
+        while (pos < str.length())
+        {
+            size_t next = str.find(delim.data.str, pos);
+            if (next == string::npos)
+            {
+                next = str.length();
+            }
+
+            Var token = str.substr(pos, next - pos);
+
+            if (!token.data.str.empty())
+            {
+                tokens.push_back(token);
+            }
+            pos = next + delim.len().getUInt();
+        }
+
+        Var result;
+        result.type = ARR;
+        result.arr = tokens;
+        return result;
+    }
+    else {
+        throw wstring{ L"Метод split() используетя только для типа STR" };
+    }
+}
+
 
 wostream& operator<< (wostream& wos, const Var& var)
 {
@@ -1363,4 +1441,16 @@ Var operator+(const Var& a, const Var& b)
         return result;
     }
 
+}
+
+void Unicode() {
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    _setmode(_fileno(stdin), _O_U16TEXT);
+    _setmode(_fileno(stderr), _O_U16TEXT);
+}
+
+void swap(Var& a, Var& b) {
+    Var tmp = a;
+    a = b;
+    b = tmp;
 }

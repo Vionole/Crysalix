@@ -60,6 +60,9 @@ public:
     
     Var(wstring t, int i);
 
+    Var(vector<Var> v);
+    Var(map<wstring, Var> m);
+
     //Геттеры обычных типов данных
     long long int getInt();
     unsigned long long int getUInt();
@@ -91,6 +94,7 @@ public:
 
     Var len();
     Var rev();
+    Var in(Var sent);
 
     Var slice(int x, int y);
     Var slice(Var x, Var y);
@@ -100,6 +104,9 @@ public:
     Var ltrim();
     Var rtrim();
     Var trim();
+
+
+    Var split(Var delim);
 
     //Вывод данных через поток
     friend wostream& operator<< (wostream& os, const Var& var);
@@ -131,3 +138,7 @@ public:
     //Математические операторы
     friend Var operator+(const Var& a, const Var& b);
 };
+
+
+void Unicode();
+void swap(Var& a, Var& b);
