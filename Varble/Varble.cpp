@@ -14,8 +14,8 @@ int main()
     try {
         //unsigned long long int var = 18446744073709551600ULL;
         wstring var = L"   abcd    ";
-        Var v = var;
-        wcout << L"Значение переменной: " << v.rtrim() << L" тип: " << v.typeOf() << endl;
+        Var v = 2;
+        wcout << L"Значение переменной: " << v.slice(1, Var(2))[0] << L" тип: " << v.typeOf() << endl;
     }
     catch (const std::wstring& error_message) {
         wcout << error_message << endl;

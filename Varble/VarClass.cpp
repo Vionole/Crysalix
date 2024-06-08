@@ -859,18 +859,80 @@ Var Var::len() {
     }
 }
 
-Var Var::reverse() {
+Var Var::rev() {
     if (this->type == STR) {
-        return Var(this->data.str.length());
+        wstring str = this->data.str;
+        reverse(str.begin(), str.end());
+        return Var(str);
     }
     else if (this->type == ARR) {
-        return Var(this->arr.size());
-    }
-    else if (this->type == MAP) {
-        return Var(this->mp.size());
+        vector<Var> v = this->arr;
+        reverse(v.begin(), v.end());
+        Var result;
+        result.type = ARR;
+        result.arr = v;
+        return result;
     }
     else {
-        throw wstring{ L"Метод len() используетя только для типов STR, ARR, MAP" };
+        throw wstring{ L"Метод rev() используетя только для типов STR, ARR" };
+    }
+}
+
+Var Var::slice(int x, int y) {
+    if (this->type == STR) {
+        return Var(this->data.str.substr(x, y));
+    }
+    else if (this->type == ARR) {
+        auto start = arr.begin() + x;
+        auto end = arr.begin() + x + y;
+        vector<Var> result(y);
+
+        copy(start, end, result.begin());
+        
+        Var res;
+        res.type = ARR;
+        res.arr = result;
+
+        return res;
+    }
+    else {
+        throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
+    }
+}
+
+Var Var::slice(Var x, Var y) {
+    if (this->type == STR) {
+        return this->slice(x.getInt(), y.getInt());
+    }
+    else if (this->type == ARR) {
+        return this->slice(x.getInt(), y.getInt());
+    }
+    else {
+        throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
+    }
+}
+
+Var Var::slice(int x, Var y) {
+    if (this->type == STR) {
+        return this->slice(x, y.getInt());
+    }
+    else if (this->type == ARR) {
+        return this->slice(x, y.getInt());
+    }
+    else {
+        throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
+    }
+}
+
+Var Var::slice(Var x, int y) {
+    if (this->type == STR) {
+        return this->slice(x.getInt(), y);
+    }
+    else if (this->type == ARR) {
+        return this->slice(x.getInt(), y);
+    }
+    else {
+        throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
     }
 }
 

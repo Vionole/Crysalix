@@ -90,7 +90,12 @@ public:
     Var& operator[](Var v);
 
     Var len();
-    Var reverse();
+    Var rev();
+
+    Var slice(int x, int y);
+    Var slice(Var x, Var y);
+    Var slice(int x, Var y);
+    Var slice(Var x, int y);
 
     Var ltrim();
     Var rtrim();
