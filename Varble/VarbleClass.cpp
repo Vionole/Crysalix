@@ -381,6 +381,71 @@ Varble Varble::toDBL() {
     }
 }
 
+Varble Varble::toCHR() {
+    if (this->type == NTG) {
+        Varble result;
+        result.type = CHR;
+        result.data.chr = (char)this->data.ntg;
+        return result;
+    }
+    else if (this->type == UNTG) {
+        Varble result;
+        result.type = CHR;
+        result.data.chr = (char)this->data.untg;
+        return result;
+    }
+    else if (this->type == DBL) {
+        Varble result;
+        result.type = CHR;
+        result.data.chr = (char)this->data.dbl;
+        return result;
+    }
+    else if (this->type == CHR) {
+        Varble result;
+        result.type = CHR;
+        result.data.chr = (char)this->data.chr;
+        return result;
+    }
+    else if (this->type == UCHR) {
+        Varble result;
+        result.type = CHR;
+        result.data.chr = (char)this->data.uchr;
+        return result;
+    }
+    else if (this->type == BLN) {
+        Varble result;
+        result.type = CHR;
+        result.data.chr = (char)this->data.bln;
+        return result;
+    }
+    else if (this->type == STR) {
+        try {
+            Varble result;
+            result.type = CHR;
+            result.data.chr = stoll(this->data.str);
+            return result;
+        }
+        catch (exception& err)
+        {
+            throw wstring{ L"Не удалось привести строку к типу CHR" };
+        }
+    }
+    else if (this->type == NIL) {
+        Varble result = (char)0;
+        return result;
+    }
+    else if (this->type == UNKNOWN) {
+        Varble result = (char)0;
+        return result;
+    }
+    else if (this->type == ARR) {
+        throw wstring{ L"Невозможно привести массив к типу CHR" };
+    }
+    else if (this->type == MAP) {
+        throw wstring{ L"Невозможно привести словарь к типу CHR" };
+    }
+}
+
 void Varble::print() {
     switch (this->type) {
     case UNTG:

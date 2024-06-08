@@ -72,6 +72,7 @@ public:
     Varble toNTG();
     Varble toUNTG();
     Varble toDBL();
+    Varble toCHR();
 
     void print();
     wstring typeOf();
