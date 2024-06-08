@@ -73,6 +73,8 @@ public:
     Varble toUNTG();
     Varble toDBL();
     Varble toCHR();
+    Varble toUCHR();
+    Varble toBLN();
 
     void print();
     wstring typeOf();

@@ -446,6 +446,157 @@ Varble Varble::toCHR() {
     }
 }
 
+Varble Varble::toUCHR() {
+    if (this->type == NTG) {
+        Varble result;
+        result.type = UCHR;
+        result.data.uchr = (unsigned char)this->data.ntg;
+        return result;
+    }
+    else if (this->type == UNTG) {
+        Varble result;
+        result.type = UCHR;
+        result.data.uchr = (unsigned char)this->data.untg;
+        return result;
+    }
+    else if (this->type == DBL) {
+        Varble result;
+        result.type = UCHR;
+        result.data.uchr = (unsigned char)this->data.dbl;
+        return result;
+    }
+    else if (this->type == CHR) {
+        Varble result;
+        result.type = UCHR;
+        result.data.uchr = (unsigned char)this->data.chr;
+        return result;
+    }
+    else if (this->type == UCHR) {
+        Varble result;
+        result.type = UCHR;
+        result.data.uchr = (unsigned char)this->data.uchr;
+        return result;
+    }
+    else if (this->type == BLN) {
+        Varble result;
+        result.type = UCHR;
+        result.data.uchr = (unsigned char)this->data.bln;
+        return result;
+    }
+    else if (this->type == STR) {
+        try {
+            Varble result;
+            result.type = UCHR;
+            result.data.uchr = stoll(this->data.str);
+            return result;
+        }
+        catch (exception& err)
+        {
+            throw wstring{ L"Не удалось привести строку к типу UCHR" };
+        }
+    }
+    else if (this->type == NIL) {
+        Varble result = (unsigned char)0;
+        return result;
+    }
+    else if (this->type == UNKNOWN) {
+        Varble result = (unsigned char)0;
+        return result;
+    }
+    else if (this->type == ARR) {
+        throw wstring{ L"Невозможно привести массив к типу UCHR" };
+    }
+    else if (this->type == MAP) {
+        throw wstring{ L"Невозможно привести словарь к типу UCHR" };
+    }
+}
+
+Varble Varble::toBLN() {
+    if (this->type == NTG) {
+        Varble result;
+        result.type = BLN;
+        result.data.bln = (bool)this->data.ntg;
+        return result;
+    }
+    else if (this->type == UNTG) {
+        Varble result;
+        result.type = BLN;
+        result.data.bln = (bool)this->data.untg;
+        return result;
+    }
+    else if (this->type == DBL) {
+        Varble result;
+        result.type = BLN;
+        result.data.bln = (bool)this->data.dbl;
+        return result;
+    }
+    else if (this->type == CHR) {
+        Varble result;
+        result.type = BLN;
+        result.data.bln = (bool)this->data.chr;
+        return result;
+    }
+    else if (this->type == UCHR) {
+        Varble result;
+        result.type = BLN;
+        result.data.bln = (bool)this->data.uchr;
+        return result;
+    }
+    else if (this->type == BLN) {
+        Varble result;
+        result.type = BLN;
+        result.data.bln = (bool)this->data.bln;
+        return result;
+    }
+    else if (this->type == STR) {
+        Varble result;
+        result.type = BLN;
+
+        if (this->data.str == L"") {
+            result.data.bln = false;
+        }
+        else {
+            result.data.bln = true;
+        }
+
+        return result;
+    }
+    else if (this->type == NIL) {
+        Varble result = (bool)0;
+        return result;
+    }
+    else if (this->type == UNKNOWN) {
+        Varble result = (bool)0;
+        return result;
+    }
+    else if (this->type == ARR) {
+        Varble result;
+        result.type = BLN;
+
+        if (this->arr.empty()) {
+            result.data.bln = false;
+        }
+        else {
+            result.data.bln = true;
+        }
+
+        return result;
+    }
+    else if (this->type == MAP) {
+        Varble result;
+        result.type = BLN;
+
+        if (this->mp.empty()) {
+            result.data.bln = false;
+        }
+        else {
+            result.data.bln = true;
+        }
+
+        return result;
+    }
+}
+
 void Varble::print() {
     switch (this->type) {
     case UNTG:
