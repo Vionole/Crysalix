@@ -71,7 +71,7 @@ public:
 
     Varble toNTG();
     Varble toUNTG();
-
+    Varble toDBL();
 
     void print();
     wstring typeOf();

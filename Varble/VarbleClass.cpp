@@ -316,6 +316,71 @@ Varble Varble::toUNTG() {
     }
 }
 
+Varble Varble::toDBL() {
+    if (this->type == NTG) {
+        Varble result;
+        result.type = DBL;
+        result.data.dbl = (long double)this->data.ntg;
+        return result;
+    }
+    else if (this->type == UNTG) {
+        Varble result;
+        result.type = DBL;
+        result.data.dbl = (long double)this->data.untg;
+        return result;
+    }
+    else if (this->type == DBL) {
+        Varble result;
+        result.type = DBL;
+        result.data.dbl = (long double)this->data.dbl;
+        return result;
+    }
+    else if (this->type == CHR) {
+        Varble result;
+        result.type = DBL;
+        result.data.dbl = (long double)this->data.chr;
+        return result;
+    }
+    else if (this->type == UCHR) {
+        Varble result;
+        result.type = DBL;
+        result.data.dbl = (long double)this->data.uchr;
+        return result;
+    }
+    else if (this->type == BLN) {
+        Varble result;
+        result.type = DBL;
+        result.data.dbl = (long double)this->data.bln;
+        return result;
+    }
+    else if (this->type == STR) {
+        try {
+            Varble result;
+            result.type = DBL;
+            result.data.dbl = stold(this->data.str);
+            return result;
+        }
+        catch (exception& err)
+        {
+            throw wstring{ L"Не удалось привести строку к типу DBL" };
+        }
+    }
+    else if (this->type == NIL) {
+        Varble result = 0.0;
+        return result;
+    }
+    else if (this->type == UNKNOWN) {
+        Varble result = 0.0;
+        return result;
+    }
+    else if (this->type == ARR) {
+        throw wstring{ L"Невозможно привести массив к типу DBL" };
+    }
+    else if (this->type == MAP) {
+        throw wstring{ L"Невозможно привести словарь к типу DBL" };
+    }
+}
+
 void Varble::print() {
     switch (this->type) {
     case UNTG:
@@ -465,6 +530,8 @@ Varble& Varble::operator= (const Varble& var) {
     this->data.uchr = var.data.uchr;
     this->data.bln = var.data.bln;
     this->data.str = var.data.str;
+    this->arr = var.arr;
+    this->mp = var.mp;
     return *this; 
 }
 

@@ -13,10 +13,10 @@ int main()
 
     try {
         //unsigned long long int var = 18446744073709551600ULL;
-        unsigned char var = 'X';
+        bool var = false;
         Varble v(L"map", 0);
 
-        wcout << L"Значение переменной: " << v.toUNTG() << L" тип: " << v.typeOf() << endl;
+        wcout << L"Значение переменной: " << v.toDBL() << L" тип: " << v.toDBL().typeOf() << endl;
     }
     catch (const std::wstring& error_message) {
         wcout << error_message << endl;
