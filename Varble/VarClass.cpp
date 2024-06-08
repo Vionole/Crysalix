@@ -5,109 +5,109 @@
 #include <iostream>
 #include <io.h>
 #include <fcntl.h>
-#include "VarbleClass.h"
+#include "VarClass.h"
 
 using namespace std;
 
-Varble::Varble() {
+Var::Var() {
     this->type = NIL;
 }
 
-Varble::Varble(unsigned long long int untg) {
+Var::Var(unsigned long long int untg) {
     this->type = UNTG;
     this->data.untg = untg;
 }
 
-Varble::Varble(long long int ntg) {
+Var::Var(long long int ntg) {
     this->type = NTG;
     this->data.ntg = ntg;
 }
 
-Varble::Varble(long int ntg) {
+Var::Var(long int ntg) {
     this->type = NTG;
     this->data.ntg = (long long int)ntg;
 }
 
-Varble::Varble(int ntg) {
+Var::Var(int ntg) {
     this->type = NTG;
     this->data.ntg = (long long int)ntg;
 }
 
-Varble::Varble(short int ntg) {
+Var::Var(short int ntg) {
     this->type = NTG;
     this->data.ntg = (long long int)ntg;
 }
 
-Varble::Varble(unsigned short int ntg) {
+Var::Var(unsigned short int ntg) {
     this->type = NTG;
     this->data.ntg = (long long int)ntg;
 }
 
-Varble::Varble(unsigned int ntg) {
+Var::Var(unsigned int ntg) {
     this->type = NTG;
     this->data.ntg = (long long int)ntg;
 }
 
-Varble::Varble(unsigned long int ntg) {
+Var::Var(unsigned long int ntg) {
     this->type = NTG;
     this->data.ntg = (long long int)ntg;
 }
 
-Varble::Varble(long double dbl) {
+Var::Var(long double dbl) {
     this->type = DBL;
     this->data.dbl = dbl;
 }
 
-Varble::Varble(double dbl) {
+Var::Var(double dbl) {
     this->type = DBL;
     this->data.dbl = (long double)dbl;
 }
 
-Varble::Varble(float dbl) {
+Var::Var(float dbl) {
     this->type = DBL;
     this->data.dbl = (long double)dbl;
 }
 
-Varble::Varble(char chr) {
+Var::Var(char chr) {
     this->type = CHR;
     this->data.chr = chr;
 }
 
-Varble::Varble(unsigned char uchr) {
+Var::Var(unsigned char uchr) {
     this->type = UCHR;
     this->data.uchr = uchr;
 }
 
-Varble::Varble(bool bln) {
+Var::Var(bool bln) {
     this->type = BLN;
     this->data.bln = bln;
 }
 
-Varble::Varble(wstring str) {
+Var::Var(wstring str) {
     this->type = STR;
     this->data.str = str;
 }
 
-Varble::Varble(const wchar_t* str) {
+Var::Var(const wchar_t* str) {
     this->type = STR;
     this->data.str = str;
 }
 
-Varble::Varble(wstring t, int i) {
+Var::Var(wstring t, int i) {
     if (t == L"array") {
         this->type = ARR;
-        this->arr = vector<Varble>(i);
+        this->arr = vector<Var>(i);
     } 
     else if (t == L"map" && i == 0) {
         this->type = MAP;
-        this->mp = map<wstring, Varble>();
+        this->mp = map<wstring, Var>();
     }
     else {
         this->type == UNKNOWN;
     }
 }
 
-long long int Varble::getInt() {
+long long int Var::getInt() {
     if (this->type == NTG) {
         return this->data.ntg;
     }
@@ -116,7 +116,7 @@ long long int Varble::getInt() {
     }
 }
 
-unsigned long long int Varble::getUInt() {
+unsigned long long int Var::getUInt() {
     if (this->type == UNTG) {
         return this->data.untg;
     }
@@ -125,7 +125,7 @@ unsigned long long int Varble::getUInt() {
     }
 }
 
-long double Varble::getDouble() {
+long double Var::getDouble() {
     if (this->type == DBL) {
         return this->data.dbl;
     }
@@ -134,7 +134,7 @@ long double Varble::getDouble() {
     }
 }
 
-char Varble::getChar() {
+char Var::getChar() {
     if (this->type == CHR) {
         return this->data.chr;
     }
@@ -143,7 +143,7 @@ char Varble::getChar() {
     }
 }
 
-unsigned char Varble::getUChar() {
+unsigned char Var::getUChar() {
     if (this->type == UCHR) {
         return this->data.uchr;
     }
@@ -152,7 +152,7 @@ unsigned char Varble::getUChar() {
     }
 }
 
-bool Varble::getBool() {
+bool Var::getBool() {
     if (this->type == BLN) {
         return this->data.bln;
     }
@@ -161,7 +161,7 @@ bool Varble::getBool() {
     }
 }
 
-wstring Varble::getWStr() {
+wstring Var::getWStr() {
     if (this->type == STR) {
         return this->data.str;
     }
@@ -170,7 +170,7 @@ wstring Varble::getWStr() {
     }
 }
 
-vector<Varble> Varble::getArr() {
+vector<Var> Var::getArr() {
     if (this->type == ARR) {
         return this->arr;
     }
@@ -179,7 +179,7 @@ vector<Varble> Varble::getArr() {
     }
 }
 
-map<wstring, Varble> Varble::getMap() {
+map<wstring, Var> Var::getMap() {
     if (this->type == MAP) {
         return this->mp;
     }
@@ -188,44 +188,44 @@ map<wstring, Varble> Varble::getMap() {
     }
 }
 
-Varble Varble::toNTG() {
+Var Var::toNTG() {
     if (this->type == NTG) {
-        Varble result = this->data.ntg;
+        Var result = this->data.ntg;
         return result;
     }
     else if (this->type == UNTG) {
-        Varble result;
+        Var result;
         result.type = NTG;
         result.data.ntg = (long long int)this->data.untg;
         return result;
     }
     else if (this->type == DBL) {
-        Varble result;
+        Var result;
         result.type = NTG;
         result.data.ntg = (long long int)this->data.dbl;
         return result;
     }
     else if (this->type == CHR) {
-        Varble result;
+        Var result;
         result.type = NTG;
         result.data.ntg = (long long int)this->data.chr;
         return result;
     }
     else if (this->type == UCHR) {
-        Varble result;
+        Var result;
         result.type = NTG;
         result.data.ntg = (long long int)this->data.uchr;
         return result;
     }
     else if (this->type == BLN) {
-        Varble result;
+        Var result;
         result.type = NTG;
         result.data.ntg = (long long int)this->data.bln;
         return result;
     }
     else if (this->type == STR) {
         try {
-            Varble result;
+            Var result;
             result.type = NTG;
             result.data.ntg = stoll(this->data.str);
             return result;
@@ -236,11 +236,11 @@ Varble Varble::toNTG() {
         }
     }
     else if (this->type == NIL) {
-        Varble result = 0;
+        Var result = 0;
         return result;
     }
     else if (this->type == UNKNOWN) {
-        Varble result = 0;
+        Var result = 0;
         return result;
     }
     else if (this->type == ARR) {
@@ -251,46 +251,46 @@ Varble Varble::toNTG() {
     }
 }
 
-Varble Varble::toUNTG() {
+Var Var::toUNTG() {
     if (this->type == NTG) {
-        Varble result;
+        Var result;
         result.type = UNTG;
         result.data.untg = (unsigned long long int)this->data.ntg;
         return result;
     }
     else if (this->type == UNTG) {
-        Varble result;
+        Var result;
         result.type = UNTG;
         result.data.untg = (unsigned long long int)this->data.untg;
         return result;
     }
     else if (this->type == DBL) {
-        Varble result;
+        Var result;
         result.type = UNTG;
         result.data.untg = (unsigned long long int)this->data.dbl;
         return result;
     }
     else if (this->type == CHR) {
-        Varble result;
+        Var result;
         result.type = UNTG;
         result.data.untg = (unsigned long long int)this->data.chr;
         return result;
     }
     else if (this->type == UCHR) {
-        Varble result;
+        Var result;
         result.type = UNTG;
         result.data.untg = (unsigned long long int)this->data.uchr;
         return result;
     }
     else if (this->type == BLN) {
-        Varble result;
+        Var result;
         result.type = UNTG;
         result.data.untg = (unsigned long long int)this->data.bln;
         return result;
     }
     else if (this->type == STR) {
         try {
-            Varble result;
+            Var result;
             result.type = UNTG;
             result.data.untg = stoull(this->data.str);
             return result;
@@ -301,11 +301,11 @@ Varble Varble::toUNTG() {
         }
     }
     else if (this->type == NIL) {
-        Varble result = 0ULL;
+        Var result = 0ULL;
         return result;
     }
     else if (this->type == UNKNOWN) {
-        Varble result = 0ULL;
+        Var result = 0ULL;
         return result;
     }
     else if (this->type == ARR) {
@@ -316,46 +316,46 @@ Varble Varble::toUNTG() {
     }
 }
 
-Varble Varble::toDBL() {
+Var Var::toDBL() {
     if (this->type == NTG) {
-        Varble result;
+        Var result;
         result.type = DBL;
         result.data.dbl = (long double)this->data.ntg;
         return result;
     }
     else if (this->type == UNTG) {
-        Varble result;
+        Var result;
         result.type = DBL;
         result.data.dbl = (long double)this->data.untg;
         return result;
     }
     else if (this->type == DBL) {
-        Varble result;
+        Var result;
         result.type = DBL;
         result.data.dbl = (long double)this->data.dbl;
         return result;
     }
     else if (this->type == CHR) {
-        Varble result;
+        Var result;
         result.type = DBL;
         result.data.dbl = (long double)this->data.chr;
         return result;
     }
     else if (this->type == UCHR) {
-        Varble result;
+        Var result;
         result.type = DBL;
         result.data.dbl = (long double)this->data.uchr;
         return result;
     }
     else if (this->type == BLN) {
-        Varble result;
+        Var result;
         result.type = DBL;
         result.data.dbl = (long double)this->data.bln;
         return result;
     }
     else if (this->type == STR) {
         try {
-            Varble result;
+            Var result;
             result.type = DBL;
             result.data.dbl = stold(this->data.str);
             return result;
@@ -366,11 +366,11 @@ Varble Varble::toDBL() {
         }
     }
     else if (this->type == NIL) {
-        Varble result = 0.0;
+        Var result = 0.0;
         return result;
     }
     else if (this->type == UNKNOWN) {
-        Varble result = 0.0;
+        Var result = 0.0;
         return result;
     }
     else if (this->type == ARR) {
@@ -381,46 +381,46 @@ Varble Varble::toDBL() {
     }
 }
 
-Varble Varble::toCHR() {
+Var Var::toCHR() {
     if (this->type == NTG) {
-        Varble result;
+        Var result;
         result.type = CHR;
         result.data.chr = (char)this->data.ntg;
         return result;
     }
     else if (this->type == UNTG) {
-        Varble result;
+        Var result;
         result.type = CHR;
         result.data.chr = (char)this->data.untg;
         return result;
     }
     else if (this->type == DBL) {
-        Varble result;
+        Var result;
         result.type = CHR;
         result.data.chr = (char)this->data.dbl;
         return result;
     }
     else if (this->type == CHR) {
-        Varble result;
+        Var result;
         result.type = CHR;
         result.data.chr = (char)this->data.chr;
         return result;
     }
     else if (this->type == UCHR) {
-        Varble result;
+        Var result;
         result.type = CHR;
         result.data.chr = (char)this->data.uchr;
         return result;
     }
     else if (this->type == BLN) {
-        Varble result;
+        Var result;
         result.type = CHR;
         result.data.chr = (char)this->data.bln;
         return result;
     }
     else if (this->type == STR) {
         try {
-            Varble result;
+            Var result;
             result.type = CHR;
             result.data.chr = stoll(this->data.str);
             return result;
@@ -431,11 +431,11 @@ Varble Varble::toCHR() {
         }
     }
     else if (this->type == NIL) {
-        Varble result = (char)0;
+        Var result = (char)0;
         return result;
     }
     else if (this->type == UNKNOWN) {
-        Varble result = (char)0;
+        Var result = (char)0;
         return result;
     }
     else if (this->type == ARR) {
@@ -446,46 +446,46 @@ Varble Varble::toCHR() {
     }
 }
 
-Varble Varble::toUCHR() {
+Var Var::toUCHR() {
     if (this->type == NTG) {
-        Varble result;
+        Var result;
         result.type = UCHR;
         result.data.uchr = (unsigned char)this->data.ntg;
         return result;
     }
     else if (this->type == UNTG) {
-        Varble result;
+        Var result;
         result.type = UCHR;
         result.data.uchr = (unsigned char)this->data.untg;
         return result;
     }
     else if (this->type == DBL) {
-        Varble result;
+        Var result;
         result.type = UCHR;
         result.data.uchr = (unsigned char)this->data.dbl;
         return result;
     }
     else if (this->type == CHR) {
-        Varble result;
+        Var result;
         result.type = UCHR;
         result.data.uchr = (unsigned char)this->data.chr;
         return result;
     }
     else if (this->type == UCHR) {
-        Varble result;
+        Var result;
         result.type = UCHR;
         result.data.uchr = (unsigned char)this->data.uchr;
         return result;
     }
     else if (this->type == BLN) {
-        Varble result;
+        Var result;
         result.type = UCHR;
         result.data.uchr = (unsigned char)this->data.bln;
         return result;
     }
     else if (this->type == STR) {
         try {
-            Varble result;
+            Var result;
             result.type = UCHR;
             result.data.uchr = stoll(this->data.str);
             return result;
@@ -496,11 +496,11 @@ Varble Varble::toUCHR() {
         }
     }
     else if (this->type == NIL) {
-        Varble result = (unsigned char)0;
+        Var result = (unsigned char)0;
         return result;
     }
     else if (this->type == UNKNOWN) {
-        Varble result = (unsigned char)0;
+        Var result = (unsigned char)0;
         return result;
     }
     else if (this->type == ARR) {
@@ -511,45 +511,45 @@ Varble Varble::toUCHR() {
     }
 }
 
-Varble Varble::toBLN() {
+Var Var::toBLN() {
     if (this->type == NTG) {
-        Varble result;
+        Var result;
         result.type = BLN;
         result.data.bln = (bool)this->data.ntg;
         return result;
     }
     else if (this->type == UNTG) {
-        Varble result;
+        Var result;
         result.type = BLN;
         result.data.bln = (bool)this->data.untg;
         return result;
     }
     else if (this->type == DBL) {
-        Varble result;
+        Var result;
         result.type = BLN;
         result.data.bln = (bool)this->data.dbl;
         return result;
     }
     else if (this->type == CHR) {
-        Varble result;
+        Var result;
         result.type = BLN;
         result.data.bln = (bool)this->data.chr;
         return result;
     }
     else if (this->type == UCHR) {
-        Varble result;
+        Var result;
         result.type = BLN;
         result.data.bln = (bool)this->data.uchr;
         return result;
     }
     else if (this->type == BLN) {
-        Varble result;
+        Var result;
         result.type = BLN;
         result.data.bln = (bool)this->data.bln;
         return result;
     }
     else if (this->type == STR) {
-        Varble result;
+        Var result;
         result.type = BLN;
 
         if (this->data.str == L"") {
@@ -562,15 +562,15 @@ Varble Varble::toBLN() {
         return result;
     }
     else if (this->type == NIL) {
-        Varble result = (bool)0;
+        Var result = (bool)0;
         return result;
     }
     else if (this->type == UNKNOWN) {
-        Varble result = (bool)0;
+        Var result = (bool)0;
         return result;
     }
     else if (this->type == ARR) {
-        Varble result;
+        Var result;
         result.type = BLN;
 
         if (this->arr.empty()) {
@@ -583,7 +583,7 @@ Varble Varble::toBLN() {
         return result;
     }
     else if (this->type == MAP) {
-        Varble result;
+        Var result;
         result.type = BLN;
 
         if (this->mp.empty()) {
@@ -597,39 +597,39 @@ Varble Varble::toBLN() {
     }
 }
 
-Varble Varble::toSTR() {
+Var Var::toSTR() {
     if (this->type == NTG) {
-        Varble result;
+        Var result;
         result.type = STR;
         result.data.str = to_wstring(this->data.ntg);
         return result;
     }
     else if (this->type == UNTG) {
-        Varble result;
+        Var result;
         result.type = STR;
         result.data.str = to_wstring(this->data.untg);
         return result;
     }
     else if (this->type == DBL) {
-        Varble result;
+        Var result;
         result.type = STR;
         result.data.str = to_wstring(this->data.dbl);
         return result;
     }
     else if (this->type == CHR) {
-        Varble result;
+        Var result;
         result.type = STR;
         result.data.str = to_wstring(this->data.chr);
         return result;
     }
     else if (this->type == UCHR) {
-        Varble result;
+        Var result;
         result.type = STR;
         result.data.str = to_wstring(this->data.uchr);
         return result;
     }
     else if (this->type == BLN) {
-        Varble result;
+        Var result;
         result.type = STR;
 
         if (this->data.bln) {
@@ -642,17 +642,17 @@ Varble Varble::toSTR() {
         return result;
     }
     else if (this->type == STR) {
-        Varble result;
+        Var result;
         result.type = STR;
         result.data.str = this->data.str;
         return result;
     }
     else if (this->type == NIL) {
-        Varble result = L"";
+        Var result = L"";
         return result;
     }
     else if (this->type == UNKNOWN) {
-        Varble result = L"";
+        Var result = L"";
         return result;
     }
     else if (this->type == ARR) {
@@ -663,55 +663,55 @@ Varble Varble::toSTR() {
     }
 }
 
-Varble Varble::toARR() {
+Var Var::toARR() {
     if (this->type == NTG) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
         return result;
     }
     else if (this->type == UNTG) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
         return result;
     }
     else if (this->type == DBL) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
         return result;
     }
     else if (this->type == CHR) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
         return result;
     }
     else if (this->type == UCHR) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
         return result;
     }
     else if (this->type == BLN) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
         return result;
     }
     else if (this->type == STR) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
     }
     else if (this->type == NIL) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
     }
     else if (this->type == UNKNOWN) {
-        Varble result;
+        Var result;
         result.type = ARR;
         result.arr.push_back(*this);
     }
@@ -724,7 +724,7 @@ Varble Varble::toARR() {
 }
 
 
-void Varble::print() {
+void Var::print() {
     switch (this->type) {
     case UNTG:
         wcout << this->data.untg;
@@ -765,7 +765,7 @@ void Varble::print() {
     }
 }
 
-wstring Varble::typeOf() {
+wstring Var::typeOf() {
     wstring result = L"";
     switch (this->type) {
     case UNTG:
@@ -813,16 +813,16 @@ wstring Varble::typeOf() {
     }
 }
 
-Varble& Varble::operator[](int ind) {
+Var& Var::operator[](int ind) {
     return this->arr[ind];
 }
-Varble& Varble::operator[](Varble v) {
+Var& Var::operator[](Var v) {
     return this->arr[v.getInt()];
 }
 
 
 
-wostream& operator<< (wostream& wos, const Varble& var)
+wostream& operator<< (wostream& wos, const Var& var)
 {
     switch (var.type) {
     case UNTG:
@@ -864,7 +864,7 @@ wostream& operator<< (wostream& wos, const Varble& var)
     }
 }
 
-Varble& Varble::operator= (const Varble& var) {
+Var& Var::operator= (const Var& var) {
     this->type = var.type;
     this->data.untg = var.data.untg;
     this->data.ntg = var.data.ntg;
@@ -878,340 +878,340 @@ Varble& Varble::operator= (const Varble& var) {
     return *this; 
 }
 
-Varble& Varble::operator= (const unsigned long long int& var) {
+Var& Var::operator= (const unsigned long long int& var) {
     this->type = UNTG;
     this->data.untg = var;
     return *this;
 }
 
-Varble& Varble::operator= (const unsigned long int& var) {
+Var& Var::operator= (const unsigned long int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (const unsigned int& var) {
+Var& Var::operator= (const unsigned int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (const unsigned short int& var) {
+Var& Var::operator= (const unsigned short int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (const long long int& var) {
+Var& Var::operator= (const long long int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (const long int& var) {
+Var& Var::operator= (const long int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (const int& var) {
+Var& Var::operator= (const int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (const short int& var) {
+Var& Var::operator= (const short int& var) {
     this->type = NTG;
     this->data.ntg = var;
     return *this;
 }
 
-Varble& Varble::operator= (const long double& var) {
+Var& Var::operator= (const long double& var) {
     this->type = DBL;
     this->data.dbl = var;
     return *this;
 }
 
-Varble& Varble::operator= (const double& var) {
+Var& Var::operator= (const double& var) {
     this->type = DBL;
     this->data.dbl = (long double)var;
     return *this;
 }
 
-Varble& Varble::operator= (const float& var) {
+Var& Var::operator= (const float& var) {
     this->type = DBL;
     this->data.dbl = (const long double)var;
     return *this;
 }
 
-Varble& Varble::operator= (const char& var) {
+Var& Var::operator= (const char& var) {
     this->type = CHR;
     this->data.chr = var;
     return *this;
 }
 
-Varble& Varble::operator= (const unsigned char& var) {
+Var& Var::operator= (const unsigned char& var) {
     this->type = UCHR;
     this->data.uchr = var;
     return *this;
 }
 
-Varble& Varble::operator= (const bool& var) {
+Var& Var::operator= (const bool& var) {
     this->type = BLN;
     this->data.bln = var;
     return *this;
 }
 
-Varble& Varble::operator= (const wstring& var) {
+Var& Var::operator= (const wstring& var) {
     this->type = STR;
     this->data.str = var;
     return *this;
 }
 
-Varble& Varble::operator= (const wchar_t* var) {
+Var& Var::operator= (const wchar_t* var) {
     this->type = STR;
     this->data.str = var;
     return *this;
 }
 
-Varble operator+(const Varble& a, const Varble& b)
+Var operator+(const Var& a, const Var& b)
 {
     if (a.type == NTG) {
         if (b.type == NTG) {
-            Varble result(a.data.ntg + b.data.ntg);
+            Var result(a.data.ntg + b.data.ntg);
             return result;
         }
         else if (b.type == UNTG) {
-            Varble result(a.data.ntg + b.data.untg);
+            Var result(a.data.ntg + b.data.untg);
             return result;
         }
         else if (b.type == DBL) {
-            Varble result(a.data.ntg + b.data.dbl);
+            Var result(a.data.ntg + b.data.dbl);
             return result;
         }
         else if (b.type == CHR) {
-            Varble result(a.data.ntg + b.data.chr);
+            Var result(a.data.ntg + b.data.chr);
             return result;
         }
         else if (b.type == UCHR) {
-            Varble result(a.data.ntg + b.data.uchr);
+            Var result(a.data.ntg + b.data.uchr);
             return result;
         }
         else if (b.type == BLN) {
-            Varble result(a.data.ntg + b.data.bln);
+            Var result(a.data.ntg + b.data.bln);
             return result;
         }
         else if (b.type == STR) {
-            Varble result(to_wstring(a.data.ntg) + b.data.str);
+            Var result(to_wstring(a.data.ntg) + b.data.str);
             return result;
         }
         else if (b.type == NIL) {
-            Varble result;
+            Var result;
             return result;
         }
         else {
-            Varble result;
+            Var result;
             return result;
         }
     }
     else if (a.type == UNTG) {
         if (b.type == NTG) {
-            Varble result(a.data.untg + b.data.ntg);
+            Var result(a.data.untg + b.data.ntg);
             return result;
         }
         else if (b.type == UNTG) {
-            Varble result(a.data.untg + b.data.untg);
+            Var result(a.data.untg + b.data.untg);
             return result;
         }
         else if (b.type == DBL) {
-            Varble result(a.data.untg + b.data.dbl);
+            Var result(a.data.untg + b.data.dbl);
             return result;
         }
         else if (b.type == CHR) {
-            Varble result(a.data.untg + b.data.chr);
+            Var result(a.data.untg + b.data.chr);
             return result;
         }
         else if (b.type == UCHR) {
-            Varble result(a.data.untg + b.data.uchr);
+            Var result(a.data.untg + b.data.uchr);
             return result;
         }
         else if (b.type == BLN) {
-            Varble result(a.data.untg + b.data.bln);
+            Var result(a.data.untg + b.data.bln);
             return result;
         }
         else if (b.type == STR) {
-            Varble result(to_wstring(a.data.untg) + b.data.str);
+            Var result(to_wstring(a.data.untg) + b.data.str);
             return result;
         }
         else if (b.type == NIL) {
-            Varble result;
+            Var result;
             return result;
         }
         else {
-            Varble result;
+            Var result;
             return result;
         }
     }
     else if (a.type == DBL) {
         if (b.type == NTG) {
-            Varble result(a.data.dbl + b.data.ntg);
+            Var result(a.data.dbl + b.data.ntg);
             return result;
         }
         else if (b.type == UNTG) {
-            Varble result(a.data.dbl + b.data.untg);
+            Var result(a.data.dbl + b.data.untg);
             return result;
         }
         else if (b.type == DBL) {
-            Varble result(a.data.dbl + b.data.dbl);
+            Var result(a.data.dbl + b.data.dbl);
             return result;
         }
         else if (b.type == CHR) {
-            Varble result(a.data.dbl + b.data.chr);
+            Var result(a.data.dbl + b.data.chr);
             return result;
         }
         else if (b.type == UCHR) {
-            Varble result(a.data.dbl + b.data.uchr);
+            Var result(a.data.dbl + b.data.uchr);
             return result;
         }
         else if (b.type == BLN) {
-            Varble result(a.data.dbl + b.data.bln);
+            Var result(a.data.dbl + b.data.bln);
             return result;
         }
         else if (b.type == STR) {
-            Varble result(to_wstring(a.data.dbl) + b.data.str);
+            Var result(to_wstring(a.data.dbl) + b.data.str);
             return result;
         }
         else if (b.type == NIL) {
-            Varble result;
+            Var result;
             return result;
         }
         else {
-            Varble result;
+            Var result;
             return result;
         }
     }
     else if (a.type == CHR) {
         if (b.type == NTG) {
-            Varble result(a.data.chr + b.data.ntg);
+            Var result(a.data.chr + b.data.ntg);
             return result;
         }
         else if (b.type == UNTG) {
-            Varble result(a.data.chr + b.data.untg);
+            Var result(a.data.chr + b.data.untg);
             return result;
         }
         else if (b.type == DBL) {
-            Varble result(a.data.chr + b.data.dbl);
+            Var result(a.data.chr + b.data.dbl);
             return result;
         }
         else if (b.type == CHR) {
-            Varble result(a.data.chr + b.data.chr);
+            Var result(a.data.chr + b.data.chr);
             return result;
         }
         else if (b.type == UCHR) {
-            Varble result(a.data.chr + b.data.uchr);
+            Var result(a.data.chr + b.data.uchr);
             return result;
         }
         else if (b.type == BLN) {
-            Varble result(a.data.chr + b.data.bln);
+            Var result(a.data.chr + b.data.bln);
             return result;
         }
         else if (b.type == STR) {
-            Varble result(to_wstring(a.data.chr) + b.data.str);
+            Var result(to_wstring(a.data.chr) + b.data.str);
             return result;
         }
         else if (b.type == NIL) {
-            Varble result;
+            Var result;
             return result;
         }
         else {
-            Varble result;
+            Var result;
             return result;
         }
     }
     else if (a.type == UCHR) {
         if (b.type == NTG) {
-            Varble result(a.data.uchr + b.data.ntg);
+            Var result(a.data.uchr + b.data.ntg);
             return result;
         }
         else if (b.type == UNTG) {
-            Varble result(a.data.uchr + b.data.untg);
+            Var result(a.data.uchr + b.data.untg);
             return result;
         }
         else if (b.type == DBL) {
-            Varble result(a.data.uchr + b.data.dbl);
+            Var result(a.data.uchr + b.data.dbl);
             return result;
         }
         else if (b.type == CHR) {
-            Varble result(a.data.uchr + b.data.chr);
+            Var result(a.data.uchr + b.data.chr);
             return result;
         }
         else if (b.type == UCHR) {
-            Varble result(a.data.uchr + b.data.uchr);
+            Var result(a.data.uchr + b.data.uchr);
             return result;
         }
         else if (b.type == BLN) {
-            Varble result(a.data.uchr + b.data.bln);
+            Var result(a.data.uchr + b.data.bln);
             return result;
         }
         else if (b.type == STR) {
-            Varble result(to_wstring(a.data.uchr) + b.data.str);
+            Var result(to_wstring(a.data.uchr) + b.data.str);
             return result;
         }
         else if (b.type == NIL) {
-            Varble result;
+            Var result;
             return result;
         }
         else {
-            Varble result;
+            Var result;
             return result;
         }
     }
     else if (a.type == BLN) {
         if (b.type == NTG) {
-            Varble result(a.data.bln + b.data.ntg);
+            Var result(a.data.bln + b.data.ntg);
             return result;
         }
         else if (b.type == UNTG) {
-            Varble result(a.data.bln + b.data.untg);
+            Var result(a.data.bln + b.data.untg);
             return result;
         }
         else if (b.type == DBL) {
-            Varble result(a.data.bln + b.data.dbl);
+            Var result(a.data.bln + b.data.dbl);
             return result;
         }
         else if (b.type == CHR) {
-            Varble result(a.data.bln + b.data.chr);
+            Var result(a.data.bln + b.data.chr);
             return result;
         }
         else if (b.type == UCHR) {
-            Varble result(a.data.bln + b.data.uchr);
+            Var result(a.data.bln + b.data.uchr);
             return result;
         }
         else if (b.type == BLN) {
-            Varble result(a.data.bln + b.data.bln);
+            Var result(a.data.bln + b.data.bln);
             return result;
         }
         else if (b.type == STR) {
             if (a.data.bln) {
-                Varble result(L"true" + b.data.str);
+                Var result(L"true" + b.data.str);
                 return result;
             }
             else {
-                Varble result(L"false" + b.data.str);
+                Var result(L"false" + b.data.str);
                 return result;
             }
         }
         else if (b.type == NIL) {
-            Varble result;
+            Var result;
             return result;
         }
         else {
-            Varble result;
+            Var result;
             return result;
         }
     }
     else {
-        Varble result;
+        Var result;
         return result;
     }
 

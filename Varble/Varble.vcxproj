@@ -121,6 +121,7 @@
       <LanguageStandard>Default</LanguageStandard>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,10 +132,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Varble.cpp" />
-    <ClCompile Include="VarbleClass.cpp" />
+    <ClCompile Include="VarClass.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VarbleClass.h" />
+    <ClInclude Include="VarClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

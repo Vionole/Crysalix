@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <io.h>
 #include <fcntl.h>
-#include "VarbleClass.h"
+#include "VarClass.h"
 using namespace std;
 
 
@@ -14,8 +14,8 @@ int main()
     try {
         //unsigned long long int var = 18446744073709551600ULL;
         wstring var = L"abcd";
-        Varble v(L"array", 2);
-            wcout << L"Значение переменной: " << v.toARR()[0] << L" тип: " << v.typeOf() << endl;
+        Var v;
+        wcout << L"Значение переменной: " << v << L" тип: " << v.typeOf() << endl;
     }
     catch (const std::wstring& error_message) {
         wcout << error_message << endl;

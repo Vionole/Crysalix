@@ -1,0 +1,114 @@
+#pragma once
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+struct Data {
+    long long int ntg = 0;
+    unsigned long long int untg = 0;
+    long double dbl = 0;
+    char chr = 0;
+    unsigned char uchr = 0;
+    bool bln = false;
+    wstring str = L"";
+};
+
+enum Type {
+    NTG,
+    UNTG,
+    DBL,
+    CHR,
+    UCHR,
+    BLN,
+    STR,
+    NIL,
+    UNKNOWN,
+    ARR,
+    MAP
+};
+
+class Var {
+private:
+    Data data;
+    Type type;
+    vector<Var> arr;
+    map<wstring, Var> mp;
+public:
+    Var();
+    Var(unsigned long long int untg);
+    Var(long long int ntg);
+    Var(long int ntg);
+    Var(int ntg);
+    Var(short int ntg);
+    Var(unsigned long int ntg);
+    Var(unsigned int ntg);
+    Var(unsigned short int ntg);
+
+    Var(long double dbl);
+    Var(double dbl);
+    Var(float dbl);
+
+    Var(char chr);
+    Var(unsigned char uchr);
+
+    Var(bool bln);
+
+    Var(wstring str);
+    Var(const wchar_t* str); 
+    
+    Var(wstring t, int i);
+
+    long long int getInt();
+    unsigned long long int getUInt();
+    long double getDouble();
+    char getChar();
+    unsigned char getUChar();
+    bool getBool();
+    wstring getWStr();
+    vector<Var> getArr();
+    map<wstring, Var> getMap();
+
+    Var toNTG();
+    Var toUNTG();
+    Var toDBL();
+    Var toCHR();
+    Var toUCHR();
+    Var toBLN();
+    Var toSTR();
+    Var toARR();
+
+    void print();
+    wstring typeOf();
+
+    Var& operator[](int ind);
+    Var& operator[](Var v);
+
+    friend wostream& operator<< (wostream& os, const Var& var);
+
+    Var& operator= (const Var& var);
+
+    Var& operator= (const unsigned long long int& var);
+    Var& operator= (const unsigned long int& var);
+    Var& operator= (const unsigned int& var);
+    Var& operator= (const unsigned short int& var);
+    Var& operator= (const long long int& var);
+    Var& operator= (const long int& var);
+    Var& operator= (const int& var);
+    Var& operator= (const short int& var);
+
+    Var& operator= (const long double& var);
+    Var& operator= (const double& var);
+    Var& operator= (const float& var);
+
+    Var& operator= (const char& var);
+    Var& operator= (const unsigned char& var);
+
+    Var& operator= (const bool& var);
+
+    Var& operator= (const wstring& var);
+    Var& operator= (const wchar_t* var);
+
+
+    friend Var operator+(const Var& a, const Var& b);
+};

@@ -18,12 +18,12 @@
     <ClCompile Include="Varble.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="VarbleClass.cpp">
+    <ClCompile Include="VarClass.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VarbleClass.h">
+    <ClInclude Include="VarClass.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
