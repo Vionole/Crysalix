@@ -35,6 +35,7 @@ private:
     vector<Var> arr;
     map<wstring, Var> mp;
 public:
+    //Конструкторы для обычны типов данных
     Var();
     Var(unsigned long long int untg);
     Var(long long int ntg);
@@ -59,6 +60,7 @@ public:
     
     Var(wstring t, int i);
 
+    //Геттеры обычных типов данных
     long long int getInt();
     unsigned long long int getUInt();
     long double getDouble();
@@ -69,6 +71,7 @@ public:
     vector<Var> getArr();
     map<wstring, Var> getMap();
 
+    //Приведение типов
     Var toNTG();
     Var toUNTG();
     Var toDBL();
@@ -78,14 +81,25 @@ public:
     Var toSTR();
     Var toARR();
 
+    //Вывод данных и типа
     void print();
     wstring typeOf();
 
+    //Работа с массивами, словарями и строками
     Var& operator[](int ind);
     Var& operator[](Var v);
 
+    Var len();
+    Var reverse();
+
+    Var ltrim();
+    Var rtrim();
+    Var trim();
+
+    //Вывод данных через поток
     friend wostream& operator<< (wostream& os, const Var& var);
 
+    //Перегрузка присваивания
     Var& operator= (const Var& var);
 
     Var& operator= (const unsigned long long int& var);
@@ -109,6 +123,6 @@ public:
     Var& operator= (const wstring& var);
     Var& operator= (const wchar_t* var);
 
-
+    //Математические операторы
     friend Var operator+(const Var& a, const Var& b);
 };

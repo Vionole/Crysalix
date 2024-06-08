@@ -822,8 +822,11 @@ Var& Var::operator[](int ind) {
     }
     else if (this->type == STR) {
         wstring str(1, this->data.str.at(ind));
-        Var *chr = new Var(str);
+        Var* chr = new Var(str);
         return *chr;
+    }
+    else {
+        throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
     }
 }
 
@@ -836,9 +839,74 @@ Var& Var::operator[](Var v) {
         Var* chr = new Var(str);
         return *chr;
     }
+    else {
+        throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+    }
 }
 
+Var Var::len() {
+    if (this->type == STR) {
+        return Var(this->data.str.length());
+    }
+    else if (this->type == ARR) {
+        return Var(this->arr.size());
+    }
+    else if (this->type == MAP) {
+        return Var(this->mp.size());
+    }
+    else {
+        throw wstring{ L"Метод len() используетя только для типов STR, ARR, MAP" };
+    }
+}
 
+Var Var::reverse() {
+    if (this->type == STR) {
+        return Var(this->data.str.length());
+    }
+    else if (this->type == ARR) {
+        return Var(this->arr.size());
+    }
+    else if (this->type == MAP) {
+        return Var(this->mp.size());
+    }
+    else {
+        throw wstring{ L"Метод len() используетя только для типов STR, ARR, MAP" };
+    }
+}
+
+Var Var::ltrim() {
+    if (this->type == STR) {
+        wstring str = this->data.str;
+        str.erase(0, str.find_first_not_of(' '));
+        return Var(str);
+    }
+    else {
+        throw wstring{ L"Метод ltrim() используетя только для типа STR" };
+    }
+}
+
+Var Var::rtrim() {
+    if (this->type == STR) {
+        wstring str = this->data.str;
+        str.erase(str.find_last_not_of(' ') + 1);
+        return Var(str);
+    }
+    else {
+        throw wstring{ L"Метод rtrim() используетя только для типа STR" };
+    }
+}
+
+Var Var::trim() {
+    if (this->type == STR) {
+        wstring str = this->data.str;
+        str.erase(0, str.find_first_not_of(' '));
+        str.erase(str.find_last_not_of(' ') + 1);
+        return Var(str);
+    }
+    else {
+        throw wstring{ L"Метод trim() используетя только для типа STR" };
+    }
+}
 
 wostream& operator<< (wostream& wos, const Var& var)
 {
