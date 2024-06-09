@@ -14,12 +14,14 @@ int main()
         wstring var = L"Hello, World!";
         map<wstring, Var> m;
         m[L"first"] = L"123";
+        m[L"second"] = L"321";
         vector<Var> vec = {1, 2, 3};
-        Var v = var;
+        Var v = m;
         wstring v2 = L"o";
         wstring v3 = L"e";
       
-        wcout << L"Значение переменной: " << v.lower() << L" тип: " << v.typeOf() << endl;
+        v.printmap();
+        wcout << L"Значение переменной: " << v << L" тип: " << v.typeOf() << endl;
     }
     catch (const std::wstring& error_message) {
         wcout << error_message << endl;

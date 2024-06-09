@@ -86,6 +86,8 @@ public:
 
     //Вывод данных и типа
     void print();
+    void printarr();
+    void printmap();
     wstring typeOf();
 
     //Работа с массивами, словарями и строками
@@ -111,6 +113,8 @@ public:
     Var repl(wstring substr, const wstring newsubstr);
     Var upper();
     Var lower();
+
+    void pushb(Var v);
 
     Var split(Var delim);
 

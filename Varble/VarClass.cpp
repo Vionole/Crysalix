@@ -777,6 +777,26 @@ void Var::print() {
         wcout << L"UNKNOWN";
     }
 }
+void Var::printarr() {
+    if (this->type == ARR) {
+        for (int i = 0; i < this->arr.size(); ++i)
+            wcout << i << L":\t" << this->arr[i] << L"\t";
+    }
+    else {
+        throw wstring{ L"Метод printarr() используетя только для типа ARR" };
+    }
+}
+void Var::printmap() {
+    if (this->type == MAP) {
+        for (const auto& elem : this->mp)
+        {
+            wcout << "\"" << elem.first << "\":\t " << elem.second << "\t";
+        }
+    }
+    else {
+        throw wstring{ L"Метод printmap() используетя только для типа MAP" };
+    }
+}
 
 wstring Var::typeOf() {
     wstring result = L"";
