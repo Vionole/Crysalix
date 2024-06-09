@@ -90,21 +90,27 @@ public:
 
     //Работа с массивами, словарями и строками
     Var& operator[](int ind);
+    Var& operator[](const wchar_t* str);
+    Var& operator[](wstring str);
     Var& operator[](Var v);
 
     Var len();
     Var rev();
     Var in(Var sent);
+    Var in(const wchar_t* sent);
+    Var in(wstring sent);
 
     Var slice(int x, int y);
     Var slice(Var x, Var y);
-    Var slice(int x, Var y);
-    Var slice(Var x, int y);
 
     Var ltrim();
     Var rtrim();
     Var trim();
-
+    Var repl(Var substr, Var newsubstr);
+    Var repl(const wchar_t* substr, const wchar_t* newsubstr);
+    Var repl(wstring substr, const wstring newsubstr);
+    Var upper();
+    Var lower();
 
     Var split(Var delim);
 

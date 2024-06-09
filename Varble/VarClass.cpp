@@ -851,7 +851,32 @@ Var& Var::operator[](int ind) {
         throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
     }
 }
-
+Var& Var::operator[](const wchar_t* str) {
+    try {
+        if (this->type == MAP) {
+            return this->mp.at(str);
+        }
+        else {
+            throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+        }
+    }
+    catch (exception& err) {
+        throw wstring{ L"Индекс словаря не существует" };
+    }
+}
+Var& Var::operator[](wstring str) {
+    try {
+        if (this->type == MAP) {
+            return this->mp.at(str);
+        }
+        else {
+            throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+        }
+    }
+    catch (exception& err) {
+        throw wstring{ L"Индекс словаря не существует" };
+    }
+}
 Var& Var::operator[](Var v) {
     if (v.type == NTG) {
         if (this->type == ARR) {
@@ -880,7 +905,12 @@ Var& Var::operator[](Var v) {
     }
     else if (v.type == STR) {
         try {
-            return this->mp.at(v.getWStr());
+            if (this->type == MAP) {
+                return this->mp.at(v.getWStr());
+            } 
+            else {
+                throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+            }
         }
         catch (exception& err) {
             throw wstring{ L"Индекс словаря не существует" };
@@ -954,34 +984,36 @@ Var Var::slice(Var x, Var y) {
         throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
     }
 }
-Var Var::slice(int x, Var y) {
-    if (this->type == STR) {
-        return this->slice(x, y.getInt());
-    }
-    else if (this->type == ARR) {
-        return this->slice(x, y.getInt());
-    }
-    else {
-        throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
-    }
-}
-Var Var::slice(Var x, int y) {
-    if (this->type == STR) {
-        return this->slice(x.getInt(), y);
-    }
-    else if (this->type == ARR) {
-        return this->slice(x.getInt(), y);
-    }
-    else {
-        throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
-    }
-}
 
 Var Var::in(Var sent) {
     if(this->type == STR) {
+        bool exists = this->data.str.find(sent.data.str) != std::string::npos;
+        return Var(exists);
+    } 
+    else {
+        throw wstring{ L"Метод in() используетя только для типа STR" };
     }
-    return Var();
 }
+Var Var::in(const wchar_t* sent) {
+    if (this->type == STR) {
+        bool exists = this->data.str.find(sent) != std::string::npos;
+        return Var(exists);
+    }
+    else {
+        throw wstring{ L"Метод in() используетя только для типа STR" };
+    }
+}
+Var Var::in(wstring sent) {
+    if (this->type == STR) {
+        bool exists = this->data.str.find(sent) != std::string::npos;
+        return Var(exists);
+    }
+    else {
+        throw wstring{ L"Метод in() используетя только для типа STR" };
+    }
+}
+
+
 
 Var Var::ltrim() {
     if (this->type == STR) {
@@ -1012,6 +1044,51 @@ Var Var::trim() {
     }
     else {
         throw wstring{ L"Метод trim() используетя только для типа STR" };
+    }
+}
+
+Var Var::repl(Var substr, Var newsubstr) {
+    if (this->type == STR) {
+        wstring s = this->getWStr();
+        size_t pos = 0;
+        while ((pos = s.find(substr.data.str, pos)) != wstring::npos) {
+            s.replace(pos, substr.data.str.length(), newsubstr.data.str);
+            pos += newsubstr.data.str.length();
+        }
+        return Var(s);
+    }
+    else {
+        throw wstring{ L"Метод repl() используетя только для типа STR" };
+    }
+}
+Var Var::repl(const wchar_t* substr, const wchar_t* newsubstr) {
+    wstring ss = substr;
+    wstring nss = newsubstr;
+    if (this->type == STR) {
+        wstring s = this->getWStr();
+        size_t pos = 0;
+        while ((pos = s.find(ss, pos)) != wstring::npos) {
+            s.replace(pos, ss.length(), nss);
+            pos += nss.length();
+        }
+        return Var(s);
+    }
+    else {
+        throw wstring{ L"Метод repl() используетя только для типа STR" };
+    }
+}
+Var Var::repl(wstring substr, const wstring newsubstr) {
+    if (this->type == STR) {
+        wstring s = this->getWStr();
+        size_t pos = 0;
+        while ((pos = s.find(substr, pos)) != wstring::npos) {
+            s.replace(pos, substr.length(), newsubstr);
+            pos += newsubstr.length();
+        }
+        return Var(s);
+    }
+    else {
+        throw wstring{ L"Метод repl() используетя только для типа STR" };
     }
 }
 
@@ -1047,6 +1124,17 @@ Var Var::split(Var delim) {
     }
 }
 
+Var Var::upper() {
+    wstring str = this->data.str;
+    for (auto& c : str) c = toupper(c);
+    return Var(str);
+}
+
+Var Var::lower() {
+    wstring str = this->data.str;
+    for (auto& c : str) c = tolower(c);
+    return Var(str);
+}
 
 wostream& operator<< (wostream& wos, const Var& var)
 {
