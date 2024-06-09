@@ -769,32 +769,17 @@ void Var::print() {
         wcout << L"NULL";
         break;
     case ARR:
-        wcout << L"ARRAY";
-        break;
-    case MAP:
-        wcout << L"MAP";
-    default:
-        wcout << L"UNKNOWN";
-    }
-}
-void Var::printarr() {
-    if (this->type == ARR) {
         for (int i = 0; i < this->arr.size(); ++i)
             wcout << i << L":\t" << this->arr[i] << L"\t";
-    }
-    else {
-        throw wstring{ L"Метод printarr() используетя только для типа ARR" };
-    }
-}
-void Var::printmap() {
-    if (this->type == MAP) {
+        break;
+    case MAP:
         for (const auto& elem : this->mp)
         {
             wcout << "\"" << elem.first << "\":\t " << elem.second << "\t";
         }
-    }
-    else {
-        throw wstring{ L"Метод printmap() используетя только для типа MAP" };
+        break;
+    default:
+        wcout << L"UNKNOWN";
     }
 }
 
@@ -1154,6 +1139,27 @@ Var Var::lower() {
     wstring str = this->data.str;
     for (auto& c : str) c = tolower(c);
     return Var(str);
+}
+
+void Var::pushb(Var v) {
+    this->arr.push_back(v);
+}
+
+void Var::popb() {
+    this->arr.pop_back();
+}
+
+void Var::clear() {
+    this->arr.clear();
+}
+
+void Var::erase(int x) {
+    vector<Var>::iterator it;
+    it = this->arr.begin() + x;
+    this->arr.erase(it);
+}
+void Var::erase(Var x) {
+    this->erase(x.getInt());
 }
 
 wostream& operator<< (wostream& wos, const Var& var)

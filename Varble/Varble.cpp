@@ -16,11 +16,9 @@ int main()
         m[L"first"] = L"123";
         m[L"second"] = L"321";
         vector<Var> vec = {1, 2, 3};
-        Var v = m;
-        wstring v2 = L"o";
-        wstring v3 = L"e";
-      
-        v.printmap();
+        Var v = vec;
+        Var v2 = L"gh";
+
         wcout << L"Значение переменной: " << v << L" тип: " << v.typeOf() << endl;
     }
     catch (const std::wstring& error_message) {

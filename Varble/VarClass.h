@@ -86,8 +86,6 @@ public:
 
     //Вывод данных и типа
     void print();
-    void printarr();
-    void printmap();
     wstring typeOf();
 
     //Работа с массивами, словарями и строками
@@ -115,6 +113,10 @@ public:
     Var lower();
 
     void pushb(Var v);
+    void popb();
+    void clear();
+    void erase(int x);
+    void erase(Var x);
 
     Var split(Var delim);
 
