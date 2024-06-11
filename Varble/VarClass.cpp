@@ -1128,6 +1128,34 @@ Var Var::split(Var delim) {
         throw wstring{ L"Метод split() используетя только для типа STR" };
     }
 }
+Var Var::split(wstring delim) {
+    return split(Var(delim));
+}
+Var Var::split(const wchar_t* delim) {
+    return split(Var(delim));
+}
+
+Var Var::join(Var delim) {
+    if (this->type == ARR) {
+        wstring str;
+        for (int i = 0; i < this->arr.size(); ++i) {
+            str += this->arr[i].toSTR().getWStr();
+            if (i != this->arr.size() - 1) {
+                str += delim.getWStr();
+            }
+        }
+        return Var(str);
+    }
+    else {
+        throw wstring{ L"Метод join() используетя только для типа ARR" };
+    }
+}
+Var Var::join(wstring delim) {
+    return this->join(Var(delim));
+}
+Var Var::join(const wchar_t* delim) {
+    return this->join(Var(delim));
+}
 
 Var Var::upper() {
     if (this->type == STR) {
@@ -1176,16 +1204,73 @@ void Var::clear() {
     else if (this->type == MAP) {
         this->mp.clear();
     }
+    else {
+        throw wstring{ L"Метод clear() используетя только для типов ARR, MAP" };
+    }
 
 }
 
 void Var::erase(int x) {
-    vector<Var>::iterator it;
-    it = this->arr.begin() + x;
-    this->arr.erase(it);
+    if (this->type == ARR) {
+        vector<Var>::iterator it;
+        it = this->arr.begin() + x;
+        this->arr.erase(it);
+    }
+    else {
+        throw wstring{ L"Метод erase() используетя только для типа ARR" };
+    }
 }
 void Var::erase(Var x) {
-    this->erase(x.getInt());
+    if (this->type == ARR) {
+        this->erase(x.getInt());
+    }
+    else if (this->type == MAP) {
+        this->mp.erase(x.getWStr());
+    }
+    else {
+        throw wstring{ L"Метод erase() используетя только для типов ARR, MAP" };
+    }
+}
+void Var::erase(wstring x) {
+    if (this->type == MAP) {
+        this->mp.erase(x);
+    }
+    else {
+        throw wstring{ L"Метод erase() используетя только для типа MAP" };
+    }
+}
+void Var::erase(const wchar_t* x) {
+    if (this->type == MAP) {
+        this->mp.erase(x);
+    }
+    else {
+        throw wstring{ L"Метод erase() используетя только для типа MAP" };
+    }
+}
+
+void Var::insert(Var str, Var val) {
+    if (this->type == MAP) {
+        this->mp[str.getWStr()] = val;
+    }
+    else {
+        throw wstring{ L"Метод insert() используетя только для типа MAP" };
+    }
+}
+void Var::insert(wstring str, Var val) {
+    if (this->type == MAP) {
+        this->mp[str] = val;
+    }
+    else {
+        throw wstring{ L"Метод insert() используетя только для типа MAP" };
+    }
+}
+void Var::insert(const wchar_t* str, Var val) {
+    if (this->type == MAP) {
+        this->mp[str] = val;
+    }
+    else {
+        throw wstring{ L"Метод insert() используетя только для типа MAP" };
+    }
 }
 
 wostream& operator<< (wostream& wos, const Var& var)

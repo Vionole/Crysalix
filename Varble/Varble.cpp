@@ -17,12 +17,15 @@ int main()
         m[L"second"] = L"321";
         vector<Var> vec = {1, 2, 3};
         Var v;
-        v = m;
+        v = 2;
 
+        v.print();
+        v = v.join(wstring(L" | "));
+        v.print();
         wcout << L"Значение переменной: " << v << L" тип: " << v.typeOf() << endl;
     }
     catch (const std::wstring& error_message) {
-        wcout << error_message << endl;
+        wcout << endl << error_message;
     }
 
     return 0;

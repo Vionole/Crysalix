@@ -117,8 +117,20 @@ public:
     void clear();
     void erase(int x);
     void erase(Var x);
+    void erase(wstring x);
+    void erase(const wchar_t* x);
+
+    void insert(Var str, Var val);
+    void insert(wstring str, Var val);
+    void insert(const wchar_t* str, Var val);
 
     Var split(Var delim);
+    Var split(wstring delim);
+    Var split(const wchar_t* delim);
+    
+    Var join(Var delim);
+    Var join(wstring delim);
+    Var join(const wchar_t* delim);
     
     //Вывод данных через поток
     friend wostream& operator<< (wostream& os, const Var& var);
