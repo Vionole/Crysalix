@@ -16,8 +16,8 @@ int main()
         m[L"first"] = L"123";
         m[L"second"] = L"321";
         vector<Var> vec = {1, 2, 3};
-        Var v = vec;
-        Var v2 = L"gh";
+        Var v;
+        v = m;
 
         wcout << L"Значение переменной: " << v << L" тип: " << v.typeOf() << endl;
     }

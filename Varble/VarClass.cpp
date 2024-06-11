@@ -1130,27 +1130,53 @@ Var Var::split(Var delim) {
 }
 
 Var Var::upper() {
-    wstring str = this->data.str;
-    for (auto& c : str) c = toupper(c);
-    return Var(str);
+    if (this->type == STR) {
+        wstring str = this->data.str;
+        for (auto& c : str) c = toupper(c);
+        return Var(str);
+    }
+    else {
+        throw wstring{ L"Метод upper() используетя только для типа STR" };
+    }
 }
 
 Var Var::lower() {
-    wstring str = this->data.str;
-    for (auto& c : str) c = tolower(c);
-    return Var(str);
+    if (this->type == STR) {
+        wstring str = this->data.str;
+        for (auto& c : str) c = tolower(c);
+        return Var(str);
+    }
+    else {
+        throw wstring{ L"Метод lower() используетя только для типа STR" };
+    }
 }
 
 void Var::pushb(Var v) {
-    this->arr.push_back(v);
+    if (this->type == ARR) {
+        this->arr.push_back(v);
+    }
+    else {
+        throw wstring{ L"Метод pushb() используетя только для типа ARR" };
+    }
 }
 
 void Var::popb() {
-    this->arr.pop_back();
+    if (this->type == ARR) {
+        this->arr.pop_back();
+    }
+    else {
+        throw wstring{ L"Метод popb() используетя только для типа ARR" };
+    }
 }
 
 void Var::clear() {
-    this->arr.clear();
+    if (this->type == ARR) {
+        this->arr.clear();
+    }
+    else if (this->type == MAP) {
+        this->mp.clear();
+    }
+
 }
 
 void Var::erase(int x) {
