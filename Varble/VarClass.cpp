@@ -1314,6 +1314,18 @@ Var& Var::operator= (const wchar_t* var) {
     return *this;
 }
 
+Var& Var::operator= (vector<Var> v) {
+    this->type = ARR;
+    this->arr = v;
+    return *this;
+}
+
+Var& Var::operator= (map<wstring, Var> m) {
+    this->type = MAP;
+    this->mp = m;
+    return *this;
+}
+
 Var operator+(const Var& a, const Var& b)
 {
     if (a.type == NTG) {

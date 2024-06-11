@@ -119,7 +119,7 @@ public:
     void erase(Var x);
 
     Var split(Var delim);
-
+    
     //Вывод данных через поток
     friend wostream& operator<< (wostream& os, const Var& var);
 
@@ -146,6 +146,9 @@ public:
 
     Var& operator= (const wstring& var);
     Var& operator= (const wchar_t* var);
+
+    Var& operator= (vector<Var> v);
+    Var& operator= (map<wstring, Var> m);
 
     //Математические операторы
     friend Var operator+(const Var& a, const Var& b);
