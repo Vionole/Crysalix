@@ -164,7 +164,8 @@ public:
 
     //Математические операторы
     friend Var operator+(const Var& a, const Var& b);
-    friend Var operator-(Var& a, Var& b);
+    friend Var operator-(const Var& a, const Var& b);
+    friend Var operator*(const Var& a, const Var& b);
 };
 
 
