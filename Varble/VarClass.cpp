@@ -1731,6 +1731,7 @@ Var operator+(const Var& a, const Var& b)
         }
         else if (b.type == STR) {
             Var result(a.data.str + b.data.str);
+            return result;
         }
         else if (b.type == NIL) {
             Var result;
@@ -2057,7 +2058,8 @@ Var operator-(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == STR) {
-            Var result(a.data.str - b.data.str);
+            Var result(a.toDBL().getDouble() - b.toDBL().getDouble());
+            return result;
         }
         else if (b.type == NIL) {
             Var result;
@@ -2383,7 +2385,8 @@ Var operator*(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == STR) {
-            Var result(a.data.str * b.data.str);
+            Var result(a.toDBL().getDouble() * b.toDBL().getDouble());
+            return result;
         }
         else if (b.type == NIL) {
             Var result;
