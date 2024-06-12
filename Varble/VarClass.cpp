@@ -117,7 +117,7 @@ Var::Var(map<wstring, Var> m) {
     this->mp = m;
 }
 
-long long int Var::getInt() {
+long long int Var::getInt() const {
     if (this->type == NTG) {
         return this->data.ntg;
     }
@@ -126,7 +126,7 @@ long long int Var::getInt() {
     }
 }
 
-unsigned long long int Var::getUInt() {
+unsigned long long int Var::getUInt() const {
     if (this->type == UNTG) {
         return this->data.untg;
     }
@@ -135,7 +135,7 @@ unsigned long long int Var::getUInt() {
     }
 }
 
-long double Var::getDouble() {
+long double Var::getDouble() const {
     if (this->type == DBL) {
         return this->data.dbl;
     }
@@ -144,7 +144,7 @@ long double Var::getDouble() {
     }
 }
 
-char Var::getChar() {
+char Var::getChar() const {
     if (this->type == CHR) {
         return this->data.chr;
     }
@@ -153,7 +153,7 @@ char Var::getChar() {
     }
 }
 
-unsigned char Var::getUChar() {
+unsigned char Var::getUChar() const {
     if (this->type == UCHR) {
         return this->data.uchr;
     }
@@ -162,7 +162,7 @@ unsigned char Var::getUChar() {
     }
 }
 
-bool Var::getBool() {
+bool Var::getBool() const {
     if (this->type == BLN) {
         return this->data.bln;
     }
@@ -171,7 +171,7 @@ bool Var::getBool() {
     }
 }
 
-wstring Var::getWStr() {
+wstring Var::getWStr() const {
     if (this->type == STR) {
         return this->data.str;
     }
@@ -180,7 +180,7 @@ wstring Var::getWStr() {
     }
 }
 
-vector<Var> Var::getArr() {
+vector<Var> Var::getArr() const {
     if (this->type == ARR) {
         return this->arr;
     }
@@ -189,7 +189,7 @@ vector<Var> Var::getArr() {
     }
 }
 
-map<wstring, Var> Var::getMap() {
+map<wstring, Var> Var::getMap() const {
     if (this->type == MAP) {
         return this->mp;
     }
@@ -198,7 +198,7 @@ map<wstring, Var> Var::getMap() {
     }
 }
 
-Var Var::toNTG() {
+Var Var::toNTG() const {
     if (this->type == NTG) {
         Var result = this->data.ntg;
         return result;
@@ -261,7 +261,7 @@ Var Var::toNTG() {
     }
 }
 
-Var Var::toUNTG() {
+Var Var::toUNTG() const {
     if (this->type == NTG) {
         Var result;
         result.type = UNTG;
@@ -326,7 +326,7 @@ Var Var::toUNTG() {
     }
 }
 
-Var Var::toDBL() {
+Var Var::toDBL() const {
     if (this->type == NTG) {
         Var result;
         result.type = DBL;
@@ -391,7 +391,7 @@ Var Var::toDBL() {
     }
 }
 
-Var Var::toCHR() {
+Var Var::toCHR() const {
     if (this->type == NTG) {
         Var result;
         result.type = CHR;
@@ -456,7 +456,7 @@ Var Var::toCHR() {
     }
 }
 
-Var Var::toUCHR() {
+Var Var::toUCHR() const {
     if (this->type == NTG) {
         Var result;
         result.type = UCHR;
@@ -521,7 +521,7 @@ Var Var::toUCHR() {
     }
 }
 
-Var Var::toBLN() {
+Var Var::toBLN() const {
     if (this->type == NTG) {
         Var result;
         result.type = BLN;
@@ -607,7 +607,7 @@ Var Var::toBLN() {
     }
 }
 
-Var Var::toSTR() {
+Var Var::toSTR() const {
     if (this->type == NTG) {
         Var result;
         result.type = STR;
@@ -673,7 +673,7 @@ Var Var::toSTR() {
     }
 }
 
-Var Var::toARR() {
+Var Var::toARR() const {
     if (this->type == NTG) {
         Var result;
         result.type = ARR;
@@ -1437,7 +1437,7 @@ Var& Var::operator= (map<wstring, Var> m) {
     return *this;
 }
 
-Var operator+(Var& a, Var& b)
+Var operator+(const Var& a, const Var& b)
 {
     if (a.type == NTG) {
         if (b.type == NTG) {

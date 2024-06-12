@@ -64,25 +64,25 @@ public:
     Var(map<wstring, Var> m);
 
     //Геттеры обычных типов данных
-    long long int getInt();
-    unsigned long long int getUInt();
-    long double getDouble();
-    char getChar();
-    unsigned char getUChar();
-    bool getBool();
-    wstring getWStr();
-    vector<Var> getArr();
-    map<wstring, Var> getMap();
+    long long int getInt() const;
+    unsigned long long int getUInt() const;
+    long double getDouble() const;
+    char getChar() const;
+    unsigned char getUChar() const;
+    bool getBool() const;
+    wstring getWStr() const;
+    vector<Var> getArr() const;
+    map<wstring, Var> getMap() const;
 
     //Приведение типов
-    Var toNTG();
-    Var toUNTG();
-    Var toDBL();
-    Var toCHR();
-    Var toUCHR();
-    Var toBLN();
-    Var toSTR();
-    Var toARR();
+    Var toNTG() const;
+    Var toUNTG() const;
+    Var toDBL() const;
+    Var toCHR() const;
+    Var toUCHR() const;
+    Var toBLN() const;
+    Var toSTR() const;
+    Var toARR() const;
 
     //Вывод данных и типа
     void print();
@@ -163,7 +163,8 @@ public:
     Var& operator= (map<wstring, Var> m);
 
     //Математические операторы
-    friend Var operator+(Var& a, Var& b);
+    friend Var operator+(const Var& a, const Var& b);
+    friend Var operator-(Var& a, Var& b);
 };
 
 
