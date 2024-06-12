@@ -166,6 +166,9 @@ public:
     friend Var operator+(const Var& a, const Var& b);
     friend Var operator-(const Var& a, const Var& b);
     friend Var operator*(const Var& a, const Var& b);
+    friend Var operator/(const Var& a, const Var& b);
+    friend Var operator%(const Var& a, const Var& b);
+
 };
 
 
