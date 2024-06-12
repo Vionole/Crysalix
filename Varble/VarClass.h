@@ -163,7 +163,7 @@ public:
     Var& operator= (map<wstring, Var> m);
 
     //Математические операторы
-    friend Var operator+(const Var& a, const Var& b);
+    friend Var operator+(Var& a, Var& b);
 };
 
 
