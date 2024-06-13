@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <io.h>
 #include <fcntl.h>
 #include "VarClass.h"
