@@ -3073,6 +3073,31 @@ Var operator%(const Var& a, const Var& b)
     }
 }
 
+Var operator+=(Var& a, const Var& b) {
+    a = a + b;
+    return a;
+}
+
+Var operator-=(Var& a, const Var& b) {
+    a = a - b;
+    return a;
+}
+
+Var operator*=(Var& a, const Var& b) {
+    a = a * b;
+    return a;
+}
+
+Var operator/=(Var& a, const Var& b) {
+    a = a / b;
+    return a;
+}
+
+Var operator%=(Var& a, const Var& b) {
+    a = a % b;
+    return a;
+}
+
 void Unicode() {
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
