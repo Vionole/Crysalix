@@ -176,6 +176,7 @@ public:
     friend Var operator%=(Var& a, const Var& b);
 
     friend bool operator==(Var& a, const Var& b);
+    friend bool operator!=(Var& a, const Var& b);
 
 };
 

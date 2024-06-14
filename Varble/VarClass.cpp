@@ -3277,36 +3277,28 @@ bool operator==(Var& a, const Var& b) {
     }
     else if (a.type == BLN) {
         if (b.type == NTG) {
-            Var result(a.data.bln + b.data.ntg);
-            return result;
+            return a.data.bln == b.data.ntg;
         }
         else if (b.type == UNTG) {
-            Var result(a.data.bln + b.data.untg);
-            return result;
+            return a.data.bln == b.data.untg;
         }
         else if (b.type == DBL) {
-            Var result(a.data.bln + b.data.dbl);
-            return result;
+            return a.data.bln == b.data.dbl;
         }
         else if (b.type == CHR) {
-            Var result(a.data.bln + b.data.chr);
-            return result;
+            return a.data.bln == b.data.chr;
         }
         else if (b.type == UCHR) {
-            Var result(a.data.bln + b.data.uchr);
-            return result;
+            return a.data.bln == b.data.uchr;
         }
         else if (b.type == BLN) {
-            Var result(a.data.bln + b.data.bln);
-            return result;
+            return a.data.bln == b.data.bln;
         }
         else if (b.type == STR) {
-            Var result(a.data.bln + b.toBLN().getBool());
-            return result;
+            return a.data.bln == b.toBLN().getBool();
         }
         else if (b.type == NIL) {
-            Var result;
-            return result;
+            return false;
         }
         else if (b.type == ARR) {
             throw wstring{ L"Массив не поддерживает данной операции" };
@@ -3315,43 +3307,33 @@ bool operator==(Var& a, const Var& b) {
             throw wstring{ L"Cловарь не поддерживает данной операции" };
         }
         else {
-            Var result;
-            return result;
+            return false;
         }
     }
     else if (a.type == STR) {
         if (b.type == NTG) {
-
-            Var result(a.toNTG().getInt() + b.data.ntg);
-            return result;
+            return a.toNTG().getInt() == b.data.ntg;
         }
         else if (b.type == UNTG) {
-            Var result(a.toUNTG().getUInt() + b.data.untg);
-            return result;
+            return a.toUNTG().getUInt() == b.data.untg;
         }
         else if (b.type == DBL) {
-            Var result(a.toDBL().getDouble() + b.data.dbl);
-            return result;
+            return a.toDBL().getDouble() == b.data.dbl;
         }
         else if (b.type == CHR) {
-            Var result(a.toCHR().getChar() + b.data.chr);
-            return result;
+            return a.toCHR().getChar() == b.data.chr;
         }
         else if (b.type == UCHR) {
-            Var result(a.toUCHR().getUChar() + b.data.uchr);
-            return result;
+            return a.toUCHR().getUChar() == b.data.uchr;
         }
         else if (b.type == BLN) {
-            Var result(a.toBLN().getBool() + b.data.bln);
-            return result;
+            return a.toBLN().getBool() == b.data.bln;
         }
         else if (b.type == STR) {
-            Var result(a.data.str + b.data.str);
-            return result;
+            return a.data.str == b.data.str;
         }
         else if (b.type == NIL) {
-            Var result;
-            return result;
+            return false;
         }
         else if (b.type == ARR) {
             throw wstring{ L"Массив не поддерживает данной операции" };
@@ -3360,13 +3342,16 @@ bool operator==(Var& a, const Var& b) {
             throw wstring{ L"Cловарь не поддерживает данной операции" };
         }
         else {
-            Var result;
-            return result;
+            return false;
         }
     }
     else if (a.type == NIL) {
-        Var result;
-        return result;
+        if (b.type == NIL) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     else if (a.type == ARR) {
         throw wstring{ L"Массив не поддерживает данной операции" };
@@ -3375,9 +3360,12 @@ bool operator==(Var& a, const Var& b) {
         throw wstring{ L"Cловарь не поддерживает данной операции" };
     }
     else {
-        Var result;
-        return result;
+        return false;
     }
+}
+
+bool operator!=(Var& a, const Var& b) {
+    return !(a == b);
 }
 
 void Unicode() {
