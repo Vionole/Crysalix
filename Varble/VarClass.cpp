@@ -3099,6 +3099,287 @@ Var operator%=(Var& a, const Var& b) {
     return a;
 }
 
+bool operator==(Var& a, const Var& b) {
+    if (a.type == NTG) {
+        if (b.type == NTG) {
+            return a.data.ntg == b.data.ntg;
+        }
+        else if (b.type == UNTG) {
+            return a.data.ntg == b.data.untg;
+        }
+        else if (b.type == DBL) {
+            return a.data.ntg == b.data.dbl;
+        }
+        else if (b.type == CHR) {
+            return a.data.ntg == b.data.chr;
+        }
+        else if (b.type == UCHR) {
+            return a.data.ntg == b.data.uchr;
+        }
+        else if (b.type == BLN) {
+            return a.data.ntg == b.data.bln;
+        }
+        else if (b.type == STR) {
+            return a.data.ntg == b.toNTG().getInt();
+        }
+        else if (b.type == NIL) {
+            return false;
+        }
+        else if (b.type == ARR) {
+            throw wstring{ L"Массив не поддерживает данной операции" };
+        }
+        else if (b.type == MAP) {
+            throw wstring{ L"Cловарь не поддерживает данной операции" };
+        }
+        else {
+            return false;
+        }
+    }
+    else if (a.type == UNTG) {
+        if (b.type == NTG) {
+            return a.data.untg == b.data.ntg;
+        }
+        else if (b.type == UNTG) {
+            return a.data.untg == b.data.untg;
+        }
+        else if (b.type == DBL) {
+            return a.data.untg == b.data.dbl;
+        }
+        else if (b.type == CHR) {
+            return a.data.untg == b.data.chr;
+        }
+        else if (b.type == UCHR) {
+            return a.data.untg == b.data.uchr;
+        }
+        else if (b.type == BLN) {
+            return a.data.untg == b.data.bln;
+        }
+        else if (b.type == STR) {
+            return a.data.untg == b.toNTG().getInt();
+        }
+        else if (b.type == NIL) {
+            return false;
+        }
+        else if (b.type == ARR) {
+            throw wstring{ L"Массив не поддерживает данной операции" };
+        }
+        else if (b.type == MAP) {
+            throw wstring{ L"Cловарь не поддерживает данной операции" };
+        }
+        else {
+            return false;
+        }
+    }
+    else if (a.type == DBL) {
+        if (b.type == NTG) {
+            return a.data.dbl == b.data.ntg;
+        }
+        else if (b.type == UNTG) {
+            return a.data.dbl == b.data.untg;
+        }
+        else if (b.type == DBL) {
+            return a.data.dbl == b.data.dbl;
+        }
+        else if (b.type == CHR) {
+            return a.data.dbl == b.data.chr;
+        }
+        else if (b.type == UCHR) {
+            return a.data.dbl == b.data.uchr;
+        }
+        else if (b.type == BLN) {
+            return a.data.dbl == b.data.bln;
+        }
+        else if (b.type == STR) {
+            return a.data.dbl == b.toDBL().getDouble();
+        }
+        else if (b.type == NIL) {
+            return false;
+        }
+        else if (b.type == ARR) {
+            throw wstring{ L"Массив не поддерживает данной операции" };
+        }
+        else if (b.type == MAP) {
+            throw wstring{ L"Cловарь не поддерживает данной операции" };
+        }
+        else {
+            return false;
+        }
+    }
+    else if (a.type == CHR) {
+        if (b.type == NTG) {
+            return a.data.chr == b.data.ntg;
+        }
+        else if (b.type == UNTG) {
+            return a.data.chr == b.data.untg;
+        }
+        else if (b.type == DBL) {
+            return a.data.chr == b.data.dbl;
+        }
+        else if (b.type == CHR) {
+            return a.data.chr == b.data.chr;
+        }
+        else if (b.type == UCHR) {
+            return a.data.chr == b.data.uchr;
+        }
+        else if (b.type == BLN) {
+            return a.data.chr == b.data.bln;
+        }
+        else if (b.type == STR) {
+            return a.data.chr == b.toCHR().getChar();
+        }
+        else if (b.type == NIL) {
+            return false;
+        }
+        else if (b.type == ARR) {
+            throw wstring{ L"Массив не поддерживает данной операции" };
+        }
+        else if (b.type == MAP) {
+            throw wstring{ L"Cловарь не поддерживает данной операции" };
+        }
+        else {
+            return false;
+        }
+    }
+    else if (a.type == UCHR) {
+        if (b.type == NTG) {
+            return a.data.uchr == b.data.ntg;
+        }
+        else if (b.type == UNTG) {
+            return a.data.uchr == b.data.untg;
+        }
+        else if (b.type == DBL) {
+            return a.data.uchr == b.data.dbl;
+        }
+        else if (b.type == CHR) {
+            return a.data.uchr == b.data.chr;
+        }
+        else if (b.type == UCHR) {
+            return a.data.uchr == b.data.uchr;
+        }
+        else if (b.type == BLN) {
+            return a.data.uchr == b.data.bln;
+        }
+        else if (b.type == STR) {
+            return a.data.uchr == b.toUCHR().getUChar();
+        }
+        else if (b.type == NIL) {
+            return false;
+        }
+        else if (b.type == ARR) {
+            throw wstring{ L"Массив не поддерживает данной операции" };
+        }
+        else if (b.type == MAP) {
+            throw wstring{ L"Cловарь не поддерживает данной операции" };
+        }
+        else {
+            return false;
+        }
+    }
+    else if (a.type == BLN) {
+        if (b.type == NTG) {
+            Var result(a.data.bln + b.data.ntg);
+            return result;
+        }
+        else if (b.type == UNTG) {
+            Var result(a.data.bln + b.data.untg);
+            return result;
+        }
+        else if (b.type == DBL) {
+            Var result(a.data.bln + b.data.dbl);
+            return result;
+        }
+        else if (b.type == CHR) {
+            Var result(a.data.bln + b.data.chr);
+            return result;
+        }
+        else if (b.type == UCHR) {
+            Var result(a.data.bln + b.data.uchr);
+            return result;
+        }
+        else if (b.type == BLN) {
+            Var result(a.data.bln + b.data.bln);
+            return result;
+        }
+        else if (b.type == STR) {
+            Var result(a.data.bln + b.toBLN().getBool());
+            return result;
+        }
+        else if (b.type == NIL) {
+            Var result;
+            return result;
+        }
+        else if (b.type == ARR) {
+            throw wstring{ L"Массив не поддерживает данной операции" };
+        }
+        else if (b.type == MAP) {
+            throw wstring{ L"Cловарь не поддерживает данной операции" };
+        }
+        else {
+            Var result;
+            return result;
+        }
+    }
+    else if (a.type == STR) {
+        if (b.type == NTG) {
+
+            Var result(a.toNTG().getInt() + b.data.ntg);
+            return result;
+        }
+        else if (b.type == UNTG) {
+            Var result(a.toUNTG().getUInt() + b.data.untg);
+            return result;
+        }
+        else if (b.type == DBL) {
+            Var result(a.toDBL().getDouble() + b.data.dbl);
+            return result;
+        }
+        else if (b.type == CHR) {
+            Var result(a.toCHR().getChar() + b.data.chr);
+            return result;
+        }
+        else if (b.type == UCHR) {
+            Var result(a.toUCHR().getUChar() + b.data.uchr);
+            return result;
+        }
+        else if (b.type == BLN) {
+            Var result(a.toBLN().getBool() + b.data.bln);
+            return result;
+        }
+        else if (b.type == STR) {
+            Var result(a.data.str + b.data.str);
+            return result;
+        }
+        else if (b.type == NIL) {
+            Var result;
+            return result;
+        }
+        else if (b.type == ARR) {
+            throw wstring{ L"Массив не поддерживает данной операции" };
+        }
+        else if (b.type == MAP) {
+            throw wstring{ L"Cловарь не поддерживает данной операции" };
+        }
+        else {
+            Var result;
+            return result;
+        }
+    }
+    else if (a.type == NIL) {
+        Var result;
+        return result;
+    }
+    else if (a.type == ARR) {
+        throw wstring{ L"Массив не поддерживает данной операции" };
+    }
+    else if (a.type == MAP) {
+        throw wstring{ L"Cловарь не поддерживает данной операции" };
+    }
+    else {
+        Var result;
+        return result;
+    }
+}
+
 void Unicode() {
     _setmode(_fileno(stdout), _O_U16TEXT);
     _setmode(_fileno(stdin), _O_U16TEXT);
