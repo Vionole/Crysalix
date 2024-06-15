@@ -21,9 +21,15 @@
     <ClCompile Include="VarClass.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Machine.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VarClass.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Machine.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

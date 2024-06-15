@@ -131,10 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Machine.cpp" />
     <ClCompile Include="Varble.cpp" />
     <ClCompile Include="VarClass.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Machine.h" />
     <ClInclude Include="VarClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
