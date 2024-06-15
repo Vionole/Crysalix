@@ -1274,6 +1274,18 @@ void Var::insert(const wchar_t* str, Var val) {
     }
 }
 
+void Var::merge(Var val) {
+    if (this->type == ARR && val.type == ARR) {
+        this->arr.insert(this->arr.end(), val.arr.begin(), val.arr.end());
+    }
+    else if (this->type == MAP && val.type == MAP) {
+        this->mp.insert(val.mp.begin(), val.mp.end());
+    } 
+    else {
+        throw wstring{ L"Метод merge() используетя только для типа ARR, MAP" };
+    }
+}
+
 wostream& operator<< (wostream& wos, const Var& var)
 {
     switch (var.type) {

@@ -132,6 +132,7 @@ public:
     Var join(wstring delim);
     Var join(const wchar_t* delim);
     
+    void merge(Var val);
     //Вывод данных через поток
     friend wostream& operator<< (wostream& os, const Var& var);
 
