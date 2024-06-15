@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
 #include "VarClass.h"
 
 using namespace std;
@@ -9,18 +10,48 @@ using namespace std;
 class Machine;
 
 class Instruct {
-private:
-	vector<Var> values;
 public:
-	virtual void go(Machine m) = 0;
+	vector<Var> values;
+	wstring name;
+
+	virtual void go(Machine& m) = 0;
+	virtual bool validate() = 0;
 	virtual ~Instruct() {};
+};
+
+class InstructNOP: public Instruct {
+public:
+	InstructNOP(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate() override;
+};
+
+class InstructEND : public Instruct {
+public:
+	InstructEND(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate() override;
+};
+
+class InstructVAR : public Instruct {
+public:
+	InstructVAR(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate() override;
+};
+
+class InstructPRINT : public Instruct {
+public:
+	InstructPRINT(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate() override;
 };
 
 class Machine {
 public:
 	int instruct_number;
 
-	vector<Var> in_data;
+	map<wstring, Var> in_data;
 	Var ret_data;
 
 	vector<Instruct*> instructions;
@@ -30,11 +61,10 @@ public:
 
 	map<wstring, Machine> sub_machines;
 	
-public:
-	Machine(vector<Var> in);
+	Machine(map<wstring, Var> in);
 
 	void prepare();
 
-	void go();
+	Var go();
 
 };

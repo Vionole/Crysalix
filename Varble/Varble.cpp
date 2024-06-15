@@ -24,7 +24,38 @@ int main()
     infile.close();
 
     try {
-        
+        map<wstring, Var> map;
+        Machine mchn(map);
+                        
+        vector<Var> vecnop;
+        mchn.instructions.push_back(new InstructNOP(vecnop));
+        mchn.instructions.push_back(new InstructNOP(vecnop));
+
+        vector<Var> vecvar;
+        vecvar.push_back(Var(L"$name"));
+        vecvar.push_back(Var(123));
+        mchn.instructions.push_back(new InstructVAR(vecvar));
+
+        vector<Var> vecvar2;
+        vecvar2.push_back(Var(L"$second"));
+        vecvar2.push_back(Var(L"$name"));
+        mchn.instructions.push_back(new InstructVAR(vecvar2));
+
+        vector<Var> vecprint;
+        vecprint.push_back(Var(L"\nПервое значение: "));
+        vecprint.push_back(Var(L"$second"));
+        vecprint.push_back(Var(L" второе значение: "));
+        vecprint.push_back(Var(L"$name"));
+        vecprint.push_back(Var(L" "));
+        vecprint.push_back(Var(true));
+        vecprint.push_back(Var(L"\n"));
+        mchn.instructions.push_back(new InstructPRINT(vecprint));
+
+        vector<Var> vecend;
+        mchn.instructions.push_back(new InstructEND(vecend));
+
+        mchn.prepare();
+        mchn.go();
     }
     catch (const std::wstring& error_message) {
         wcout << endl << error_message;
