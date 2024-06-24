@@ -52,10 +52,11 @@ int main()
         mchn.instructions.push_back(new InstructPRINT(vecprint));
 
         vector<Var> vecend;
+        vecend.push_back(Var(L"name"));
         mchn.instructions.push_back(new InstructEND(vecend));
 
         mchn.prepare();
-        mchn.go();
+        wcout << L"Программа выполнилась и вернула значение: " << mchn.go() << endl;
     }
     catch (const std::wstring& error_message) {
         wcout << endl << error_message;

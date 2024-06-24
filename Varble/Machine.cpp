@@ -18,7 +18,7 @@ Var Machine::go() {
 		}
 		wcout << L"=======================================================" << endl;
 
-		if (this->instructions[this->instruct_number]->validate()) {
+		if (this->instructions[this->instruct_number]->validate(*this)) {
 			this->instructions[this->instruct_number]->go(*this);
 		}
 	}
@@ -34,8 +34,13 @@ void InstructNOP::go(Machine& m) {
 	++m.instruct_number;
 }
 
-bool InstructNOP::validate() {
-	return true;
+bool InstructNOP::validate(Machine& m) {
+	if (this->values.size() == 0) {
+		return true;
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция NOP принимает 0 параметров\n" };
+	}
 }
 
 
@@ -45,11 +50,33 @@ InstructEND::InstructEND(vector<Var> val) {
 }
 
 void InstructEND::go(Machine& m) {
+	if (this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+		m.ret_data = m.heap[this->values[0].getWStr()];
+	}
+	else {
+		m.ret_data = this->values[0];
+	}
 	m.instruct_number = -1;
+
 }
 
-bool InstructEND::validate() {
-	return true;
+bool InstructEND::validate(Machine& m) {
+	if (this->values.size() == 1) {
+		if (this->values[0].typeOf() == L"STR" && this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+			if (m.heap.find(this->values[0].getWStr()) == m.heap.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].getWStr() + L" не существует\n" };
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			return true;
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция END принимает 1 параметр\n" };
+	}
 }
 
 
@@ -68,17 +95,22 @@ void InstructVAR::go(Machine& m) {
 	++m.instruct_number;
 }
 
-bool InstructVAR::validate() {
+bool InstructVAR::validate(Machine& m) {
 	if (this->values.size() == 2) {
 		if (this->values[0].typeOf() == L"STR" && this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
-			return true;
+			if (m.heap.find(this->values[0].getWStr()) == m.heap.end()) {
+				return true;
+			}
+			else {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].getWStr() + L" уже определена\n"};
+			}
 		}
 		else {
-			throw wstring{ L"Первый параметр инструкции VAR должен быть именем переменной\n" };
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Первый параметр инструкции VAR должен быть именем переменной\n" };
 		}
 	}
 	else {
-		throw wstring{ L"Инструкция VAR принимает 2 параметра\n" };
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция VAR принимает 2 параметра\n" };
 	}
 }
 
@@ -101,11 +133,22 @@ void InstructPRINT::go(Machine& m) {
 	++m.instruct_number;
 }
 
-bool InstructPRINT::validate() {
+bool InstructPRINT::validate(Machine& m) {
+
 	if (this->values.size() > 0) {
-			return true;
+		for (auto& i : this->values)
+		{
+			if (i.toSTR().slice(0, 1).getWStr() == L"$") {
+				if (m.heap.find(i.getWStr()) == m.heap.end()) {
+					throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + i.getWStr() + L" не существует\n" };
+				}
+				else {}
+			}
+			else {}
+		}
+		return true;
 	}
 	else {
-		throw wstring{ L"Инструкция PRINT принимает как минимум 1 параметр\n" };
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция PRINT принимает как минимум 1 параметр\n" };
 	}
 }
