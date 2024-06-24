@@ -25,7 +25,7 @@ int main()
 
     try {
         map<wstring, Var> map;
-        Machine mchn(map);
+        Machine mchn(map, true);
                         
         vector<Var> vecnop;
         mchn.instructions.push_back(new InstructNOP(vecnop));
@@ -66,9 +66,9 @@ int main()
         veclbl2.push_back(Var(L"&label2"));
         mchn.instructions.push_back(new InstructLBL(veclbl2));
 
-        vector<Var> vecjmp;
+        /*vector<Var> vecjmp;
         vecjmp.push_back(Var(L"&label1"));
-        mchn.instructions.push_back(new InstructJMP(vecjmp));
+        mchn.instructions.push_back(new InstructJMP(vecjmp));*/
 
         vector<Var> vecend;
         vecend.push_back(Var(L"name"));

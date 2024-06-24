@@ -1,7 +1,8 @@
 #include "Machine.h"
 
-Machine::Machine(map<wstring, Var> in) {
+Machine::Machine(map<wstring, Var> in, bool dbg) {
 	this->in_data = in;
+	this->debug = dbg;
 }
 
 void Machine::prepare() {
@@ -30,25 +31,53 @@ void Machine::prepare() {
 
 Var Machine::go() {
 	while (this->instruct_number != -1) {
-		wcout << this->instruct_number << L": " << this->instructions[this->instruct_number]->name << endl;
-		wcout << L"-------------------------------------------------------" << endl;
-		wcout << L"Heap:" << endl;
-		for (const auto& kv : this->heap) {
-			wcout << kv.first << ": " << kv.second << endl;
+		if (this->debug) {
+			wcout << endl;
+			wcout << L"=======================================================" << endl;
+			wcout << (this->instruct_number + 1) << L": " << this->instructions[this->instruct_number]->name << ": ";
+			bool comma = false;
+			for (auto& i : this->instructions[this->instruct_number]->values)
+			{
+				if (comma) {
+					wcout << ", ";
+				}
+				i.print();
+				comma = true;
+
+			}
+			wcout << endl;
+			wcout << L"_______________________________________________________" << endl;
 		}
-		wcout << L"-------------------------------------------------------" << endl;
-		wcout << L"Jump pointers:" << endl;
-		for (const auto& kv : this->jmp_pointers) {
-			wcout << kv.first << ": " << kv.second << endl;
-		}
-		wcout << L"=======================================================" << endl;
 
 		if (this->instructions[this->instruct_number]->validate(*this)) {
 			this->instructions[this->instruct_number]->go(*this);
 		}
+
+		if (this->debug) {
+			wcout << endl;
+			wcout << L"_______________________________________________________" << endl;
+			wcout << L"Heap:" << endl;
+			wcout << L"_______________________________________________________" << endl;
+			for (const auto& kv : this->heap) {
+				wcout << kv.first << ": " << kv.second << endl;
+			}
+			wcout << L"_______________________________________________________" << endl;
+			wcout << endl;
+			wcout << L"_______________________________________________________" << endl;
+			wcout << L"Jump pointers:" << endl;
+			wcout << L"_______________________________________________________" << endl;
+			for (const auto& kv : this->jmp_pointers) {
+				wcout << kv.first << ": " << kv.second << endl;
+			}
+			wcout << L"=======================================================" << endl;
+			system("pause");
+		}
 	}
 	return this->ret_data;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// NOP
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructNOP::InstructNOP(vector<Var> val) {
 	this->name = L"NOP";
@@ -68,6 +97,8 @@ bool InstructNOP::validate(Machine& m) {
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// END
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructEND::InstructEND(vector<Var> val) {
 	this->name = L"END";
@@ -105,6 +136,8 @@ bool InstructEND::validate(Machine& m) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VAR
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructVAR::InstructVAR(vector<Var> val) {
 	this->name = L"VAR";
 	this->values = val;
@@ -139,6 +172,8 @@ bool InstructVAR::validate(Machine& m) {
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// PRINT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructPRINT::InstructPRINT(vector<Var> val) {
 	this->name = L"PRINT";
@@ -177,6 +212,8 @@ bool InstructPRINT::validate(Machine& m) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FREE
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructFREE::InstructFREE(vector<Var> val) {
 	this->name = L"FREE";
 	this->values = val;
@@ -212,6 +249,8 @@ bool InstructFREE::validate(Machine& m) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LBL
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructLBL::InstructLBL(vector<Var> val) {
 	this->name = L"LBL";
 	this->values = val;
@@ -235,6 +274,8 @@ bool InstructLBL::validate(Machine& m) {
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// JMP
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructJMP::InstructJMP(vector<Var> val) {
 	this->name = L"JMP";

@@ -70,6 +70,7 @@ public:
 
 class Machine {
 public:
+	bool debug;
 	int instruct_number;
 
 	map<wstring, Var> in_data;
@@ -82,7 +83,7 @@ public:
 
 	map<wstring, Machine> sub_machines;
 	
-	Machine(map<wstring, Var> in);
+	Machine(map<wstring, Var> in, bool dbg = false);
 
 	void prepare();
 
