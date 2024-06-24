@@ -142,13 +142,45 @@ bool InstructPRINT::validate(Machine& m) {
 				if (m.heap.find(i.getWStr()) == m.heap.end()) {
 					throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + i.getWStr() + L" не существует\n" };
 				}
-				else {}
 			}
-			else {}
 		}
 		return true;
 	}
 	else {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция PRINT принимает как минимум 1 параметр\n" };
+	}
+}
+
+InstructFREE::InstructFREE(vector<Var> val) {
+	this->name = L"FREE";
+	this->values = val;
+}
+
+void InstructFREE::go(Machine& m) {
+	for (auto& i : this->values)
+	{
+			m.heap.erase(i.getWStr());
+	}
+	++m.instruct_number;
+}
+
+bool InstructFREE::validate(Machine& m) {
+
+	if (this->values.size() > 0) {
+		for (auto& i : this->values)
+		{
+			if (i.toSTR().slice(0, 1).getWStr() == L"$") {
+				if (m.heap.find(i.getWStr()) == m.heap.end()) {
+					throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + i.getWStr() + L" не существует\n" };
+				}
+			}
+			else {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Параметр " + i.getWStr() + L" должен быть именем переменной\n" };
+			}
+		}
+		return true;
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция FREE принимает как минимум 1 параметр\n" };
 	}
 }

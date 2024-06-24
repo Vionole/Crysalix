@@ -51,9 +51,15 @@ int main()
         vecprint.push_back(Var(L"\n"));
         mchn.instructions.push_back(new InstructPRINT(vecprint));
 
+        vector<Var> vecfree;
+        vecfree.push_back(Var(L"$name"));
+        vecfree.push_back(Var(L"$second"));
+        mchn.instructions.push_back(new InstructFREE(vecfree));
+
         vector<Var> vecend;
         vecend.push_back(Var(L"name"));
         mchn.instructions.push_back(new InstructEND(vecend));
+
 
         mchn.prepare();
         wcout << L"Программа выполнилась и вернула значение: " << mchn.go() << endl;

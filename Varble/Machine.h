@@ -47,6 +47,13 @@ public:
 	bool validate(Machine& m) override;
 };
 
+class InstructFREE : public Instruct {
+public:
+	InstructFREE(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
 class Machine {
 public:
 	int instruct_number;
