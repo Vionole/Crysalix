@@ -54,6 +54,13 @@ public:
 	bool validate(Machine& m) override;
 };
 
+class InstructLBL : public Instruct {
+public:
+	InstructLBL(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
 class Machine {
 public:
 	int instruct_number;

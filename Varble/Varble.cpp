@@ -31,6 +31,10 @@ int main()
         mchn.instructions.push_back(new InstructNOP(vecnop));
         mchn.instructions.push_back(new InstructNOP(vecnop));
 
+        vector<Var> veclbl;
+        veclbl.push_back(Var(L"&label1"));
+        mchn.instructions.push_back(new InstructLBL(veclbl));
+
         vector<Var> vecvar;
         vecvar.push_back(Var(L"$name"));
         vecvar.push_back(Var(123));
@@ -51,10 +55,16 @@ int main()
         vecprint.push_back(Var(L"\n"));
         mchn.instructions.push_back(new InstructPRINT(vecprint));
 
+
         vector<Var> vecfree;
         vecfree.push_back(Var(L"$name"));
         vecfree.push_back(Var(L"$second"));
         mchn.instructions.push_back(new InstructFREE(vecfree));
+
+
+        vector<Var> veclbl2;
+        veclbl2.push_back(Var(L"&label2"));
+        mchn.instructions.push_back(new InstructLBL(veclbl2));
 
         vector<Var> vecend;
         vecend.push_back(Var(L"name"));

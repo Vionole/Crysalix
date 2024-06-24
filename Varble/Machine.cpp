@@ -6,6 +6,26 @@ Machine::Machine(map<wstring, Var> in) {
 
 void Machine::prepare() {
 	this->instruct_number = 0;
+	for (int i = 0; i < instructions.size(); ++i) {
+		if (this->instructions[i]->name == L"LBL") {
+			if (this->instructions[i]->values.size() == 1) {
+				if (this->instructions[i]->values[0].toSTR().slice(0, 1).getWStr() == L"&") {
+					if (this->jmp_pointers.find(this->instructions[i]->values[0].getWStr()) == this->jmp_pointers.end()) {
+						this->jmp_pointers[this->instructions[i]->values[0].toSTR().getWStr()] = i;
+					}
+					else {
+						throw wstring{ L"Ссылка " + this->instructions[i]->values[0].toSTR().getWStr() + L" инструкции LBL уже существует\n" };
+					}
+				}
+				else {
+					throw wstring{ L"Параметр " + this->instructions[i]->values[0].toSTR().getWStr() + L" инструкции LBL должен быть именем ссылки\n"};
+				}
+			}
+			else {
+				throw wstring{ L"Инструкция LBL принимает только 1 параметр\n" };
+			}
+		}
+	}
 }
 
 Var Machine::go() {
@@ -14,6 +34,11 @@ Var Machine::go() {
 		wcout << L"-------------------------------------------------------" << endl;
 		wcout << L"Heap:" << endl;
 		for (const auto& kv : this->heap) {
+			wcout << kv.first << ": " << kv.second << endl;
+		}
+		wcout << L"-------------------------------------------------------" << endl;
+		wcout << L"Jump pointers:" << endl;
+		for (const auto& kv : this->jmp_pointers) {
 			wcout << kv.first << ": " << kv.second << endl;
 		}
 		wcout << L"=======================================================" << endl;
@@ -182,5 +207,28 @@ bool InstructFREE::validate(Machine& m) {
 	}
 	else {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция FREE принимает как минимум 1 параметр\n" };
+	}
+}
+
+InstructLBL::InstructLBL(vector<Var> val) {
+	this->name = L"LBL";
+	this->values = val;
+}
+
+void InstructLBL::go(Machine& m) {
+	++m.instruct_number;
+}
+
+bool InstructLBL::validate(Machine& m) {
+	if (this->values.size() == 1) {
+		if (this->values[0].toSTR().slice(0, 1).getWStr() == L"&") {
+			return true;
+		}
+		else {
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Параметр инструкции LBL должен быть именем ссылки\n" };
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция LBL принимает 1 параметр\n" };
 	}
 }
