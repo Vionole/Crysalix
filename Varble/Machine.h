@@ -61,6 +61,13 @@ public:
 	bool validate(Machine& m) override;
 };
 
+class InstructJMP : public Instruct {
+public:
+	InstructJMP(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
 class Machine {
 public:
 	int instruct_number;

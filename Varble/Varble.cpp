@@ -66,10 +66,13 @@ int main()
         veclbl2.push_back(Var(L"&label2"));
         mchn.instructions.push_back(new InstructLBL(veclbl2));
 
+        vector<Var> vecjmp;
+        vecjmp.push_back(Var(L"&label1"));
+        mchn.instructions.push_back(new InstructJMP(vecjmp));
+
         vector<Var> vecend;
         vecend.push_back(Var(L"name"));
         mchn.instructions.push_back(new InstructEND(vecend));
-
 
         mchn.prepare();
         wcout << L"Программа выполнилась и вернула значение: " << mchn.go() << endl;

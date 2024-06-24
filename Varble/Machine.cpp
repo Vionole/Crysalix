@@ -49,7 +49,7 @@ Var Machine::go() {
 	}
 	return this->ret_data;
 }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructNOP::InstructNOP(vector<Var> val) {
 	this->name = L"NOP";
 	this->values = val;
@@ -68,7 +68,7 @@ bool InstructNOP::validate(Machine& m) {
 	}
 }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructEND::InstructEND(vector<Var> val) {
 	this->name = L"END";
 	this->values = val;
@@ -104,7 +104,7 @@ bool InstructEND::validate(Machine& m) {
 	}
 }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructVAR::InstructVAR(vector<Var> val) {
 	this->name = L"VAR";
 	this->values = val;
@@ -139,7 +139,7 @@ bool InstructVAR::validate(Machine& m) {
 	}
 }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructPRINT::InstructPRINT(vector<Var> val) {
 	this->name = L"PRINT";
 	this->values = val;
@@ -176,6 +176,7 @@ bool InstructPRINT::validate(Machine& m) {
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructFREE::InstructFREE(vector<Var> val) {
 	this->name = L"FREE";
 	this->values = val;
@@ -210,6 +211,7 @@ bool InstructFREE::validate(Machine& m) {
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructLBL::InstructLBL(vector<Var> val) {
 	this->name = L"LBL";
 	this->values = val;
@@ -230,5 +232,34 @@ bool InstructLBL::validate(Machine& m) {
 	}
 	else {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция LBL принимает 1 параметр\n" };
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructJMP::InstructJMP(vector<Var> val) {
+	this->name = L"JMP";
+	this->values = val;
+}
+
+void InstructJMP::go(Machine& m) {
+	m.instruct_number = m.jmp_pointers[this->values[0].toSTR().getWStr()];
+}
+
+bool InstructJMP::validate(Machine& m) {
+	if (this->values.size() == 1) {
+		if (this->values[0].toSTR().slice(0, 1).getWStr() == L"&") {
+			if (m.jmp_pointers.find(this->values[0].getWStr()) == m.jmp_pointers.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Ссылка " + this->values[0].getWStr() + L" не существует\n" };
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Параметр инструкции JMP должен быть именем ссылки\n" };
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMP принимает 1 параметр\n" };
 	}
 }
