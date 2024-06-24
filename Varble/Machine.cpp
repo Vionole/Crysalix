@@ -106,6 +106,6 @@ bool InstructPRINT::validate() {
 			return true;
 	}
 	else {
-		throw wstring{ L"Инструкция VAR принимает как минимум 1 параметр\n" };
+		throw wstring{ L"Инструкция PRINT принимает как минимум 1 параметр\n" };
 	}
 }
