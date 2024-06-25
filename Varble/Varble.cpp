@@ -15,6 +15,7 @@ int main()
     Unicode();
 
     try {
+        clock_t start = clock();
         map<wstring, Var> map;
         Machine mchn(map, false);
 
@@ -24,6 +25,10 @@ int main()
 
         mchn.prepare();
         wcout << endl << mchn.go() << endl;
+
+        clock_t end = clock();
+        double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+        wcout << seconds << L" sec." << endl;
     }
     catch (const std::wstring& error_message) {
         wcout << endl << error_message << endl;
