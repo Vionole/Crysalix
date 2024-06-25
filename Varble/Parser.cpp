@@ -183,6 +183,9 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"JMP") {
             m.instructions.push_back(new InstructJMP(lexeme.parameters));
         }
+        else if (lexeme.type == L"JMPIFZ") {
+            m.instructions.push_back(new InstructJMPIFZ(lexeme.parameters));
+        }
         else
         {
             throw wstring{ lexeme.type + L": Неизвестная инструкция\n" };

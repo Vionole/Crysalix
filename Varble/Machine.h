@@ -68,6 +68,13 @@ public:
 	bool validate(Machine& m) override;
 };
 
+class InstructJMPIFZ : public Instruct {
+public:
+	InstructJMPIFZ(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
 class Machine {
 public:
 	bool debug;

@@ -16,7 +16,7 @@ int main()
 
     try {
         map<wstring, Var> map;
-        Machine mchn(map);
+        Machine mchn(map, false);
 
         Parser p(L"file.vrb");
         p.fileLoad();
@@ -26,7 +26,7 @@ int main()
         wcout << endl << mchn.go() << endl;
     }
     catch (const std::wstring& error_message) {
-        wcout << endl << error_message;
+        wcout << endl << error_message << endl;
     }
     system("pause");
     return 0;

@@ -304,3 +304,55 @@ bool InstructJMP::validate(Machine& m) {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMP принимает 1 параметр\n" };
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// JMPIFZ
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructJMPIFZ::InstructJMPIFZ(vector<Var> val) {
+	this->name = L"JMPIFZ";
+	this->values = val;
+}
+
+void InstructJMPIFZ::go(Machine& m) {
+	if (this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+		if (m.heap[this->values[0].getWStr()].toNTG().getInt() == 0) {
+			m.instruct_number = m.jmp_pointers[this->values[1].toSTR().getWStr()];
+		}
+		else {
+			++m.instruct_number;
+		}
+	}
+	else {
+		if (this->values[0].toNTG().getInt() == 0) {
+			m.instruct_number = m.jmp_pointers[this->values[1].toSTR().getWStr()];
+		}
+		else {
+			++m.instruct_number;
+		}
+	}
+}
+
+bool InstructJMPIFZ::validate(Machine& m) {
+	if (this->values.size() == 2) {
+		if (this->values[1].toSTR().slice(0, 1).getWStr() == L"&") {
+			if (m.jmp_pointers.find(this->values[1].getWStr()) == m.jmp_pointers.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Ссылка " + this->values[1].getWStr() + L" не существует\n" };
+			}
+			else {
+				
+				if (this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+						if (m.heap.find(this->values[0].toSTR().getWStr()) == m.heap.end()) {
+							throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].toSTR().getWStr() + L" не существует\n" };
+						}
+				}
+				return true;
+			}
+		}
+		else {
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Второй параметр инструкции JMPIFZ должен быть именем ссылки\n" };
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMPIFZ принимает 2 параметра\n" };
+	}
+}
