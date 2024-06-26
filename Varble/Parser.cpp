@@ -158,6 +158,9 @@ void Parser::parse(Machine& m) {
                 lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[TAB]", L"\t");
                 lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[ENDL]", L"\n");
             }
+            else {
+                throw wstring{ lxms_array[i].parameters[j].getWStr() + L": Неизвестный параметр\n"};
+            }
         }
     }
 
@@ -183,8 +186,17 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"JMP") {
             m.instructions.push_back(new InstructJMP(lexeme.parameters));
         }
-        else if (lexeme.type == L"JMPIFZ") {
+        else if (lexeme.type == L"JMP IF Z") {
             m.instructions.push_back(new InstructJMPIFZ(lexeme.parameters));
+        }
+        else if (lexeme.type == L"JMP IF NOT Z") {
+            m.instructions.push_back(new InstructJMPIFNOTZ(lexeme.parameters));
+        }
+        else if (lexeme.type == L"INPUT") {
+            m.instructions.push_back(new InstructINPUT(lexeme.parameters));
+        }
+        else if (lexeme.type == L"CHNG") {
+            m.instructions.push_back(new InstructCHNG(lexeme.parameters));
         }
         else
         {

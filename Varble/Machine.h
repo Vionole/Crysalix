@@ -75,6 +75,27 @@ public:
 	bool validate(Machine& m) override;
 };
 
+class InstructJMPIFNOTZ : public Instruct {
+public:
+	InstructJMPIFNOTZ(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
+class InstructINPUT : public Instruct {
+public:
+	InstructINPUT(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
+class InstructCHNG : public Instruct {
+public:
+	InstructCHNG(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
 class Machine {
 public:
 	bool debug;

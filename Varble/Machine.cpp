@@ -306,10 +306,10 @@ bool InstructJMP::validate(Machine& m) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// JMPIFZ
+// JMP IF Z
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructJMPIFZ::InstructJMPIFZ(vector<Var> val) {
-	this->name = L"JMPIFZ";
+	this->name = L"JMP IF Z";
 	this->values = val;
 }
 
@@ -349,10 +349,133 @@ bool InstructJMPIFZ::validate(Machine& m) {
 			}
 		}
 		else {
-			throw wstring{ to_wstring(m.instruct_number + 1) + L": Второй параметр инструкции JMPIFZ должен быть именем ссылки\n" };
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Второй параметр инструкции JMP IF Z должен быть именем ссылки\n" };
 		}
 	}
 	else {
-		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMPIFZ принимает 2 параметра\n" };
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMP IF Z принимает 2 параметра\n" };
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// JMP IF NOT Z
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructJMPIFNOTZ::InstructJMPIFNOTZ(vector<Var> val) {
+	this->name = L"JMP IF NOT Z";
+	this->values = val;
+}
+
+void InstructJMPIFNOTZ::go(Machine& m) {
+	if (this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+		if (m.heap[this->values[0].getWStr()].toNTG().getInt() != 0) {
+			m.instruct_number = m.jmp_pointers[this->values[1].toSTR().getWStr()];
+		}
+		else {
+			++m.instruct_number;
+		}
+	}
+	else {
+		if (this->values[0].toNTG().getInt() != 0) {
+			m.instruct_number = m.jmp_pointers[this->values[1].toSTR().getWStr()];
+		}
+		else {
+			++m.instruct_number;
+		}
+	}
+}
+
+bool InstructJMPIFNOTZ::validate(Machine& m) {
+	if (this->values.size() == 2) {
+		if (this->values[1].toSTR().slice(0, 1).getWStr() == L"&") {
+			if (m.jmp_pointers.find(this->values[1].getWStr()) == m.jmp_pointers.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Ссылка " + this->values[1].getWStr() + L" не существует\n" };
+			}
+			else {
+
+				if (this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+					if (m.heap.find(this->values[0].toSTR().getWStr()) == m.heap.end()) {
+						throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].toSTR().getWStr() + L" не существует\n" };
+					}
+				}
+				return true;
+			}
+		}
+		else {
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Второй параметр инструкции JMP IF NOT Z должен быть именем ссылки\n" };
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMP IF NOT Z принимает 2 параметра\n" };
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// INPUT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructINPUT::InstructINPUT(vector<Var> val) {
+	this->name = L"INPUT";
+	this->values = val;
+}
+
+void InstructINPUT::go(Machine& m) {
+	wstring str;
+	getline(wcin, str);
+	m.heap[this->values[0].toSTR().getWStr()] = Var(str);
+	++m.instruct_number;
+}
+
+bool InstructINPUT::validate(Machine& m) {
+
+	if (this->values.size() == 1) {
+		for (auto& i : this->values)
+		{
+			if (i.toSTR().slice(0, 1).getWStr() == L"$") {
+				if (m.heap.find(i.toSTR().getWStr()) == m.heap.end()) {
+					throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + i.toSTR().getWStr() + L" не существует\n" };
+				}
+			}
+			else {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Параметр " + i.toSTR().getWStr() + L" должен быть именем переменной\n" };
+			}
+		}
+		return true;
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция INPUT принимает 1 параметр\n" };
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CHNG
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructCHNG::InstructCHNG(vector<Var> val) {
+	this->name = L"CHNG";
+	this->values = val;
+}
+
+void InstructCHNG::go(Machine& m) {
+	if (this->values[1].toSTR().slice(0, 1).getWStr() == L"$") {
+		m.heap[this->values[0].getWStr()] = m.heap[this->values[1].getWStr()];
+	}
+	else {
+		m.heap[this->values[0].getWStr()] = this->values[1];
+	}
+	++m.instruct_number;
+}
+
+bool InstructCHNG::validate(Machine& m) {
+	if (this->values.size() == 2) {
+		if (this->values[0].typeOf() == L"STR" && this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+			if (m.heap.find(this->values[0].getWStr()) == m.heap.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].getWStr() + L" не существует\n" };
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Первый параметр инструкции CHNG должен быть именем переменной\n" };
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция CHNG принимает 2 параметра\n" };
 	}
 }
