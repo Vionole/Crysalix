@@ -186,10 +186,10 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"JMP") {
             m.instructions.push_back(new InstructJMP(lexeme.parameters));
         }
-        else if (lexeme.type == L"JMP IF Z") {
+        else if (lexeme.type == L"JMPIFZ") {
             m.instructions.push_back(new InstructJMPIFZ(lexeme.parameters));
         }
-        else if (lexeme.type == L"JMP IF NOT Z") {
+        else if (lexeme.type == L"JMPIFNOTZ") {
             m.instructions.push_back(new InstructJMPIFNOTZ(lexeme.parameters));
         }
         else if (lexeme.type == L"INPUT") {
@@ -197,6 +197,12 @@ void Parser::parse(Machine& m) {
         }
         else if (lexeme.type == L"CHNG") {
             m.instructions.push_back(new InstructCHNG(lexeme.parameters));
+        }
+        else if (lexeme.type == L"TONTG") {
+            m.instructions.push_back(new InstructTONTG(lexeme.parameters));
+        }
+        else if (lexeme.type == L"TOUNTG") {
+            m.instructions.push_back(new InstructTOUNTG(lexeme.parameters));
         }
         else
         {

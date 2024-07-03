@@ -306,10 +306,10 @@ bool InstructJMP::validate(Machine& m) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// JMP IF Z
+// JMPIFZ
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructJMPIFZ::InstructJMPIFZ(vector<Var> val) {
-	this->name = L"JMP IF Z";
+	this->name = L"JMPIFZ";
 	this->values = val;
 }
 
@@ -349,19 +349,19 @@ bool InstructJMPIFZ::validate(Machine& m) {
 			}
 		}
 		else {
-			throw wstring{ to_wstring(m.instruct_number + 1) + L": Второй параметр инструкции JMP IF Z должен быть именем ссылки\n" };
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Второй параметр инструкции JMPIFZ должен быть именем ссылки\n" };
 		}
 	}
 	else {
-		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMP IF Z принимает 2 параметра\n" };
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMPIFZ принимает 2 параметра\n" };
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// JMP IF NOT Z
+// JMPIFNOTZ
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructJMPIFNOTZ::InstructJMPIFNOTZ(vector<Var> val) {
-	this->name = L"JMP IF NOT Z";
+	this->name = L"JMPIFNOTZ";
 	this->values = val;
 }
 
@@ -401,13 +401,14 @@ bool InstructJMPIFNOTZ::validate(Machine& m) {
 			}
 		}
 		else {
-			throw wstring{ to_wstring(m.instruct_number + 1) + L": Второй параметр инструкции JMP IF NOT Z должен быть именем ссылки\n" };
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Второй параметр инструкции JMPIFNOTZ должен быть именем ссылки\n" };
 		}
 	}
 	else {
-		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMP IF NOT Z принимает 2 параметра\n" };
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция JMPIFNOTZ принимает 2 параметра\n" };
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INPUT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -443,6 +444,7 @@ bool InstructINPUT::validate(Machine& m) {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция INPUT принимает 1 параметр\n" };
 	}
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CHNG
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -477,5 +479,103 @@ bool InstructCHNG::validate(Machine& m) {
 	}
 	else {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция CHNG принимает 2 параметра\n" };
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TONTG
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructTONTG::InstructTONTG(vector<Var> val) {
+	this->name = L"TONTG";
+	this->values = val;
+}
+
+void InstructTONTG::go(Machine& m) {
+	if (this->values.size() == 1) {
+		m.heap[this->values[0].getWStr()] = m.heap[this->values[0].getWStr()].toNTG();
+	}
+	else if (this->values.size() == 2) {
+		if (this->values[1].toSTR().slice(0, 1).getWStr() == L"$") {
+			m.heap[this->values[0].getWStr()] = m.heap[this->values[1].getWStr()].toNTG();
+		}
+		else {
+			m.heap[this->values[0].getWStr()] = this->values[1].toNTG();
+		}
+	}
+	++m.instruct_number;
+}
+
+bool InstructTONTG::validate(Machine& m) {
+	if (this->values.size() == 1 || this->values.size() == 2) {
+		if (this->values[0].typeOf() == L"STR" && this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+			if (m.heap.find(this->values[0].getWStr()) == m.heap.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].getWStr() + L" не существует\n" };
+			}
+			else {
+				if (this->values.size() == 2 
+					&& this->values[0].typeOf() == L"STR" && this->values[1].toSTR().slice(0, 1).getWStr() == L"$" 
+					&&  m.heap.find(this->values[1].toSTR().getWStr()) == m.heap.end()) {
+					throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[1].toSTR().getWStr() + L" не существует\n"};
+				}
+				else {
+					return true;
+				}
+			}
+		}
+		else {
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Первый параметр инструкции TONTG должен быть именем переменной\n" };
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция TONTG принимает от 1 до 2 параметров\n" };
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TOUNTG
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructTOUNTG::InstructTOUNTG(vector<Var> val) {
+	this->name = L"TOUNTG";
+	this->values = val;
+}
+
+void InstructTOUNTG::go(Machine& m) {
+	if (this->values.size() == 1) {
+		m.heap[this->values[0].getWStr()] = m.heap[this->values[0].getWStr()].toUNTG();
+	}
+	else if (this->values.size() == 2) {
+		if (this->values[1].toSTR().slice(0, 1).getWStr() == L"$") {
+			m.heap[this->values[0].getWStr()] = m.heap[this->values[1].getWStr()].toUNTG();
+		}
+		else {
+			m.heap[this->values[0].getWStr()] = this->values[1].toUNTG();
+		}
+	}
+	++m.instruct_number;
+}
+
+bool InstructTOUNTG::validate(Machine& m) {
+	if (this->values.size() == 1 || this->values.size() == 2) {
+		if (this->values[0].typeOf() == L"STR" && this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+			if (m.heap.find(this->values[0].getWStr()) == m.heap.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].getWStr() + L" не существует\n" };
+			}
+			else {
+				if (this->values.size() == 2
+					&& this->values[0].typeOf() == L"STR" && this->values[1].toSTR().slice(0, 1).getWStr() == L"$"
+					&& m.heap.find(this->values[1].toSTR().getWStr()) == m.heap.end()) {
+					throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[1].toSTR().getWStr() + L" не существует\n" };
+				}
+				else {
+					return true;
+				}
+			}
+		}
+		else {
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Первый параметр инструкции TOUNTG должен быть именем переменной\n" };
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция TOUNTG принимает от 1 до 2 параметров\n" };
 	}
 }
