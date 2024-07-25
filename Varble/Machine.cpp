@@ -584,7 +584,7 @@ bool InstructTOUNTG::validate(Machine& m) {
 // TODBL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructTODBL::InstructTODBL(vector<Var> val) {
-	this->name = L"TOUNTG";
+	this->name = L"TODBL";
 	this->values = val;
 }
 
@@ -621,10 +621,10 @@ bool InstructTODBL::validate(Machine& m) {
 			}
 		}
 		else {
-			throw wstring{ to_wstring(m.instruct_number + 1) + L": Первый параметр инструкции TOUNTG должен быть именем переменной\n" };
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Первый параметр инструкции TODBL должен быть именем переменной\n" };
 		}
 	}
 	else {
-		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция TOUNTG принимает от 1 до 2 параметров\n" };
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция TODBL принимает от 1 до 2 параметров\n" };
 	}
 }
