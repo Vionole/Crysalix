@@ -110,6 +110,14 @@ public:
 	bool validate(Machine& m) override;
 };
 
+class InstructTODBL : public Instruct {
+public:
+	InstructTODBL(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
+
 class Machine {
 public:
 	bool debug;

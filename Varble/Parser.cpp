@@ -157,6 +157,7 @@ void Parser::parse(Machine& m) {
                 lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[QUOTE]", L"'");
                 lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[TAB]", L"\t");
                 lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[ENDL]", L"\n");
+                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[HASH]", L"#");
             }
             else {
                 throw wstring{ lxms_array[i].parameters[j].getWStr() + L": Неизвестный параметр\n"};
@@ -203,6 +204,9 @@ void Parser::parse(Machine& m) {
         }
         else if (lexeme.type == L"TOUNTG") {
             m.instructions.push_back(new InstructTOUNTG(lexeme.parameters));
+        }
+        else if (lexeme.type == L"TODBL") {
+            m.instructions.push_back(new InstructTODBL(lexeme.parameters));
         }
         else
         {

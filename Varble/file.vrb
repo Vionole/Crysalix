@@ -1,0 +1,26 @@
+NOP: ;# Это комментарий
+NOP: ;# И это комментарий
+
+# Это тоже комментарий
+VAR: $FIRST, NTG1665; VAR: $SECOND, DBL3.14; VAR: $THIRD, CHR77;
+
+PRINT: 'первый равен[COLON][TAB] ', 
+	$FIRST, 
+	'[COMMA][COMMA] [ENDL]второй равен[COLON][TAB] ', 
+	$SECOND, 
+	'[SEMICOLON][QUOTE][ENDL]';
+
+INPUT: $THIRD;
+#CHNG: $SECOND, $FIRST;
+#PRINT: $THIRD, ' ', $SECOND;
+
+LBL: &LABEL1;
+
+TOUNTG: $THIRD;
+PRINT: $THIRD;
+
+JMPIFZ: $FIRST, &LABEL1;
+
+FREE: $FIRST, $SECOND, $THIRD;
+
+END: '';

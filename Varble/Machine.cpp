@@ -579,3 +579,52 @@ bool InstructTOUNTG::validate(Machine& m) {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция TOUNTG принимает от 1 до 2 параметров\n" };
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TODBL
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructTODBL::InstructTODBL(vector<Var> val) {
+	this->name = L"TOUNTG";
+	this->values = val;
+}
+
+void InstructTODBL::go(Machine& m) {
+	if (this->values.size() == 1) {
+		m.heap[this->values[0].getWStr()] = m.heap[this->values[0].getWStr()].toDBL();
+	}
+	else if (this->values.size() == 2) {
+		if (this->values[1].toSTR().slice(0, 1).getWStr() == L"$") {
+			m.heap[this->values[0].getWStr()] = m.heap[this->values[1].getWStr()].toDBL();
+		}
+		else {
+			m.heap[this->values[0].getWStr()] = this->values[1].toDBL();
+		}
+	}
+	++m.instruct_number;
+}
+
+bool InstructTODBL::validate(Machine& m) {
+	if (this->values.size() == 1 || this->values.size() == 2) {
+		if (this->values[0].typeOf() == L"STR" && this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+			if (m.heap.find(this->values[0].getWStr()) == m.heap.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].getWStr() + L" не существует\n" };
+			}
+			else {
+				if (this->values.size() == 2
+					&& this->values[0].typeOf() == L"STR" && this->values[1].toSTR().slice(0, 1).getWStr() == L"$"
+					&& m.heap.find(this->values[1].toSTR().getWStr()) == m.heap.end()) {
+					throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[1].toSTR().getWStr() + L" не существует\n" };
+				}
+				else {
+					return true;
+				}
+			}
+		}
+		else {
+			throw wstring{ to_wstring(m.instruct_number + 1) + L": Первый параметр инструкции TOUNTG должен быть именем переменной\n" };
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция TOUNTG принимает от 1 до 2 параметров\n" };
+	}
+}
