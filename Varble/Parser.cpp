@@ -35,8 +35,20 @@ void Parser::fileLoad() {
 void Parser::commentRemover() {
     wstring str = L"";
     bool comment_char = false;
+    bool is_string = false;
     for (auto& c : this->file_content) {
+        if (is_string) {
+            if (c == L'\'') {
+                is_string = false;
+            }
+            str += c;
+            continue;
+        }
+
         if (!comment_char) {
+            if (c == L'\'') {
+                is_string = true;
+            }
             if (c != L'#' && c != L'\n' && c != L'\t') {
                 str += c;
             } 
@@ -55,15 +67,71 @@ void Parser::commentRemover() {
 }
 
 void Parser::parse(Machine& m) {
+
+    //Убираем комментарии
     this->commentRemover();
-    this->splitted = this->refined.split(L";");
+
+    //Разрезаем на инструкции
+    bool is_string = false;
+    vector<Var> instructions;
+    wstring str = L"";
+    for (auto& c : this->refined.getWStr()) {
+        if (is_string) {
+            str += c;
+            if (c == L'\'') {
+                is_string = false;
+            }
+        }
+        else {
+            if (c == ';') {
+                instructions.push_back(Var(str));
+                str = L"";
+            }
+            else if (c == L'\'') {
+                is_string = true;
+                str += c;
+            }
+            else {
+                str += c;
+            }
+        }
+    }
+
+    //Записываем "хвост, если он есть, благодаря незакрытой кавычке"
+    if (str != L"") {
+        instructions.push_back(Var(str));
+    }
+
+    //Заполняем массив инструкций
+    this->splitted = Var(instructions);
+
+    //Разрезаем инструкции на тип и аргумент
     vector<Var> split = this->splitted.getArr();
     vector<vector<Var>> splitTypeNArguments;
     for (auto& command : split) {
-        Var cs = command.split(L":");
-        splitTypeNArguments.push_back(cs.getArr());
+        wstring instr = L"";
+        wstring params = L"";
+        bool is_colon = false;
+        for (auto& c : command.getWStr()) {
+            if (is_colon) {
+                params += c;
+            }
+            else {
+                if (c != L':') {
+                    instr += c;
+                }
+                else {
+                    is_colon = true;
+                }
+            }
+        }
+        vector<Var> splitted_command;
+        splitted_command.push_back(Var(instr));
+        splitted_command.push_back(Var(params));
+        splitTypeNArguments.push_back(splitted_command);
     }
     
+    //Обрезаем пробелы у лексем
     vector<Lexeme> lxms;
     this->splitted_second = splitTypeNArguments;
     for (auto& command : this->splitted_second) {
@@ -83,17 +151,46 @@ void Parser::parse(Machine& m) {
         }
     }
 
+   //Разделяем строку параметров на отдельные параметры
     vector<Lexeme> lxms_array;
     for (auto& lexeme : lxms) {
         Lexeme lex;
         lex.type = lexeme.type;
-        Var str(lexeme.param_in_str);
-        Var vec = str.split(L",");
-        lex.parameters = vec.getArr();
+        vector<Var>vec;
+
+        wstring str = L"";
+        bool is_string = false;
+        for (auto& c : lexeme.param_in_str) {
+            if (is_string) {
+                str += c;
+                if (c == L'\'') {
+                    is_string = false;
+                }
+            }
+            else {
+                if (c == L'\'') {
+                    is_string = true;
+                }
+                if (c == L',') {
+                    vec.push_back(Var(str));
+                    str = L"";
+                    continue;
+                }
+                str += c;
+            }
+        }
+
+        //Если запятой нет, это последний параметр, вносим в массив
+        if (str != L"") {
+            vec.push_back(Var(str));
+        }
+
+        lex.parameters = vec;
         lxms_array.push_back(lex);
         
     }
 
+    //Обрезаем пробелы у отдельных параметров
     for (int i = 0; i < lxms_array.size(); ++i) {
         for (int j = 0; j < lxms_array[i].parameters.size(); ++j) {
             lxms_array[i].parameters[j] = lxms_array[i].parameters[j].trim();
@@ -150,14 +247,59 @@ void Parser::parse(Machine& m) {
                 wstring str = lxms_array[i].parameters[j].getWStr();
                 str.erase(0, 1);
                 str.pop_back();
-                lxms_array[i].parameters[j] = Var(str);
-                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[COLON]", L":");
-                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[SEMICOLON]", L";");
-                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[COMMA]", L",");
-                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[QUOTE]", L"'");
-                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[TAB]", L"\t");
-                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[ENDL]", L"\n");
-                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].repl(L"[HASH]", L"#");
+
+                wstring new_str = L"";
+                bool escape_ch = false;
+                for (auto& c : str) {
+                    if (c != L'\\' && !escape_ch) {
+                        new_str += c;
+                        continue;
+                    }
+                    if (c == L'\\' && !escape_ch) {
+                        escape_ch = true;
+                        continue;
+                    }
+                    if (escape_ch) {
+                        switch (c) {
+                            case L't':
+                                new_str += L'\t';
+                                break;
+                            case L'n':
+                                new_str += L'\n';
+                                break;
+                            case L'a':
+                                new_str += L'\a';
+                                break;
+                            case L'q':
+                                new_str += L'\'';
+                                break;
+                            case L'b':
+                                new_str += L'\b';
+                                break;
+                            case L'f':
+                                new_str += L'\f';
+                                break;
+                            case L'r':
+                                new_str += L'\r';
+                                break;
+                            case L'v':
+                                new_str += L'\v';
+                                break;
+                            case L'"':
+                                new_str += L'"';
+                                break;
+                            case L'?':
+                                new_str += L'?';
+                                break;
+                            case L'\\':
+                                new_str += L'\\';
+                        }
+                        escape_ch = false;
+                        continue;
+                    }
+                }
+
+                lxms_array[i].parameters[j] = Var(new_str);
             }
             else {
                 throw wstring{ lxms_array[i].parameters[j].getWStr() + L": Неизвестный параметр\n"};

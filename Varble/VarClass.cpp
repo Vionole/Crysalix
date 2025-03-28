@@ -771,7 +771,7 @@ void Var::print() {
         break;
     case ARR:
         for (int i = 0; i < this->arr.size(); ++i)
-            wcout << i << L":\t" << this->arr[i] << L"\t";
+            wcout << i << L":\t" << this->arr[i] << L"\n";
         break;
     case MAP:
         for (const auto& elem : this->mp)

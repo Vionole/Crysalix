@@ -2,17 +2,16 @@ NOP: ;# Это комментарий
 NOP: ;# И это комментарий
 
 # Это тоже комментарий
-VAR: $FIRST, NTG1665; VAR: $SECOND, DBL3.14; VAR: $THIRD, CHR77;
+VAR: $FIRST, NTG1665; VAR: $SECOND, DBL3.14; VAR: $THIRD, '123abc';
 
-PRINT: 'первый равен[COLON][TAB] ', 
+PRINT: 'первый # #равен:\t ', 
 	$FIRST, 
-	'[COMMA][COMMA] [ENDL]второй равен[COLON][TAB] ', 
+	',, \nвторой равен:\t ', 
 	$SECOND, 
-	'[SEMICOLON][QUOTE][ENDL]';
+	';\q\n';
 
 INPUT: $THIRD;
-#CHNG: $SECOND, $FIRST;
-#PRINT: $THIRD, ' ', $SECOND;
+CHNG: $SECOND, $FIRST;
 
 LBL: &LABEL1;
 
@@ -21,6 +20,7 @@ PRINT: $THIRD;
 
 JMPIFZ: $FIRST, &LABEL1;
 
+PRINT: '\nESCAPE-ПОСЛЕДОВАТЕЛЬНОСТИ: \t\n\a\b\f\r\v\q\?\"\\';
 FREE: $FIRST, $SECOND, $THIRD;
 
-END: '';
+END: CHR77;
