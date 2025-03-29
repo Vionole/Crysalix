@@ -35,6 +35,8 @@ void Parser::fileLoad() {
 void Parser::commentRemover() {
     wstring str = L"";
     bool comment_char = false;
+    bool first_comment_char = false;
+    bool multistring_comment = false;
     bool is_string = false;
     for (auto& c : this->file_content) {
         if (is_string) {
@@ -55,11 +57,31 @@ void Parser::commentRemover() {
             else if (c == L'\n' || c == L'\t') {}
             else {
                 comment_char = true;
+                first_comment_char = true;
             }
         }
         else {
-            if (c == L'\n') {
-                comment_char = false;
+            if (!multistring_comment) {
+                if (c == L'\n') {
+                    comment_char = false;
+                }
+                else if (c == L'#' && first_comment_char) {
+                    multistring_comment = true;
+                }
+                first_comment_char = false;
+            }
+            else {
+                if (c == L'#' && !first_comment_char) {
+                    first_comment_char = true;
+                }
+                else if (c == L'#' && first_comment_char) {
+                    multistring_comment = false;
+                    comment_char = false;
+                    first_comment_char == false;
+                }
+                else {
+                    first_comment_char = false;
+                }
             }
         }
     }
