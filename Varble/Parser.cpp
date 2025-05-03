@@ -219,6 +219,7 @@ void Parser::parse(Machine& m) {
         }
     }
 
+    //Парсим параметры, превращая литералы в объект VAR со значением
     for (int i = 0; i < lxms_array.size(); ++i) {
         for (int j = 0; j < lxms_array[i].parameters.size(); ++j) {
             if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"$" || lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"&") {

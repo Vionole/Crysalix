@@ -10,12 +10,12 @@ NOP:;# И это комментарий
 
 ## И это многострочный комментарий, но в одной строке ##
 		
-VAR: $FIRST, NTG1665; VAR: $SECOND, DBL3.14; VAR: $THIRD, '123abc';
+VAR: $FIRST, 'Ǆئ٨ש'; VAR: $SECOND, DBL3.14; VAR: $THIRD, '123abc' ;
 
-PRINT: 'первый ## равен:\t ', 
-	$FIRST, 
-	',, \nвторой равен:\t ', 
-	$SECOND, 
+PRINT: 'первый ## равен:\t ',
+	$FIRST,
+	',, \nвторой равен:\t ',
+	$SECOND,
 	';\q\n';
 
 INPUT: $THIRD;
@@ -23,7 +23,7 @@ CHNG: $SECOND, $FIRST;
 
 LBL: &LABEL1;
 
-TOUNTG: $THIRD;
+#TOUNTG: $THIRD;
 PRINT: $THIRD;
 
 JMPIFZ: $FIRST, &LABEL1;
