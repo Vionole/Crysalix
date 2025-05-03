@@ -644,10 +644,10 @@ Var Var::toSTR() const {
         result.type = STR;
 
         if (this->data.bln) {
-            result.data.str = L"true";
+            result.data.str = L"TRUE";
         }
         else {
-            result.data.str = L"false";
+            result.data.str = L"FALSE";
         }
 
         return result;
@@ -757,17 +757,17 @@ void Var::print() {
         break;
     case BLN:
         if (this->data.bln) {
-            wcout << "true";
+            wcout << L"TRUE";
         }
         else {
-            wcout << "false";
+            wcout << L"FALSE";
         }
         break;
     case STR:
         wcout << this->data.str;
         break;
     case NIL:
-        wcout << L"NULL";
+        wcout << L"NIL";
         break;
     case ARR:
         for (int i = 0; i < this->arr.size(); ++i)
@@ -1306,10 +1306,10 @@ wostream& operator<< (wostream& wos, const Var& var)
         break;
     case BLN:
         if (var.data.bln) {
-            return wos << L"true";
+            return wos << L"TRUE";
         }
         else {
-            return wos << L"false";
+            return wos << L"FALSE";
         }
         break;
     case STR:

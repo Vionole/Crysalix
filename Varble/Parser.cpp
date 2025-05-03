@@ -364,14 +364,8 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"CHNG") {
             m.instructions.push_back(new InstructCHNG(lexeme.parameters));
         }
-        else if (lexeme.type == L"TONTG") {
-            m.instructions.push_back(new InstructTONTG(lexeme.parameters));
-        }
-        else if (lexeme.type == L"TOUNTG") {
-            m.instructions.push_back(new InstructTOUNTG(lexeme.parameters));
-        }
-        else if (lexeme.type == L"TODBL") {
-            m.instructions.push_back(new InstructTODBL(lexeme.parameters));
+        else if (lexeme.type == L"TO") {
+            m.instructions.push_back(new InstructTO(lexeme.parameters));
         }
         else
         {

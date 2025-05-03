@@ -9,7 +9,11 @@ NOP:;# И это комментарий
 ##
 
 ## И это многострочный комментарий, но в одной строке ##
-		
+
+VAR: $CAST, 'CHR'; VAR: $VARCAST, NIL; VAR: $VAR, DBL77.14;
+TO: $CAST, $VARCAST;
+PRINT: $CAST, ': ', $VARCAST, ' ', $VAR, '\n';
+	
 VAR: $FIRST, 'Ǆئ٨ש'; VAR: $SECOND, DBL3.14; VAR: $THIRD, '123abc' ;
 
 PRINT: 'первый ## равен:\t ',
