@@ -1,38 +1,10 @@
-NOP:;# Это комментарий
-NOP:;# И это комментарий
-# Это тоже комментарий 
+VAR: $VARCAST, NIL; 
+VAR: $VAR, CHR34;
 
-## 
-	Это
-		Многострочный
-			Комментарий
-##
+TO: 'STR' , $VARCAST, $VAR;
+PRINT: $VARCAST, ' ', $VAR, '\n';
 
-## И это многострочный комментарий, но в одной строке ##
-
-VAR: $CAST, 'CHR'; VAR: $VARCAST, NIL; VAR: $VAR, DBL77.14;
-TO: $CAST, $VARCAST;
-PRINT: $CAST, ': ', $VARCAST, ' ', $VAR, '\n';
+TO: 'CHR', $VARCAST;
+PRINT: $VARCAST, ' ', $VAR, '\n';
 	
-VAR: $FIRST, 'Ǆئ٨ש'; VAR: $SECOND, DBL3.14; VAR: $THIRD, '123abc' ;
-
-PRINT: 'первый ## равен:\t ',
-	$FIRST,
-	',, \nвторой равен:\t ',
-	$SECOND,
-	';\q\n';
-
-INPUT: $THIRD;
-CHNG: $SECOND, $FIRST;
-
-LBL: &LABEL1;
-
-#TOUNTG: $THIRD;
-PRINT: $THIRD;
-
-JMPIFZ: $FIRST, &LABEL1;
-
-PRINT: '\nESCAPE-ПОСЛЕДОВАТЕЛЬНОСТИ: \t\n\a\b\f\r\v\q\?\"\\';
-FREE: $FIRST, $SECOND, $THIRD;
-
-END: CHR77;
+END: '123';
