@@ -1,11 +1,13 @@
-var: $varcast, nil; 
-var: $var, dbl3.14;
+var: $!45var caSt    , nil; 
+var: $var, dbl 3.14;
 
-to: 'ntg' , $varcast, $var;
-print: $varcast, ' ', $var, '\n';
+to: 'ntg' , $!45var caSt, $var;
+print: $!45var caSt , ' ', $var, '\n';
 
-to: 'chr', $varcast;
-print: $varcast, ' ', $var, '\n';
-var: $sleep, ntg500;
+to: 'chr', $!45var caSt   ;
+print: $!45var caSt, ' ', $var, '\n';
+
+var: $sleep, uchr 254;
 sleep: $sleep;
+
 end: '123';

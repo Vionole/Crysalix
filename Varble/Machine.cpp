@@ -357,7 +357,7 @@ InstructJMP::InstructJMP(vector<Var> val) {
 }
 
 void InstructJMP::go(Machine& m) {
-	m.instruct_number = m.jmp_pointers[this->values[0].toSTR().getWStr()];
+	m.instruct_number = m.jmp_pointers[this->values[0].toSTR().getWStr()] + 1;
 }
 
 bool InstructJMP::validate(Machine& m) {
