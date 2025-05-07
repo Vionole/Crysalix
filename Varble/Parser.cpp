@@ -226,45 +226,45 @@ void Parser::parse(Machine& m) {
                 if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"$" || lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"&") {
                     lxms_array[i].parameters[j] = lxms_array[i].parameters[j].toSTR();
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NTG") {
+                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NTG" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"ntg") {
                     wstring str = lxms_array[i].parameters[j].getWStr();
                     str.erase(0, 3);
                     Var v(str);
                     lxms_array[i].parameters[j] = v.toNTG();
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UNTG") {
+                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UNTG" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"untg") {
                     wstring str = lxms_array[i].parameters[j].getWStr();
                     str.erase(0, 4);
                     Var v(str);
                     lxms_array[i].parameters[j] = v.toUNTG();
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"DBL") {
+                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"DBL" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"dbl") {
                     wstring str = lxms_array[i].parameters[j].getWStr();
                     str.erase(0, 3);
                     Var v(str);
                     lxms_array[i].parameters[j] = v.toDBL();
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"CHR") {
+                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"CHR" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"chr") {
                     wstring str = lxms_array[i].parameters[j].getWStr();
                     str.erase(0, 3);
                     Var v(str);
                     lxms_array[i].parameters[j] = v.toCHR();
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UCHR") {
+                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UCHR" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"uchr") {
                     wstring str = lxms_array[i].parameters[j].getWStr();
                     str.erase(0, 4);
                     Var v(str);
                     lxms_array[i].parameters[j] = v.toUCHR();
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"TRUE") {
+                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"TRUE" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"true") {
 
                     lxms_array[i].parameters[j] = Var(true);
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"FALSE") {
+                else if (lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"FALSE" || lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"false") {
 
                     lxms_array[i].parameters[j] = Var(false);
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NIL") {
+                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NIL" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"nil") {
                     lxms_array[i].parameters[j] = Var();
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"'") {
@@ -337,46 +337,46 @@ void Parser::parse(Machine& m) {
 
     int i = 1;
     for (auto& lexeme : lxms_array) {
-        if (lexeme.type == L"NOP") {
+        if (lexeme.type == L"NOP" || lexeme.type == L"nop") {
             m.instructions.push_back(new InstructNOP(lexeme.parameters));
         }
-        else if (lexeme.type == L"END") {
+        else if (lexeme.type == L"END" || lexeme.type == L"end") {
             m.instructions.push_back(new InstructEND(lexeme.parameters));
         }
-        else if (lexeme.type == L"PAUSE") {
+        else if (lexeme.type == L"PAUSE" || lexeme.type == L"pause") {
             m.instructions.push_back(new InstructPAUSE(lexeme.parameters));
         }
-        else if (lexeme.type == L"SLEEP") {
+        else if (lexeme.type == L"SLEEP" || lexeme.type == L"sleep") {
             m.instructions.push_back(new InstructSLEEP(lexeme.parameters));
         }
-        else if (lexeme.type == L"VAR") {
+        else if (lexeme.type == L"VAR" || lexeme.type == L"var") {
             m.instructions.push_back(new InstructVAR(lexeme.parameters));
         }
-        else if (lexeme.type == L"PRINT") {
+        else if (lexeme.type == L"PRINT" || lexeme.type == L"print") {
             m.instructions.push_back(new InstructPRINT(lexeme.parameters));
         }
-        else if (lexeme.type == L"FREE") {
+        else if (lexeme.type == L"FREE" || lexeme.type == L"free") {
             m.instructions.push_back(new InstructFREE(lexeme.parameters));
         }
-        else if (lexeme.type == L"LBL") {
+        else if (lexeme.type == L"LBL" || lexeme.type == L"lbl") {
             m.instructions.push_back(new InstructLBL(lexeme.parameters));
         }
-        else if (lexeme.type == L"JMP") {
+        else if (lexeme.type == L"JMP" || lexeme.type == L"jmp") {
             m.instructions.push_back(new InstructJMP(lexeme.parameters));
         }
-        else if (lexeme.type == L"JMPIFZ") {
+        else if (lexeme.type == L"JMPIFZ" || lexeme.type == L"jmpifz") {
             m.instructions.push_back(new InstructJMPIFZ(lexeme.parameters));
         }
-        else if (lexeme.type == L"JMPIFNOTZ") {
+        else if (lexeme.type == L"JMPIFNOTZ" || lexeme.type == L"jmpifnotz") {
             m.instructions.push_back(new InstructJMPIFNOTZ(lexeme.parameters));
         }
-        else if (lexeme.type == L"INPUT") {
+        else if (lexeme.type == L"INPUT" || lexeme.type == L"input") {
             m.instructions.push_back(new InstructINPUT(lexeme.parameters));
         }
-        else if (lexeme.type == L"CHNG") {
+        else if (lexeme.type == L"CHNG" || lexeme.type == L"chng") {
             m.instructions.push_back(new InstructCHNG(lexeme.parameters));
         }
-        else if (lexeme.type == L"TO") {
+        else if (lexeme.type == L"TO" || lexeme.type == L"to") {
             m.instructions.push_back(new InstructTO(lexeme.parameters));
         }
         else

@@ -1,11 +1,11 @@
-VAR: $VARCAST, NIL; 
-VAR: $VAR, DBL3.14;
+var: $varcast, nil; 
+var: $var, dbl3.14;
 
-TO: 'NTG' , $VARCAST, $VAR;
-#PRINT: $VARCAST, ' ', $VAR, '\n';
+to: 'ntg' , $varcast, $var;
+print: $varcast, ' ', $var, '\n';
 
-TO: 'CHR', $VARCAST;
-#PRINT: $VARCAST, ' ', $VAR, '\n';
-VAR: $SLEEP, DBL500.57;
-SLEEP: $SLEEP2;	
-END: '123';
+to: 'chr', $varcast;
+print: $varcast, ' ', $var, '\n';
+var: $sleep, ntg500;
+sleep: $sleep;
+end: '123';

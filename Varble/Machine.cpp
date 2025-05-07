@@ -576,81 +576,81 @@ void InstructTO::go(Machine& m) {
 	}
 
 	if (this->values.size() == 2) {
-		if (type == L"NTG") {
+		if (type == L"NTG" || type == L"ntg") {
 			m.heap[this->values[1].getWStr()] = m.heap[this->values[1].getWStr()].toNTG();
 		}
-		else if (type == L"UNTG") {
+		else if (type == L"UNTG" || type == L"untg") {
 			m.heap[this->values[1].getWStr()] = m.heap[this->values[1].getWStr()].toUNTG();
 		}
-		else if (type == L"DBL") {
+		else if (type == L"DBL" || type == L"dbl") {
 			m.heap[this->values[1].getWStr()] = m.heap[this->values[1].getWStr()].toDBL();
 		}
-		else if (type == L"CHR") {
+		else if (type == L"CHR" || type == L"chr") {
 			m.heap[this->values[1].getWStr()] = m.heap[this->values[1].getWStr()].toCHR();
 		}
-		else if (type == L"UCHR") {
+		else if (type == L"UCHR" || type == L"uchr") {
 			m.heap[this->values[1].getWStr()] = m.heap[this->values[1].getWStr()].toUCHR();
 		}
-		else if (type == L"BLN") {
+		else if (type == L"BLN" || type == L"bln") {
 			m.heap[this->values[1].getWStr()] = m.heap[this->values[1].getWStr()].toBLN();
 		}
-		else if (type == L"STR") {
+		else if (type == L"STR" || type == L"str") {
 			m.heap[this->values[1].getWStr()] = m.heap[this->values[1].getWStr()].toSTR();
 		}
-		else if (type == L"ARR") {
+		else if (type == L"ARR" || type == L"arr") {
 			m.heap[this->values[1].getWStr()] = m.heap[this->values[1].getWStr()].toARR();
 		}
 	}
 	else if (this->values.size() == 3) {
 		if (this->values[2].toSTR().slice(0, 1).getWStr() == L"$") {
-			if (type == L"NTG") {
+			if (type == L"NTG" || type == L"ntg") {
 				m.heap[this->values[1].getWStr()] = m.heap[this->values[2].getWStr()].toNTG();
 			}
-			else if (type == L"UNTG") {
+			else if (type == L"UNTG" || type == L"untg") {
 				m.heap[this->values[1].getWStr()] = m.heap[this->values[2].getWStr()].toUNTG();
 			}
-			else if (type == L"DBL") {
+			else if (type == L"DBL" || type == L"dbl") {
 				m.heap[this->values[1].getWStr()] = m.heap[this->values[2].getWStr()].toDBL();
 			}
-			else if (type == L"CHR") {
+			else if (type == L"CHR" || type == L"chr") {
 				m.heap[this->values[1].getWStr()] = m.heap[this->values[2].getWStr()].toCHR();
 			}
-			else if (type == L"UCHR") {
+			else if (type == L"UCHR" || type == L"uchr") {
 				m.heap[this->values[1].getWStr()] = m.heap[this->values[2].getWStr()].toUCHR();
 			}
-			else if (type == L"BLN") {
+			else if (type == L"BLN" || type == L"bln") {
 				m.heap[this->values[1].getWStr()] = m.heap[this->values[2].getWStr()].toBLN();
 			}
-			else if (type == L"STR") {
+			else if (type == L"STR" || type == L"str") {
 				m.heap[this->values[1].getWStr()] = m.heap[this->values[2].getWStr()].toSTR();
 			}
-			else if (type == L"ARR") {
+			else if (type == L"ARR" || type == L"arr") {
 				m.heap[this->values[1].getWStr()] = m.heap[this->values[2].getWStr()].toARR();
 			}
 		}
 		else {
-			if (type == L"NTG") {
+			if (type == L"NTG" || type == L"ntg") {
 				m.heap[this->values[1].getWStr()] = this->values[2].toNTG();
 			}
-			else if (type == L"UNTG") {
+			else if (type == L"UNTG" || type == L"untg") {
 				m.heap[this->values[1].getWStr()] = this->values[2].toUNTG();
 			}
-			else if (type == L"DBL") {
+			else if (type == L"DBL" || type == L"dbl") {
 				m.heap[this->values[1].getWStr()] = this->values[2].toDBL();
 			}
-			else if (type == L"CHR") {
+			else if (type == L"CHR" || type == L"chr") {
 				m.heap[this->values[1].getWStr()] = this->values[2].toCHR();
 			}
-			else if (type == L"UCHR") {
+			else if (type == L"UCHR" || type == L"uchr") {
 				m.heap[this->values[1].getWStr()] = this->values[2].toUCHR();
 			}
-			else if (type == L"BLN") {
+			else if (type == L"BLN" || type == L"bln") {
 				m.heap[this->values[1].getWStr()] = this->values[2].toBLN();
 			}
-			else if (type == L"STR") {
+			else if (type == L"STR" || type == L"str") {
 				m.heap[this->values[1].getWStr()] = this->values[2].toSTR();
 			}
-			else if (type == L"ARR") {
+			else if (type == L"ARR" || type == L"arr") {
 				m.heap[this->values[1].getWStr()] = this->values[2].toARR();
 			}
 		}
@@ -696,6 +696,14 @@ bool InstructTO::validate(Machine& m) {
 		&& type != L"BLN"
 		&& type != L"STR"
 		&& type != L"ARR"
+		&& type != L"ntg"
+		&& type != L"untg"
+		&& type != L"dbl"
+		&& type != L"chr"
+		&& type != L"uchr"
+		&& type != L"bln"
+		&& type != L"str"
+		&& type != L"arr"
 		) {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Тип данных " + type + L" неизвестен\n"};
 	}
