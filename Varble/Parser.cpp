@@ -343,6 +343,12 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"END") {
             m.instructions.push_back(new InstructEND(lexeme.parameters));
         }
+        else if (lexeme.type == L"PAUSE") {
+            m.instructions.push_back(new InstructPAUSE(lexeme.parameters));
+        }
+        else if (lexeme.type == L"SLEEP") {
+            m.instructions.push_back(new InstructSLEEP(lexeme.parameters));
+        }
         else if (lexeme.type == L"VAR") {
             m.instructions.push_back(new InstructVAR(lexeme.parameters));
         }

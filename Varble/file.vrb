@@ -2,9 +2,10 @@ VAR: $VARCAST, NIL;
 VAR: $VAR, DBL3.14;
 
 TO: 'NTG' , $VARCAST, $VAR;
-PRINT: $VARCAST, ' ', $VAR, '\n';
+#PRINT: $VARCAST, ' ', $VAR, '\n';
 
 TO: 'CHR', $VARCAST;
-PRINT: $VARCAST, ' ', $VAR, '\n';
-	
-#END: '123';
+#PRINT: $VARCAST, ' ', $VAR, '\n';
+VAR: $SLEEP, DBL500.57;
+SLEEP: $SLEEP2;	
+END: '123';

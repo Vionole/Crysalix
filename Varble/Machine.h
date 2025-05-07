@@ -33,6 +33,20 @@ public:
 	bool validate(Machine& m) override;
 };
 
+class InstructPAUSE : public Instruct {
+public:
+	InstructPAUSE(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
+class InstructSLEEP : public Instruct {
+public:
+	InstructSLEEP(vector<Var> val);
+	void go(Machine& m) override;
+	bool validate(Machine& m) override;
+};
+
 class InstructVAR : public Instruct {
 public:
 	InstructVAR(vector<Var> val);

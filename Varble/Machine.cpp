@@ -1,4 +1,5 @@
 #include "Machine.h"
+#include "windows.h"
 
 Machine::Machine(map<wstring, Var> in, bool dbg) {
 	this->in_data = in;
@@ -145,6 +146,66 @@ bool InstructEND::validate(Machine& m) {
 	}
 	else {
 		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция END принимает 1 параметр\n" };
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// PAUSE
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructPAUSE::InstructPAUSE(vector<Var> val) {
+	this->name = L"PAUSE";
+	this->values = val;
+}
+
+void InstructPAUSE::go(Machine& m) {
+	system("pause");
+	++m.instruct_number;
+}
+
+bool InstructPAUSE::validate(Machine& m) {
+	if (this->values.size() == 0) {
+		return true;
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция PAUSE принимает 0 параметров\n" };
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SLEEP
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructSLEEP::InstructSLEEP(vector<Var> val) {
+	this->name = L"SLEEP";
+	this->values = val;
+}
+
+void InstructSLEEP::go(Machine& m) {
+	if (this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+		Sleep(m.heap[this->values[0].getWStr()].toUNTG().getUInt());
+	}
+	else {
+		Sleep(this->values[0].toUNTG().getUInt());
+	}
+	++m.instruct_number;
+
+}
+
+bool InstructSLEEP::validate(Machine& m) {
+	if (this->values.size() == 1) {
+		if (this->values[0].typeOf() == L"STR" && this->values[0].toSTR().slice(0, 1).getWStr() == L"$") {
+			if (m.heap.find(this->values[0].getWStr()) == m.heap.end()) {
+				throw wstring{ to_wstring(m.instruct_number + 1) + L": Переменная " + this->values[0].getWStr() + L" не существует\n" };
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			return true;
+		}
+	}
+	else {
+		throw wstring{ to_wstring(m.instruct_number + 1) + L": Инструкция SLEEP принимает 1 параметр\n" };
 	}
 }
 

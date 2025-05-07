@@ -46,7 +46,6 @@ int main()
         wcout << endl << error_message << endl;
     }
 
-    system("pause");
     return 0;
 }
 
