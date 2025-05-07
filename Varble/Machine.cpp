@@ -31,6 +31,11 @@ void Machine::prepare() {
 
 Var Machine::go() {
 	while (this->instruct_number != -1) {
+
+		if (this->instruct_number >= this->instructions.size()) {
+			throw wstring{ L"Ошибка после выполнения инструкции " + to_wstring(this->instruct_number) + L": Неожиданный конец программы. Пропущена инструкция END\n" };
+		}
+
 		if (this->debug) {
 			wcout << endl;
 			wcout << L"=======================================================" << endl;
@@ -50,7 +55,12 @@ Var Machine::go() {
 		}
 
 		if (this->instructions[this->instruct_number]->validate(*this)) {
-			this->instructions[this->instruct_number]->go(*this);
+			try {
+				this->instructions[this->instruct_number]->go(*this);
+			}
+			catch (const std::wstring& error_message) {
+				throw wstring{ L"Ошибка выполнения инструкции " + to_wstring(this->instruct_number + 1) + L": " + error_message};
+			}
 		}
 		else {
 			throw wstring{ to_wstring(this->instruct_number + 1) + L": Неизвестная ошибка интерпретации\n" };

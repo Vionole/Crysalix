@@ -221,69 +221,70 @@ void Parser::parse(Machine& m) {
 
     //Парсим параметры, превращая литералы в объект VAR со значением
     for (int i = 0; i < lxms_array.size(); ++i) {
-        for (int j = 0; j < lxms_array[i].parameters.size(); ++j) {
-            if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"$" || lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"&") {
-                lxms_array[i].parameters[j] = lxms_array[i].parameters[j].toSTR();
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NTG") {
-                wstring str = lxms_array[i].parameters[j].getWStr();
-                str.erase(0, 3);
-                Var v(str);
-                lxms_array[i].parameters[j] = v.toNTG();
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UNTG") {
-                wstring str = lxms_array[i].parameters[j].getWStr();
-                str.erase(0, 4);
-                Var v(str);
-                lxms_array[i].parameters[j] = v.toUNTG();
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"DBL") {
-                wstring str = lxms_array[i].parameters[j].getWStr();
-                str.erase(0, 3);
-                Var v(str);
-                lxms_array[i].parameters[j] = v.toDBL();
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"CHR") {
-                wstring str = lxms_array[i].parameters[j].getWStr();
-                str.erase(0, 3);
-                Var v(str);
-                lxms_array[i].parameters[j] = v.toCHR();
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UCHR") {
-                wstring str = lxms_array[i].parameters[j].getWStr();
-                str.erase(0, 4);
-                Var v(str);
-                lxms_array[i].parameters[j] = v.toUCHR();
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"TRUE") {
+        try {
+            for (int j = 0; j < lxms_array[i].parameters.size(); ++j) {
+                if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"$" || lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"&") {
+                    lxms_array[i].parameters[j] = lxms_array[i].parameters[j].toSTR();
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NTG") {
+                    wstring str = lxms_array[i].parameters[j].getWStr();
+                    str.erase(0, 3);
+                    Var v(str);
+                    lxms_array[i].parameters[j] = v.toNTG();
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UNTG") {
+                    wstring str = lxms_array[i].parameters[j].getWStr();
+                    str.erase(0, 4);
+                    Var v(str);
+                    lxms_array[i].parameters[j] = v.toUNTG();
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"DBL") {
+                    wstring str = lxms_array[i].parameters[j].getWStr();
+                    str.erase(0, 3);
+                    Var v(str);
+                    lxms_array[i].parameters[j] = v.toDBL();
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"CHR") {
+                    wstring str = lxms_array[i].parameters[j].getWStr();
+                    str.erase(0, 3);
+                    Var v(str);
+                    lxms_array[i].parameters[j] = v.toCHR();
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UCHR") {
+                    wstring str = lxms_array[i].parameters[j].getWStr();
+                    str.erase(0, 4);
+                    Var v(str);
+                    lxms_array[i].parameters[j] = v.toUCHR();
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"TRUE") {
 
-                lxms_array[i].parameters[j] = Var(true);
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"FALSE") {
+                    lxms_array[i].parameters[j] = Var(true);
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"FALSE") {
 
-                lxms_array[i].parameters[j] = Var(false);
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NIL") {
-                lxms_array[i].parameters[j] = Var();
-            }
-            else if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"'") {
-                wstring str = lxms_array[i].parameters[j].getWStr();
-                str.erase(0, 1);
-                str.pop_back();
+                    lxms_array[i].parameters[j] = Var(false);
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NIL") {
+                    lxms_array[i].parameters[j] = Var();
+                }
+                else if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"'") {
+                    wstring str = lxms_array[i].parameters[j].getWStr();
+                    str.erase(0, 1);
+                    str.pop_back();
 
-                wstring new_str = L"";
-                bool escape_ch = false;
-                for (auto& c : str) {
-                    if (c != L'\\' && !escape_ch) {
-                        new_str += c;
-                        continue;
-                    }
-                    if (c == L'\\' && !escape_ch) {
-                        escape_ch = true;
-                        continue;
-                    }
-                    if (escape_ch) {
-                        switch (c) {
+                    wstring new_str = L"";
+                    bool escape_ch = false;
+                    for (auto& c : str) {
+                        if (c != L'\\' && !escape_ch) {
+                            new_str += c;
+                            continue;
+                        }
+                        if (c == L'\\' && !escape_ch) {
+                            escape_ch = true;
+                            continue;
+                        }
+                        if (escape_ch) {
+                            switch (c) {
                             case L't':
                                 new_str += L'\t';
                                 break;
@@ -316,20 +317,25 @@ void Parser::parse(Machine& m) {
                                 break;
                             case L'\\':
                                 new_str += L'\\';
+                            }
+                            escape_ch = false;
+                            continue;
                         }
-                        escape_ch = false;
-                        continue;
                     }
-                }
 
-                lxms_array[i].parameters[j] = Var(new_str);
+                    lxms_array[i].parameters[j] = Var(new_str);
+                }
+                else {
+                    throw wstring{ lxms_array[i].parameters[j].getWStr() + L": Неизвестный параметр\n" };
+                }
             }
-            else {
-                throw wstring{ lxms_array[i].parameters[j].getWStr() + L": Неизвестный параметр\n"};
-            }
+        }
+        catch (const std::wstring& error_message) {
+            throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i + 1) + L": " + error_message};
         }
     }
 
+    int i = 1;
     for (auto& lexeme : lxms_array) {
         if (lexeme.type == L"NOP") {
             m.instructions.push_back(new InstructNOP(lexeme.parameters));
@@ -369,7 +375,8 @@ void Parser::parse(Machine& m) {
         }
         else
         {
-            throw wstring{ lexeme.type + L": Неизвестная инструкция\n" };
+            throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i) + L": " + lexeme.type + L": Неизвестная инструкция\n" };
         }
+        ++i;
     }
 }

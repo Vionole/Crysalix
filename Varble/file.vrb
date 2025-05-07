@@ -1,10 +1,10 @@
 VAR: $VARCAST, NIL; 
-VAR: $VAR, CHR34;
+VAR: $VAR, DBL3.14;
 
-TO: 'STR' , $VARCAST, $VAR;
+TO: 'NTG' , $VARCAST, $VAR;
 PRINT: $VARCAST, ' ', $VAR, '\n';
 
 TO: 'CHR', $VARCAST;
 PRINT: $VARCAST, ' ', $VAR, '\n';
 	
-END: '123';
+#END: '123';
