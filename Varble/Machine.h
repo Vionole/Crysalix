@@ -14,94 +14,94 @@ public:
 	vector<Var> values;
 	wstring name;
 
-	virtual void go(Machine& m, bool prego) = 0;
-	virtual bool validate(Machine& m, bool prevalidate) = 0;
+	virtual void go(Machine* m, bool prego) = 0;
+	virtual bool validate(Machine* m, bool prevalidate) = 0;
 	virtual ~Instruct() {};
 };
 
 class InstructNOP: public Instruct {
 public:
-	InstructNOP(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructNOP(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructEND : public Instruct {
 public:
-	InstructEND(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructEND(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructPAUSE : public Instruct {
 public:
-	InstructPAUSE(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructPAUSE(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructSLEEP : public Instruct {
 public:
-	InstructSLEEP(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructSLEEP(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructVAR : public Instruct {
 public:
-	InstructVAR(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructVAR(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructPRINT : public Instruct {
 public:
-	InstructPRINT(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructPRINT(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructFREE : public Instruct {
 public:
-	InstructFREE(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructFREE(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructLABEL : public Instruct {
 public:
-	InstructLABEL(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructLABEL(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructJMP : public Instruct {
 public:
-	InstructJMP(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructJMP(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructINPUT : public Instruct {
 public:
-	InstructINPUT(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructINPUT(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 class InstructCHANGE : public Instruct {
 public:
-	InstructCHANGE(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructCHANGE(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 
 class InstructTO : public Instruct {
 public:
-	InstructTO(vector<Var>& val);
-	void go(Machine& m, bool prego) override;
-	bool validate(Machine& m, bool prevalidate) override;
+	InstructTO(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
 };
 
 

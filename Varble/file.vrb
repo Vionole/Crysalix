@@ -6,15 +6,15 @@ label: &lbl1;
 	var: $sleep, uchr 250;
 label: &lbl2;
 	to: 'ntg' , $varcast, $var;
-	#print: $varcast, ' ', $var, '\n';
+	print: $varcast, ' ', $var, '\n';
 
 	to: 'chr', $varcast;
-	#print: $varcast, ' ', $var, '\n';
+	print: $varcast, ' ', $var, '\n';
 
-	#print: $sleep, ntg0, '\n';
+	print: $sleep, ntg0, '\n';
 	#sleep: $sleep;
 	change: $var, $sleep;
-	#print: $var, ' ', $sleep, '\n';
+	print: $var, ' ', $sleep, '\n';
 #jmp: &lbl1;
 	free: $var, $sleep, $varcast;
 end: ntg 0;

@@ -227,49 +227,31 @@ void Parser::parse(Machine& m) {
                     lxms_array[i].parameters[j] = lxms_array[i].parameters[j].toSTR();
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NTG" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"ntg") {
-                    wstring str = lxms_array[i].parameters[j].getWStr();
-                    str.erase(0, 3);
-                    Var v(str);
-                    lxms_array[i].parameters[j] = v.toNTG();
+                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 3))).toNTG();
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UNTG" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"untg") {
-                    wstring str = lxms_array[i].parameters[j].getWStr();
-                    str.erase(0, 4);
-                    Var v(str);
-                    lxms_array[i].parameters[j] = v.toUNTG();
+                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 4))).toUNTG();
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"DBL" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"dbl") {
-                    wstring str = lxms_array[i].parameters[j].getWStr();
-                    str.erase(0, 3);
-                    Var v(str);
-                    lxms_array[i].parameters[j] = v.toDBL();
+                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 3))).toDBL();
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"CHR" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"chr") {
-                    wstring str = lxms_array[i].parameters[j].getWStr();
-                    str.erase(0, 3);
-                    Var v(str);
-                    lxms_array[i].parameters[j] = v.toCHR();
+                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 3))).toCHR();
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UCHR" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"uchr") {
-                    wstring str = lxms_array[i].parameters[j].getWStr();
-                    str.erase(0, 4);
-                    Var v(str);
-                    lxms_array[i].parameters[j] = v.toUCHR();
+                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 4))).toUCHR();
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"TRUE" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"true") {
-
                     lxms_array[i].parameters[j] = Var(true);
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"FALSE" || lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"false") {
-
                     lxms_array[i].parameters[j] = Var(false);
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NIL" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"nil") {
                     lxms_array[i].parameters[j] = Var();
                 }
                 else if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"'") {
-                    wstring str = lxms_array[i].parameters[j].getWStr();
-                    str.erase(0, 1);
+                    wstring str = lxms_array[i].parameters[j].getWStr().erase(0, 1);
                     str.pop_back();
 
                     wstring new_str = L"";
@@ -338,40 +320,40 @@ void Parser::parse(Machine& m) {
     int i = 1;
     for (auto& lexeme : lxms_array) {
         if (lexeme.type == L"NOP" || lexeme.type == L"nop") {
-            m.instructions.push_back(new InstructNOP(lexeme.parameters));
+            m.instructions.push_back(new InstructNOP(&lexeme.parameters));
         }
         else if (lexeme.type == L"END" || lexeme.type == L"end") {
-            m.instructions.push_back(new InstructEND(lexeme.parameters));
+            m.instructions.push_back(new InstructEND(&lexeme.parameters));
         }
         else if (lexeme.type == L"PAUSE" || lexeme.type == L"pause") {
-            m.instructions.push_back(new InstructPAUSE(lexeme.parameters));
+            m.instructions.push_back(new InstructPAUSE(&lexeme.parameters));
         }
         else if (lexeme.type == L"SLEEP" || lexeme.type == L"sleep") {
-            m.instructions.push_back(new InstructSLEEP(lexeme.parameters));
+            m.instructions.push_back(new InstructSLEEP(&lexeme.parameters));
         }
         else if (lexeme.type == L"VAR" || lexeme.type == L"var") {
-            m.instructions.push_back(new InstructVAR(lexeme.parameters));
+            m.instructions.push_back(new InstructVAR(&lexeme.parameters));
         }
         else if (lexeme.type == L"PRINT" || lexeme.type == L"print") {
-            m.instructions.push_back(new InstructPRINT(lexeme.parameters));
+            m.instructions.push_back(new InstructPRINT(&lexeme.parameters));
         }
         else if (lexeme.type == L"FREE" || lexeme.type == L"free") {
-            m.instructions.push_back(new InstructFREE(lexeme.parameters));
+            m.instructions.push_back(new InstructFREE(&lexeme.parameters));
         }
         else if (lexeme.type == L"LABEL" || lexeme.type == L"label") {
-            m.instructions.push_back(new InstructLABEL(lexeme.parameters));
+            m.instructions.push_back(new InstructLABEL(&lexeme.parameters));
         }
         else if (lexeme.type == L"JMP" || lexeme.type == L"jmp") {
-            m.instructions.push_back(new InstructJMP(lexeme.parameters));
+            m.instructions.push_back(new InstructJMP(&lexeme.parameters));
         }
         else if (lexeme.type == L"INPUT" || lexeme.type == L"input") {
-            m.instructions.push_back(new InstructINPUT(lexeme.parameters));
+            m.instructions.push_back(new InstructINPUT(&lexeme.parameters));
         }
         else if (lexeme.type == L"CHANGE" || lexeme.type == L"change") {
-            m.instructions.push_back(new InstructCHANGE(lexeme.parameters));
+            m.instructions.push_back(new InstructCHANGE(&lexeme.parameters));
         }
         else if (lexeme.type == L"TO" || lexeme.type == L"to") {
-            m.instructions.push_back(new InstructTO(lexeme.parameters));
+            m.instructions.push_back(new InstructTO(&lexeme.parameters));
         }
         else
         {

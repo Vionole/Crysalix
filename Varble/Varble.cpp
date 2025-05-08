@@ -26,9 +26,9 @@ int main()
         Machine mchn(map, false);
 
         //Загружаем и парсим исходный код
-        auto begin = chrono::high_resolution_clock::now();
         Parser p(L"file.vrb");
         p.fileLoad();
+        auto begin = chrono::high_resolution_clock::now();
         p.parse(mchn);
         auto end = chrono::high_resolution_clock::now();
         auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - begin);
