@@ -31,10 +31,10 @@ enum Type {
 class Var {
 private:
     Data data;
-    Type type;
     vector<Var> arr;
     map<wstring, Var> mp;
 public:
+    Type type;
     // онструкторы дл€ обычны типов данных
     Var();
     Var(unsigned long long int untg);

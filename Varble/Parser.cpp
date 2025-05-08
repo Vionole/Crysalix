@@ -358,23 +358,17 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"FREE" || lexeme.type == L"free") {
             m.instructions.push_back(new InstructFREE(lexeme.parameters));
         }
-        else if (lexeme.type == L"LBL" || lexeme.type == L"lbl") {
-            m.instructions.push_back(new InstructLBL(lexeme.parameters));
+        else if (lexeme.type == L"LABEL" || lexeme.type == L"label") {
+            m.instructions.push_back(new InstructLABEL(lexeme.parameters));
         }
         else if (lexeme.type == L"JMP" || lexeme.type == L"jmp") {
             m.instructions.push_back(new InstructJMP(lexeme.parameters));
         }
-        else if (lexeme.type == L"JMPIFZ" || lexeme.type == L"jmpifz") {
-            m.instructions.push_back(new InstructJMPIFZ(lexeme.parameters));
-        }
-        else if (lexeme.type == L"JMPIFNOTZ" || lexeme.type == L"jmpifnotz") {
-            m.instructions.push_back(new InstructJMPIFNOTZ(lexeme.parameters));
-        }
         else if (lexeme.type == L"INPUT" || lexeme.type == L"input") {
             m.instructions.push_back(new InstructINPUT(lexeme.parameters));
         }
-        else if (lexeme.type == L"CHNG" || lexeme.type == L"chng") {
-            m.instructions.push_back(new InstructCHNG(lexeme.parameters));
+        else if (lexeme.type == L"CHANGE" || lexeme.type == L"change") {
+            m.instructions.push_back(new InstructCHANGE(lexeme.parameters));
         }
         else if (lexeme.type == L"TO" || lexeme.type == L"to") {
             m.instructions.push_back(new InstructTO(lexeme.parameters));

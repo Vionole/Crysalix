@@ -14,108 +14,94 @@ public:
 	vector<Var> values;
 	wstring name;
 
-	virtual void go(Machine& m) = 0;
-	virtual bool validate(Machine& m) = 0;
+	virtual void go(Machine& m, bool prego) = 0;
+	virtual bool validate(Machine& m, bool prevalidate) = 0;
 	virtual ~Instruct() {};
 };
 
 class InstructNOP: public Instruct {
 public:
-	InstructNOP(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructNOP(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 class InstructEND : public Instruct {
 public:
-	InstructEND(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructEND(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 class InstructPAUSE : public Instruct {
 public:
-	InstructPAUSE(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructPAUSE(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 class InstructSLEEP : public Instruct {
 public:
-	InstructSLEEP(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructSLEEP(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 class InstructVAR : public Instruct {
 public:
-	InstructVAR(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructVAR(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 class InstructPRINT : public Instruct {
 public:
-	InstructPRINT(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructPRINT(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 class InstructFREE : public Instruct {
 public:
-	InstructFREE(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructFREE(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
-class InstructLBL : public Instruct {
+class InstructLABEL : public Instruct {
 public:
-	InstructLBL(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructLABEL(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 class InstructJMP : public Instruct {
 public:
-	InstructJMP(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
-};
-
-class InstructJMPIFZ : public Instruct {
-public:
-	InstructJMPIFZ(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
-};
-
-class InstructJMPIFNOTZ : public Instruct {
-public:
-	InstructJMPIFNOTZ(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructJMP(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 class InstructINPUT : public Instruct {
 public:
-	InstructINPUT(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructINPUT(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
-class InstructCHNG : public Instruct {
+class InstructCHANGE : public Instruct {
 public:
-	InstructCHNG(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructCHANGE(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 
 class InstructTO : public Instruct {
 public:
-	InstructTO(vector<Var> val);
-	void go(Machine& m) override;
-	bool validate(Machine& m) override;
+	InstructTO(vector<Var>& val);
+	void go(Machine& m, bool prego) override;
+	bool validate(Machine& m, bool prevalidate) override;
 };
 
 
@@ -128,6 +114,7 @@ public:
 	Var ret_data;
 
 	vector<Instruct*> instructions;
+	unsigned int instruct_count = 0;
 
 	map<wstring, Var> heap;
 	map<wstring, int> jmp_pointers;
