@@ -40,6 +40,7 @@ void Parser::parse(Machine& m) {
     bool is_long_comment = false;
     bool is_comment = false;
     bool is_string = false;
+    bool escape = false;
     Lexeme instruction;
     vector<Lexeme> lexemes;
 
@@ -88,7 +89,9 @@ void Parser::parse(Machine& m) {
             //Если у нас кавычка ' это значит, началась или кончилась строка. Игнорируем все синтаксические символы
             if (c == L'\'') {
                 if (is_string == true) {
-                    is_string = false;
+                    if (escape == false) {
+                        is_string = false;
+                    }
                 }
                 else {
                     is_string = true;
@@ -97,6 +100,12 @@ void Parser::parse(Machine& m) {
             }
             else {
                 if (is_string == true) {
+                    if (c == L'\\') {
+                        escape = true;
+                    }
+                    else {
+                        escape = false;
+                    }
                     str += c;
                 }
                 else {
@@ -237,6 +246,9 @@ void Parser::parse(Machine& m) {
                                 break;
                             case L'?':
                                 new_str += L'?';
+                                break;
+                            case L'\'':
+                                new_str += L'\'';
                                 break;
                             case L'\\':
                                 new_str += L'\\';
