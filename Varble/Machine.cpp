@@ -288,12 +288,12 @@ bool InstructSLEEP::validate(Machine* m, bool prevalidate = false) {
 //////i////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructVARIABLE::InstructVARIABLE(vector<Var>* val) {
-	this->name = L"VARIABLE";
+InstructVAR::InstructVAR(vector<Var>* val) {
+	this->name = L"VAR";
 	this->values = *val;
 }
 
-void InstructVARIABLE::go(Machine* m, bool prego = false) {
+void InstructVAR::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
@@ -303,7 +303,7 @@ void InstructVARIABLE::go(Machine* m, bool prego = false) {
 	}
 }
 
-bool InstructVARIABLE::validate(Machine* m, bool prevalidate = false) {
+bool InstructVAR::validate(Machine* m, bool prevalidate = false) {
 	if (prevalidate) {
 		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
 		requiredVar(&this->values[0], m, &this->name, L"Первый");
@@ -733,4 +733,120 @@ bool InstructCALC::validate(Machine* m, bool prevalidate = false) {
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// NEWTEMP
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructNEWTEMP::InstructNEWTEMP(vector<Var>* val) {
+	this->name = L"NEWTEMP";
+	this->values = *val;
+}
 
+void InstructNEWTEMP::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		int start = (*m).tmp_count;
+		(*m).tmp_count += getValue(&(this->values[0]), &(*m).heap).toUNTG().getUInt();
+		for (int i = start; i < (*m).tmp_count; ++i) {
+			(*m).heap[L"$" + to_wstring(i)] = Var();
+		}
+		++(*m).instruct_number;
+	}
+}
+
+bool InstructNEWTEMP::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
+	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FORGET
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructFORGET::InstructFORGET(vector<Var>* val) {
+	this->name = L"FORGET";
+	this->values = *val;
+}
+
+void InstructFORGET::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		if (this->values.size() == 0) {
+			int start = (*m).tmp_count - 1;
+			(*m).tmp_count = 0;
+			for (int i = start; i >= (*m).tmp_count; --i) {
+				(*m).heap.erase(L"$" + to_wstring(i));
+			}
+		}
+		else if (this->values.size() == 1) {
+			int start = (*m).tmp_count - 1;
+			(*m).tmp_count -= getValue(&(this->values[0]), &(*m).heap).toUNTG().getUInt();
+			for (int i = start; i >= (*m).tmp_count; --i) {
+				(*m).heap.erase(L"$" + to_wstring(i));
+			}
+		}
+		++(*m).instruct_number;
+	}
+}
+
+bool InstructFORGET::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		int v[2]{ 0, 1};
+		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 0, 0, nullptr, v);
+	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TCOUNT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructTCOUNT::InstructTCOUNT(vector<Var>* val) {
+	this->name = L"TCOUNT";
+	this->values = *val;
+}
+
+void InstructTCOUNT::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		(*m).heap[this->values[0].toSTR().getWStr()] = Var((*m).tmp_count);
+		++(*m).instruct_number;
+	}
+}
+
+bool InstructTCOUNT::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
+	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ISSET
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructISSET::InstructISSET(vector<Var>* val) {
+	this->name = L"ISSET";
+	this->values = *val;
+}
+
+void InstructISSET::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		(*m).heap[this->values[0].toSTR().getWStr()] = Var((*m).tmp_count);
+		++(*m).instruct_number;
+	}
+}
+
+bool InstructISSET::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
+	}
+	return true;
+}

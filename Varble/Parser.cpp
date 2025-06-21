@@ -290,8 +290,8 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"SLEEP" || lexeme.type == L"sleep") {
             m.instructions.push_back(new InstructSLEEP(&lexeme.parameters));
         }
-        else if (lexeme.type == L"VARIABLE" || lexeme.type == L"variable") {
-            m.instructions.push_back(new InstructVARIABLE(&lexeme.parameters));
+        else if (lexeme.type == L"VAR" || lexeme.type == L"var") {
+            m.instructions.push_back(new InstructVAR(&lexeme.parameters));
         }
         else if (lexeme.type == L"PRINT" || lexeme.type == L"print") {
             m.instructions.push_back(new InstructPRINT(&lexeme.parameters));
@@ -316,6 +316,18 @@ void Parser::parse(Machine& m) {
         }
         else if (lexeme.type == L"CALC" || lexeme.type == L"calc") {
             m.instructions.push_back(new InstructCALC(&lexeme.parameters));
+        }
+        else if (lexeme.type == L"NEWTEMP" || lexeme.type == L"newtemp") {
+            m.instructions.push_back(new InstructNEWTEMP(&lexeme.parameters));
+        }
+        else if (lexeme.type == L"FORGET" || lexeme.type == L"forget") {
+            m.instructions.push_back(new InstructFORGET(&lexeme.parameters));
+        }
+        else if (lexeme.type == L"TCOUNT" || lexeme.type == L"tcount") {
+            m.instructions.push_back(new InstructTCOUNT(&lexeme.parameters));
+        }
+        else if (lexeme.type == L"ISSET" || lexeme.type == L"isset") {
+            m.instructions.push_back(new InstructISSET(&lexeme.parameters));
         }
         else
         {

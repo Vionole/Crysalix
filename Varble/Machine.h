@@ -47,9 +47,9 @@ public:
 	bool validate(Machine* m, bool prevalidate) override;
 };
 
-class InstructVARIABLE: public Instruct {
+class InstructVAR: public Instruct {
 public:
-	InstructVARIABLE(vector<Var>* val);
+	InstructVAR(vector<Var>* val);
 	void go(Machine* m, bool prego) override;
 	bool validate(Machine* m, bool prevalidate) override;
 };
@@ -111,10 +111,39 @@ public:
 	bool validate(Machine* m, bool prevalidate) override;
 };
 
+class InstructNEWTEMP : public Instruct {
+public:
+	InstructNEWTEMP(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
+};
+
+class InstructFORGET : public Instruct {
+public:
+	InstructFORGET(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
+};
+
+class InstructTCOUNT : public Instruct {
+public:
+	InstructTCOUNT(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
+};
+
+class InstructISSET : public Instruct {
+public:
+	InstructISSET(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
+};
+
 
 class Machine {
 public:
 	bool debug;
+	int tmp_count;
 	int instruct_number;
 
 	map<wstring, Var> in_data;
