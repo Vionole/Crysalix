@@ -28,28 +28,10 @@ void Machine::prepare() {
 
 Var Machine::go() {
 	while (this->instruct_number != -1) {
-
 		if (this->instruct_number >= this->instruct_count) {
 			throw wstring{ error_type_2 + to_wstring(this->instruct_number) + L": Неожиданный конец программы. Пропущена инструкция END\n" };
 		}
 
-		if (this->debug) {
-			wcout << endl;
-			wcout << L"=======================================================" << endl;
-			wcout << (this->instruct_number + 1) << L": " << this->instructions[this->instruct_number]->name << ": ";
-			bool comma = false;
-			for (auto& i : this->instructions[this->instruct_number]->values)
-			{
-				if (comma) {
-					wcout << ", ";
-				}
-				i.print();
-				comma = true;
-
-			}
-			wcout << endl;
-			wcout << L"_______________________________________________________" << endl;
-		}
 
 		if (this->instructions[this->instruct_number]->validate(this, false)) {
 			try {
@@ -61,26 +43,6 @@ Var Machine::go() {
 		}
 		else {
 			throw wstring{ error_type + to_wstring(this->instruct_number + 1) + L": Неизвестная ошибка интерпретации\n" };
-		}
-
-		if (this->debug) {
-			wcout << endl;
-			wcout << L"_______________________________________________________" << endl;
-			wcout << L"Heap:" << endl;
-			wcout << L"_______________________________________________________" << endl;
-			for (const auto& kv : this->heap) {
-				wcout << kv.first << ": " << kv.second << endl;
-			}
-			wcout << L"_______________________________________________________" << endl;
-			wcout << endl;
-			wcout << L"_______________________________________________________" << endl;
-			wcout << L"Jump pointers:" << endl;
-			wcout << L"_______________________________________________________" << endl;
-			for (const auto& kv : this->jmp_pointers) {
-				wcout << kv.first << ": " << kv.second << endl;
-			}
-			wcout << L"=======================================================" << endl;
-			system("pause");
 		}
 	}
 	return this->ret_data;

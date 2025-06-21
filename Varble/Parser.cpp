@@ -32,231 +32,172 @@ void Parser::fileLoad() {
     infile.close();
 }
 
-void Parser::commentRemover() {
+void Parser::parse(Machine& m) {
+    //Перебираем каждый символ в строке
     wstring str = L"";
-    bool comment_char = false;
+    bool instruction_parameters = false;
     bool first_comment_char = false;
-    bool multistring_comment = false;
+    bool is_long_comment = false;
+    bool is_comment = false;
     bool is_string = false;
-    for (auto& c : this->file_content) {
-        if (is_string) {
-            if (c == L'\'') {
-                is_string = false;
-            }
-            str += c;
-            continue;
-        }
+    Lexeme instruction;
+    vector<Lexeme> lexemes;
 
-        if (!comment_char) {
-            if (c == L'\'') {
-                is_string = true;
-            }
-            if (c != L'#' && c != L'\n' && c != L'\t') {
-                str += c;
-            } 
-            else if (c == L'\n' || c == L'\t') {}
-            else {
-                comment_char = true;
-                first_comment_char = true;
-            }
-        }
-        else {
-            if (!multistring_comment) {
-                if (c == L'\n') {
-                    comment_char = false;
+    for (wchar_t& c : this->file_content) {
+        //Вырезаем комментарии, если они есть, игнорируем сиволы после начала комментария до конца строки
+        if (is_comment) {
+            //Если предыдущий знак был равен #
+            if (first_comment_char == true) {
+                //Если у нас многострочный комментарий
+                if (is_long_comment == true) {
+                    //и попадается знак #, многострочный комментарий заканчивается
+                    if (c == L'#') {
+                        is_long_comment = false;
+                        is_comment = false;
+                    }
                 }
-                else if (c == L'#' && first_comment_char) {
-                    multistring_comment = true;
+                else {
+                    //Если предыдущий знак был # а многострочный комментарий не начался, начинаем многострочный комментарий
+                    if (c == L'#') {
+                        is_long_comment = true;
+                    }
                 }
+                //В любом случае сбрасываем флаг первого символа
                 first_comment_char = false;
             }
             else {
-                if (c == L'#' && !first_comment_char) {
-                    first_comment_char = true;
+                //Если предыдущий знак  не был # и у нас длинный кооментарий
+                if (is_long_comment == true) {
+                    //Если текущий знак # ставим флаг первого знака комментария
+                    if (c == L'#') {
+                        first_comment_char = true;
+                    }
                 }
-                else if (c == L'#' && first_comment_char) {
-                    multistring_comment = false;
-                    comment_char = false;
-                    first_comment_char == false;
-                }
+                //если это однострочный комментарий, заканчиваем его с момента перевода на другую строку
                 else {
-                    first_comment_char = false;
+                    if (c == L'\n') {
+                        is_comment = false;
+                        is_long_comment = false;
+                        first_comment_char = false;
+                    }
                 }
             }
-        }
-    }
-    this->refined = str;
-}
-
-void Parser::parse(Machine& m) {
-
-    //Убираем комментарии
-    this->commentRemover();
-
-    //Разрезаем на инструкции
-    bool is_string = false;
-    vector<Var> instructions;
-    wstring str = L"";
-    for (auto& c : this->refined.getWStr()) {
-        if (is_string) {
-            str += c;
-            if (c == L'\'') {
-                is_string = false;
-            }
+            
         }
         else {
-            if (c == ';') {
-                instructions.push_back(Var(str));
-                str = L"";
-            }
-            else if (c == L'\'') {
-                is_string = true;
-                str += c;
-            }
-            else {
-                str += c;
-            }
-        }
-    }
-
-    //Записываем "хвост, если он есть, благодаря незакрытой кавычке"
-    if (str != L"") {
-        instructions.push_back(Var(str));
-    }
-
-    //Заполняем массив инструкций
-    this->splitted = Var(instructions);
-
-    //Разрезаем инструкции на тип и аргумент
-    vector<Var> split = this->splitted.getArr();
-    vector<vector<Var>> splitTypeNArguments;
-    for (auto& command : split) {
-        wstring instr = L"";
-        wstring params = L"";
-        bool is_colon = false;
-        for (auto& c : command.getWStr()) {
-            if (is_colon) {
-                params += c;
-            }
-            else {
-                if (c != L':') {
-                    instr += c;
-                }
-                else {
-                    is_colon = true;
-                }
-            }
-        }
-        vector<Var> splitted_command;
-        splitted_command.push_back(Var(instr));
-        splitted_command.push_back(Var(params));
-        splitTypeNArguments.push_back(splitted_command);
-    }
-    
-    //Обрезаем пробелы у лексем
-    vector<Lexeme> lxms;
-    this->splitted_second = splitTypeNArguments;
-    for (auto& command : this->splitted_second) {
-        bool type = true;
-        Lexeme lex;
-        for (auto& lexemes : command) {
-            lexemes = lexemes.trim();
-            if (type) {
-                lex.type = lexemes.getWStr();
-                type = false;
-            } 
-            else {
-                lex.param_in_str = lexemes.getWStr();
-                lxms.push_back(lex);
-                type = true;
-            }
-        }
-    }
-
-   //Разделяем строку параметров на отдельные параметры
-    vector<Lexeme> lxms_array;
-    for (auto& lexeme : lxms) {
-        Lexeme lex;
-        lex.type = lexeme.type;
-        vector<Var>vec;
-
-        wstring str = L"";
-        bool is_string = false;
-        for (auto& c : lexeme.param_in_str) {
-            if (is_string) {
-                str += c;
-                if (c == L'\'') {
+            //Если у нас кавычка ' это значит, началась или кончилась строка. Игнорируем все синтаксические символы
+            if (c == L'\'') {
+                if (is_string == true) {
                     is_string = false;
                 }
-            }
-            else {
-                if (c == L'\'') {
+                else {
                     is_string = true;
-                }
-                if (c == L',') {
-                    vec.push_back(Var(str));
-                    str = L"";
-                    continue;
                 }
                 str += c;
             }
+            else {
+                if (is_string == true) {
+                    str += c;
+                }
+                else {
+                    //Если у нас имеется знак #, у нас начался однострочный или многострочный комментарий
+                    if (c == L'#') {
+                        if (is_comment == false) {
+                            is_comment = true;
+                            first_comment_char = true;
+                        }
+                    }
+                    else {
+                        //Перебираем символы до тех пор, пока не найдем знак :
+                        //Это конец наименования инструкции
+                        if (instruction_parameters == false) {
+                            if (c == L':') {
+                                str.erase(0, str.find_first_not_of(L" \n\r\t"));
+                                str.erase(str.find_last_not_of(L" \n\r\t") + 1);
+                                instruction.type = str;
+                                str = L"";
+                                //устанавливаем флаг, что начались параметры инструкции
+                                instruction_parameters = true;
+                            }
+                            else {
+                                //Иначе записываем символ в переменную с названием инструкции
+                                str += c;
+                            }
+                        }
+                        else {
+                            //Парсим параметры инструкции. Если у нас запятая, параметр кончился.
+                            if (c == ',') {
+                                str.erase(0, str.find_first_not_of(L" \n\r\t"));
+                                str.erase(str.find_last_not_of(L" \n\r\t") + 1);
+                                if (str != L"") {
+                                    instruction.str_parameters.push_back(str);
+                                    str = L"";
+                                }
+                            }
+                            //если точка с запятой, инструкция вообще кончилась
+                            else if (c == ';') {
+                                str.erase(0, str.find_first_not_of(L" \n\r\t"));
+                                str.erase(str.find_last_not_of(L" \n\r\t") + 1);
+                                if (str != L"") {
+                                    instruction.str_parameters.push_back(str);
+                                    lexemes.push_back(instruction);
+                                    instruction.str_parameters.clear();
+                                    instruction.type = L"";
+                                    str = L"";
+                                }
+                                instruction_parameters = false;
+                            }
+                            else {
+                                str += c;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        //Если запятой нет, это последний параметр, вносим в массив
-        if (str != L"") {
-            vec.push_back(Var(str));
-        }
-
-        lex.parameters = vec;
-        lxms_array.push_back(lex);
-        
     }
-
-    //Обрезаем пробелы у отдельных параметров
-    for (int i = 0; i < lxms_array.size(); ++i) {
-        for (int j = 0; j < lxms_array[i].parameters.size(); ++j) {
-            lxms_array[i].parameters[j] = lxms_array[i].parameters[j].trim();
-        }
-    }
-
+    
     //Парсим параметры, превращая литералы в объект VAR со значением
-    for (int i = 0; i < lxms_array.size(); ++i) {
+    int size = lexemes.size();
+    for (int i = 0; i < size; ++i) {
         try {
-            for (int j = 0; j < lxms_array[i].parameters.size(); ++j) {
-                if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"$" || lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"&") {
-                    lxms_array[i].parameters[j] = lxms_array[i].parameters[j].toSTR();
+            int params_size = lexemes[i].str_parameters.size();
+            for (int j = 0; j < params_size; ++j) {
+                if (lexemes[i].str_parameters[j][0] == L'$' || lexemes[i].str_parameters[j][0] == L'&') {
+                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j]));
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NTG" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"ntg") {
-                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 3))).toNTG();
+                else if (lexemes[i].str_parameters[j].substr(0, 3) == L"NTG" || lexemes[i].str_parameters[j].substr(0, 3) == L"ntg") {
+                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 3)).toNTG());
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UNTG" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"untg") {
-                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 4))).toUNTG();
+                else if (lexemes[i].str_parameters[j].substr(0, 4) == L"UNTG" || lexemes[i].str_parameters[j].substr(0, 4) == L"untg") {
+                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 4)).toUNTG());
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"DBL" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"dbl") {
-                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 3))).toDBL();
+                else if (lexemes[i].str_parameters[j].substr(0, 3) == L"DBL" || lexemes[i].str_parameters[j].substr(0, 3) == L"dbl") {
+                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 3)).toDBL());
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"CHR" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"chr") {
-                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 3))).toCHR();
+                else if (lexemes[i].str_parameters[j].substr(0, 3) == L"CHR" || lexemes[i].str_parameters[j].substr(0, 3) == L"chr") {
+                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 3)).toCHR());
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"UCHR" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"uchr") {
-                    lxms_array[i].parameters[j] = (Var(lxms_array[i].parameters[j].getWStr().erase(0, 4))).toUCHR();
+                else if (lexemes[i].str_parameters[j].substr(0, 4) == L"UCHR" || lexemes[i].str_parameters[j].substr(0, 4) == L"uchr") {
+                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 4)).toUCHR());
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"TRUE" || lxms_array[i].parameters[j].slice(0, 4).getWStr() == L"true") {
-                    lxms_array[i].parameters[j] = Var(true);
+                else if (lexemes[i].str_parameters[j] == L"TRUE" || lexemes[i].str_parameters[j] == L"true") {
+                    lexemes[i].parameters.push_back(Var(true));
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"FALSE" || lxms_array[i].parameters[j].slice(0, 5).getWStr() == L"false") {
-                    lxms_array[i].parameters[j] = Var(false);
+                else if (lexemes[i].str_parameters[j] == L"FALSE" || lexemes[i].str_parameters[j] == L"false") {
+                    lexemes[i].parameters.push_back(Var(false));
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"NIL" || lxms_array[i].parameters[j].slice(0, 3).getWStr() == L"nil") {
-                    lxms_array[i].parameters[j] = Var();
+                else if (lexemes[i].str_parameters[j] == L"NIL" || lexemes[i].str_parameters[j] == L"nil") {
+                    lexemes[i].parameters.push_back(Var());
                 }
-                else if (lxms_array[i].parameters[j].slice(0, 1).getWStr() == L"'") {
-                    wstring str = lxms_array[i].parameters[j].getWStr().erase(0, 1);
-                    str.pop_back();
-
+                else if (lexemes[i].str_parameters[j][0] == L'\'') {
+                    wstring str = lexemes[i].str_parameters[j].erase(0, lexemes[i].str_parameters[j].find_first_not_of(L"\'"));
+                    str = lexemes[i].str_parameters[j].erase(lexemes[i].str_parameters[j].find_last_not_of(L"\'") + 1);
+                   
                     wstring new_str = L"";
                     bool escape_ch = false;
-                    for (auto& c : str) {
+                    for (wchar_t& c : str) {
                         if (c != L'\\' && !escape_ch) {
                             new_str += c;
                             continue;
@@ -304,21 +245,17 @@ void Parser::parse(Machine& m) {
                             continue;
                         }
                     }
-
-                    lxms_array[i].parameters[j] = Var(new_str);
-                }
-                else {
-                    throw wstring{ lxms_array[i].parameters[j].getWStr() + L": Неизвестный параметр\n" };
+                    lexemes[i].parameters.push_back(Var(new_str));
                 }
             }
         }
         catch (const std::wstring& error_message) {
-            throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i + 1) + L": " + error_message};
+            throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i + 1) + L": " + error_message };
         }
     }
-
+    
     int i = 1;
-    for (auto& lexeme : lxms_array) {
+    for (Lexeme& lexeme : lexemes) {
         if (lexeme.type == L"NOP" || lexeme.type == L"nop") {
             m.instructions.push_back(new InstructNOP(&lexeme.parameters));
         }
