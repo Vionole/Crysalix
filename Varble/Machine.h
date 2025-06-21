@@ -47,9 +47,9 @@ public:
 	bool validate(Machine* m, bool prevalidate) override;
 };
 
-class InstructVAR : public Instruct {
+class InstructVARIABLE: public Instruct {
 public:
-	InstructVAR(vector<Var>* val);
+	InstructVARIABLE(vector<Var>* val);
 	void go(Machine* m, bool prego) override;
 	bool validate(Machine* m, bool prevalidate) override;
 };
@@ -75,9 +75,9 @@ public:
 	bool validate(Machine* m, bool prevalidate) override;
 };
 
-class InstructJMP : public Instruct {
+class InstructJUMP : public Instruct {
 public:
-	InstructJMP(vector<Var>* val);
+	InstructJUMP(vector<Var>* val);
 	void go(Machine* m, bool prego) override;
 	bool validate(Machine* m, bool prevalidate) override;
 };
@@ -100,6 +100,13 @@ public:
 class InstructTO : public Instruct {
 public:
 	InstructTO(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
+};
+
+class InstructCALC : public Instruct {
+public:
+	InstructCALC(vector<Var>* val);
 	void go(Machine* m, bool prego) override;
 	bool validate(Machine* m, bool prevalidate) override;
 };

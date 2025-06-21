@@ -1,20 +1,7 @@
-	nop:;
-	pause:;
-label: &lbl1;
-	var: $varcast, ntg 1; 
-	var: $var, dbl 3.14;
-	var: $sleep, uchr 250;
-label: &lbl2;
-	to: 'ntg' , $varcast, $var;
-	print: $varcast, 'жес\'ть\q 123321 ', $var, '\n';
-
-	to: 'chr', $varcast;
-	print: $varcast, ' ', $var, '\n';
-
-	print: $sleep, ntg0, '\n';
-	#sleep: $sleep;
-	change: $var, $sleep;
-	print: $var, ' ', $sleep, '\n';
-#jmp: &lbl1;
-	free: $var, $sleep, $varcast;
+variable: $type, 'LOG';
+variable: $op1, ntg 25; 
+variable: $op2, ntg 5;
+variable: $result, nil;
+calc: $type, $result, $op1, ntg4;
+print: $type, ' ', $result, ' ', $op1, ' ', $op2, '\n';
 end: ntg 0;

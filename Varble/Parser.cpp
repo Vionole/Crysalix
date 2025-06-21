@@ -83,7 +83,7 @@ void Parser::parse(Machine& m) {
                     }
                 }
             }
-            
+
         }
         else {
             //Если у нас кавычка ' это значит, началась или кончилась строка. Игнорируем все синтаксические символы
@@ -96,12 +96,18 @@ void Parser::parse(Machine& m) {
                 else {
                     is_string = true;
                 }
+                escape = false;
                 str += c;
             }
             else {
                 if (is_string == true) {
                     if (c == L'\\') {
-                        escape = true;
+                        if (escape == false) {
+                            escape = true;
+                        }
+                        else {
+                            escape = false;
+                        }
                     }
                     else {
                         escape = false;
@@ -149,11 +155,11 @@ void Parser::parse(Machine& m) {
                                 str.erase(str.find_last_not_of(L" \n\r\t") + 1);
                                 if (str != L"") {
                                     instruction.str_parameters.push_back(str);
-                                    lexemes.push_back(instruction);
-                                    instruction.str_parameters.clear();
-                                    instruction.type = L"";
                                     str = L"";
                                 }
+                                lexemes.push_back(instruction);
+                                instruction.str_parameters.clear();
+                                instruction.type = L"";
                                 instruction_parameters = false;
                             }
                             else {
@@ -164,9 +170,9 @@ void Parser::parse(Machine& m) {
                 }
             }
         }
-
     }
-    
+
+
     //Парсим параметры, превращая литералы в объект VAR со значением
     int size = lexemes.size();
     for (int i = 0; i < size; ++i) {
@@ -259,6 +265,10 @@ void Parser::parse(Machine& m) {
                     }
                     lexemes[i].parameters.push_back(Var(new_str));
                 }
+                else {
+                    throw wstring{lexemes[i].str_parameters[j] + L": Неизвестный литерал"};
+
+                }
             }
         }
         catch (const std::wstring& error_message) {
@@ -280,8 +290,8 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"SLEEP" || lexeme.type == L"sleep") {
             m.instructions.push_back(new InstructSLEEP(&lexeme.parameters));
         }
-        else if (lexeme.type == L"VAR" || lexeme.type == L"var") {
-            m.instructions.push_back(new InstructVAR(&lexeme.parameters));
+        else if (lexeme.type == L"VARIABLE" || lexeme.type == L"variable") {
+            m.instructions.push_back(new InstructVARIABLE(&lexeme.parameters));
         }
         else if (lexeme.type == L"PRINT" || lexeme.type == L"print") {
             m.instructions.push_back(new InstructPRINT(&lexeme.parameters));
@@ -292,8 +302,8 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"LABEL" || lexeme.type == L"label") {
             m.instructions.push_back(new InstructLABEL(&lexeme.parameters));
         }
-        else if (lexeme.type == L"JMP" || lexeme.type == L"jmp") {
-            m.instructions.push_back(new InstructJMP(&lexeme.parameters));
+        else if (lexeme.type == L"JUMP" || lexeme.type == L"jump") {
+            m.instructions.push_back(new InstructJUMP(&lexeme.parameters));
         }
         else if (lexeme.type == L"INPUT" || lexeme.type == L"input") {
             m.instructions.push_back(new InstructINPUT(&lexeme.parameters));
@@ -303,6 +313,9 @@ void Parser::parse(Machine& m) {
         }
         else if (lexeme.type == L"TO" || lexeme.type == L"to") {
             m.instructions.push_back(new InstructTO(&lexeme.parameters));
+        }
+        else if (lexeme.type == L"CALC" || lexeme.type == L"calc") {
+            m.instructions.push_back(new InstructCALC(&lexeme.parameters));
         }
         else
         {
