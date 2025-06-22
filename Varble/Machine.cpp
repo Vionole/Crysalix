@@ -856,11 +856,96 @@ void InstructISSET::go(Machine* m, bool prego = false) {
 bool InstructISSET::validate(Machine* m, bool prevalidate = false) {
 	if (prevalidate) {
 		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
-		requiredVar(&this->values[1], m, &this->name, L"Первый");
+		requiredVar(&this->values[0], m, &this->name, L"Первый");
 		requiredVar(&this->values[1], m, &this->name, L"Второй");
 	}
 	else {
 		checkNotExistValue(&this->values[0], m);
 	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TYPEOF
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructTYPEOF::InstructTYPEOF(vector<Var>* val) {
+	this->name = L"TYPEOF";
+	this->values = *val;
+}
+
+void InstructTYPEOF::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		(*m).heap[this->values[0].toSTR().getWStr()] = getValue(&(this->values[1]), &(*m).heap).typeOf();
+		++(*m).instruct_number;
+	}
+}
+
+bool InstructTYPEOF::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
+		requiredVar(&this->values[0], m, &this->name, L"Первый");
+	}
+	else {
+		checkNotExistValue(&this->values[0], m);
+	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// COMP
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructCOMP::InstructCOMP(vector<Var>* val) {
+	this->name = L"COMP";
+	this->values = *val;
+}
+
+void InstructCOMP::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		wstring type = getValue(&this->values[0], &(*m).heap).toSTR().getWStr();
+		if (type != L"=="
+			&& type != L"!="
+			&& type != L">"
+			&& type != L"<"
+			&& type != L">="
+			&& type != L"<="
+			&& type != L"!") {
+			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": операция сравнения " + type + L" неизвестна\n" };
+			}
+
+		if (this->values.size() == 2) {
+			if (type == L"!") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = !getValue(&this->values[1], &(*m).heap).toBLN().getBool();
+			}
+			else {
+				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": операция сравнения " + type + L" не менее 4 параметров\n" };
+			}
+		}
+
+		if (this->values.size() == 4) {
+			if (type == L"==") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[1], &(*m).heap) == getValue(&this->values[2], &(*m).heap);
+			}
+		}
+		++(*m).instruct_number;
+	}
+}
+
+bool InstructCOMP::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		int v[2]{ 2, 4 };
+		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 0, 0, nullptr, v);
+		requiredVar(&this->values[1], m, &this->name, L"Второй");
+
+	}
+	else {
+		checkNotExistValue(&this->values[1], m);
+	}
+
 	return true;
 }
