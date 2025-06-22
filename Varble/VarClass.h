@@ -29,11 +29,10 @@ enum Type {
 };
 
 class Var {
-private:
+public:
     Data data;
     vector<Var> arr;
     map<wstring, Var> mp;
-public:
     Type type;
     //Конструкторы для обычны типов данных
     Var();
@@ -177,13 +176,13 @@ public:
     friend Var operator%=(Var& a, const Var& b);
 
     //Логичекие операторы
-    friend bool operator==(Var& a, const Var& b);
-    friend bool operator!=(Var& a, const Var& b);
-    friend bool operator>(Var& a, const Var& b);
-    friend bool operator<=(Var& a, const Var& b);
-    friend bool operator<(Var& a, const Var& b);
-    friend bool operator>=(Var& a, const Var& b);
-    friend bool operator!(Var& a);
+    friend bool operator==(const Var& a, const Var& b);
+    friend bool operator!=(const Var& a, const Var& b);
+    friend bool operator>(const Var& a, const Var& b);
+    friend bool operator<=(const Var& a, const Var& b);
+    friend bool operator<(const Var& a, const Var& b);
+    friend bool operator>=(const Var& a, const Var& b);
+    friend bool operator!(const Var& a);
 };
 
 

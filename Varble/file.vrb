@@ -1,6 +1,6 @@
 newtemp: ntg3;
-change: $0, dbl 3.1415;
+change: $0, nil;
 change: $1, ntg 4;
-comp: '==', $2, $0, $1;
-print: $0, $1, $2, '\n';
+comp: '!', $2, $0;
+print: $2, '\n';
 end: ntg 0;

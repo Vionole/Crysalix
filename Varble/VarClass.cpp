@@ -3111,7 +3111,7 @@ Var operator%=(Var& a, const Var& b) {
     return a;
 }
 
-bool operator==(Var& a, const Var& b) {
+bool operator==(const Var& a, const Var& b) {
     if (a.type == NTG) {
         if (b.type == NTG) {
             return a.data.ntg == b.data.ntg;
@@ -3376,11 +3376,11 @@ bool operator==(Var& a, const Var& b) {
     }
 }
 
-bool operator!=(Var& a, const Var& b) {
+bool operator!=(const Var& a, const Var& b) {
     return !(a == b);
 }
 
-bool operator>(Var& a, const Var& b) {
+bool operator>(const Var& a, const Var& b) {
     if (a.type == NTG) {
         if (b.type == NTG) {
             return a.data.ntg > b.data.ntg;
@@ -3640,11 +3640,11 @@ bool operator>(Var& a, const Var& b) {
     }
 }
 
-bool operator<=(Var& a, const Var& b) {
+bool operator<=(const Var& a, const Var& b) {
     return !(a > b);
 }
 
-bool operator<(Var& a, const Var& b) {
+bool operator<(const Var& a, const Var& b) {
     if (a.type == NTG) {
         if (b.type == NTG) {
             return a.data.ntg < b.data.ntg;
@@ -3904,11 +3904,11 @@ bool operator<(Var& a, const Var& b) {
     }
 }
 
-bool operator>=(Var& a, const Var& b) {
+bool operator>=(const Var& a, const Var& b) {
     return !(a < b);
 }
 
-bool operator!(Var& a) {
+bool operator!(const Var& a) {
     return !(a.toBLN().getBool());
 }
 
