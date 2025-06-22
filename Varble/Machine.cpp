@@ -822,6 +822,10 @@ void InstructTCOUNT::go(Machine* m, bool prego = false) {
 bool InstructTCOUNT::validate(Machine* m, bool prevalidate = false) {
 	if (prevalidate) {
 		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
+		requiredVar(&this->values[0], m, &this->name, L"Первый");
+	}
+	else {
+		checkNotExistValue(&this->values[0], m);
 	}
 	return true;
 }
@@ -839,7 +843,12 @@ void InstructISSET::go(Machine* m, bool prego = false) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).heap[this->values[0].toSTR().getWStr()] = Var((*m).tmp_count);
+		if ((*m).heap.find(this->values[1].toSTR().getWStr()) != (*m).heap.end()) {
+			(*m).heap[this->values[0].toSTR().getWStr()] = Var(true);
+		}
+		else {
+			(*m).heap[this->values[0].toSTR().getWStr()] = Var(false);
+		}
 		++(*m).instruct_number;
 	}
 }
@@ -847,6 +856,11 @@ void InstructISSET::go(Machine* m, bool prego = false) {
 bool InstructISSET::validate(Machine* m, bool prevalidate = false) {
 	if (prevalidate) {
 		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
+		requiredVar(&this->values[1], m, &this->name, L"Первый");
+		requiredVar(&this->values[1], m, &this->name, L"Второй");
+	}
+	else {
+		checkNotExistValue(&this->values[0], m);
 	}
 	return true;
 }
