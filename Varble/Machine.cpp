@@ -955,3 +955,83 @@ bool InstructCOMP::validate(Machine* m, bool prevalidate = false) {
 
 	return true;
 }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LOGIC
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructLOGIC::InstructLOGIC(vector<Var>* val) {
+	this->name = L"LOGIC";
+	this->values = *val;
+}
+
+void InstructLOGIC::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		wstring type = getValue(&this->values[0], &(*m).heap).toSTR().getWStr();
+		if (type != L"NOT"
+			&& type != L"AND"
+			&& type != L"OR"
+			&& type != L"NAND"
+			&& type != L"NOR"
+			&& type != L"XOR"
+			&& type != L"XNOR"
+			&& type != L"not"
+			&& type != L"and"
+			&& type != L"or"
+			&& type != L"nand"
+			&& type != L"nor"
+			&& type != L"xor"
+			&& type != L"xnor") {
+			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": логическая операция " + type + L" неизвестна\n" };
+		}
+		if (this->values.size() == 3) {
+			if (type == L"NOT" || type == L"not") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = !getValue(&this->values[2], &(*m).heap).toBLN().getBool();
+			}
+			else {
+				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": логическая операция " + type + L" принимет не менее 4 параметров\n" };
+			}
+		}
+		else if (this->values.size() == 4) {
+			if (type == L"AND" || type == L"and") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap).toBLN().getBool() && getValue(&this->values[3], &(*m).heap).toBLN().getBool();
+			}
+			else if (type == L"OR" || type == L"or") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap).toBLN().getBool() || getValue(&this->values[3], &(*m).heap).toBLN().getBool();
+			}
+			else if (type == L"NAND" || type == L"nand") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = !(getValue(&this->values[2], &(*m).heap).toBLN().getBool() && getValue(&this->values[3], &(*m).heap).toBLN().getBool());
+			}
+			else if (type == L"NOR" || type == L"nor") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = !(getValue(&this->values[2], &(*m).heap).toBLN().getBool() || getValue(&this->values[3], &(*m).heap).toBLN().getBool());
+			}
+			else if (type == L"XOR" || type == L"xor") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = !(getValue(&this->values[2], &(*m).heap).toBLN().getBool()) != !(getValue(&this->values[3], &(*m).heap).toBLN().getBool());
+			}
+			else if (type == L"XNOR" || type == L"xnor") {
+				(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap).toBLN().getBool() == getValue(&this->values[3], &(*m).heap).toBLN().getBool();
+			}
+			else {
+				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": логическая операция " + type + L" принимет не более 3 параметров\n" };
+			}
+		}
+		++(*m).instruct_number;
+	}
+}
+
+bool InstructLOGIC::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		int v[2]{ 3, 4 };
+		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 0, 0, nullptr, v);
+		requiredVar(&this->values[1], m, &this->name, L"Второй");
+
+	}
+	else {
+		checkNotExistValue(&this->values[1], m);
+	}
+
+	return true;
+}

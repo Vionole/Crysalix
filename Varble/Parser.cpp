@@ -335,6 +335,9 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"COMP" || lexeme.type == L"comp") {
             m.instructions.push_back(new InstructCOMP(&lexeme.parameters));
         }
+        else if (lexeme.type == L"LOGIC" || lexeme.type == L"logic") {
+            m.instructions.push_back(new InstructLOGIC(&lexeme.parameters));
+        }
         else
         {
             throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i) + L": " + lexeme.type + L": Неизвестная инструкция\n" };

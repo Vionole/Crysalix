@@ -1,7 +1,8 @@
-var: $one, ntg 8;
-var: $two, dbl8;
+var: $one, 'xnor';
+var: $two, dbl0;
 var: $result, nil;
-comp: '!=', $result, $one, $two;
-#print: $result, '\n';
+#comp: '!=', $result, $one, $two;
+logic: $one, $result, true, true;
+print: $result, '\n';
 free: $one, $two, $result;
 end: ntg 0;

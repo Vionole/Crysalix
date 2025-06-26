@@ -153,6 +153,13 @@ public:
 	bool validate(Machine* m, bool prevalidate) override;
 };
 
+class InstructLOGIC : public Instruct {
+public:
+	InstructLOGIC(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
+};
+
 
 class Machine {
 public:
