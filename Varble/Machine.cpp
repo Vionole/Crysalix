@@ -918,19 +918,26 @@ void InstructCOMP::go(Machine* m, bool prego = false) {
 			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": операция сравнения " + type + L" неизвестна\n" };
 			}
 
-		if (this->values.size() == 3) {
-			if (type == L"!") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = !getValue(&this->values[2], &(*m).heap);
-			}
-			else {
-				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": операция сравнения " + type + L" не менее 4 параметров\n" };
-			}
+		if (type == L"==") {
+			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) == getValue(&this->values[3], &(*m).heap);
 		}
-
-		if (this->values.size() == 4) {
-			if (type == L"==") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) == getValue(&this->values[3], &(*m).heap);
-			}
+		else if (type == L"!=") {
+			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) != getValue(&this->values[3], &(*m).heap);
+		}
+		else if (type == L">") {
+			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) > getValue(&this->values[3], &(*m).heap);
+		}
+		else if (type == L"<") {
+			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) < getValue(&this->values[3], &(*m).heap);
+		}
+		else if (type == L">=") {
+			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) >= getValue(&this->values[3], &(*m).heap);
+		}
+		else if (type == L"<=") {
+			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) <= getValue(&this->values[3], &(*m).heap);
+		}
+		else {
+			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": математическая операция " + type + L" неизвестна\n" };
 		}
 		++(*m).instruct_number;
 	}
@@ -938,8 +945,7 @@ void InstructCOMP::go(Machine* m, bool prego = false) {
 
 bool InstructCOMP::validate(Machine* m, bool prevalidate = false) {
 	if (prevalidate) {
-		int v[2]{ 3, 4 };
-		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 0, 0, nullptr, v);
+		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 4);
 		requiredVar(&this->values[1], m, &this->name, L"Второй");
 
 	}

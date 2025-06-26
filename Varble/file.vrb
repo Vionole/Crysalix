@@ -1,6 +1,7 @@
-newtemp: ntg3;
-change: $0, nil;
-change: $1, ntg 4;
-comp: '!', $2, $0;
-print: $2, '\n';
+var: $one, ntg 8;
+var: $two, dbl8;
+var: $result, nil;
+comp: '!=', $result, $one, $two;
+#print: $result, '\n';
+free: $one, $two, $result;
 end: ntg 0;
