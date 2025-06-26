@@ -338,6 +338,12 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"LOGIC" || lexeme.type == L"logic") {
             m.instructions.push_back(new InstructLOGIC(&lexeme.parameters));
         }
+        else if (lexeme.type == L"JIF" || lexeme.type == L"jif") {
+            m.instructions.push_back(new InstructJIF(&lexeme.parameters));
+        }
+        else if (lexeme.type == L"JIFNOT" || lexeme.type == L"jifnot") {
+            m.instructions.push_back(new InstructJIFNOT(&lexeme.parameters));
+        }
         else
         {
             throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i) + L": " + lexeme.type + L": Неизвестная инструкция\n" };

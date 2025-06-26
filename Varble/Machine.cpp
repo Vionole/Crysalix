@@ -71,7 +71,7 @@ Var getValue(Var *val, map<wstring, Var>* heap) {
 // getLabel
 // Возвращает значение параметра по имени переменной или литералу
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int getLabel(Var* val, map<wstring, int>* pointers) {
+Var getLabel(Var* val, map<wstring, int>* pointers) {
 	if ((*val).type == STR && (*val).getWStr()[0] == L'&') {
 		try {
 			return (*pointers).at((*val).getWStr());
@@ -79,6 +79,9 @@ int getLabel(Var* val, map<wstring, int>* pointers) {
 		catch (std::out_of_range& ex) {
 			throw wstring{ L"Метка " + (*val).getWStr() + L" не определена\n" };
 		}
+	}
+	else {
+		return *val;
 	}
 	return 0;
 }
@@ -285,8 +288,8 @@ bool InstructSLEEP::validate(Machine* m, bool prevalidate = false) {
 	return true;
 }
 
-//////i////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// VARIABLE
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VAR
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 InstructVAR::InstructVAR(vector<Var>* val) {
 	this->name = L"VAR";
@@ -420,14 +423,13 @@ void InstructJUMP::go(Machine* m, bool prego = false) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).instruct_number = getLabel(&this->values[0], &(*m).jmp_pointers) + 1;
+		(*m).instruct_number = getLabel(&this->values[0], &(*m).jmp_pointers).toUNTG().getUInt();
 	}
 }
 
 bool InstructJUMP::validate(Machine* m, bool prevalidate = false) {
 	if (prevalidate) {
 		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
-		requiredLabel(&this->values[0], m, &this->name, L"Единственный");
 	}
 	return true;
 }
@@ -1033,5 +1035,68 @@ bool InstructLOGIC::validate(Machine* m, bool prevalidate = false) {
 		checkNotExistValue(&this->values[1], m);
 	}
 
+	return true;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// JIF
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructJIF::InstructJIF(vector<Var>* val) {
+	this->name = L"JIF";
+	this->values = *val;
+}
+
+void InstructJIF::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		bool swtch = getValue(&this->values[0], &(*m).heap).toBLN().getBool();
+		if (swtch) {
+			(*m).instruct_number = getLabel(&this->values[1], &(*m).jmp_pointers).toUNTG().getUInt();
+		}
+		else {
+			++(*m).instruct_number;
+		}
+	}
+}
+
+bool InstructJIF::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		int v[2]{ 1, 2 };
+		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 1, 2, nullptr, v);
+	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// JIFNOT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructJIFNOT::InstructJIFNOT(vector<Var>* val) {
+	this->name = L"InstructJIFNOT";
+	this->values = *val;
+}
+
+void InstructJIFNOT::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		bool swtch = getValue(&this->values[0], &(*m).heap).toBLN().getBool();
+		if (swtch) {
+			++(*m).instruct_number;
+		}
+		else {
+			(*m).instruct_number = getLabel(&this->values[1], &(*m).jmp_pointers).toUNTG().getUInt();
+		}
+	}
+}
+
+bool InstructJIFNOT::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		int v[2]{ 1, 2 };
+		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 1, 2, nullptr, v);
+	}
 	return true;
 }

@@ -1,0 +1,24 @@
+#Циклический расчет факториала:
+
+	var: $n, nil; #Факториал чего считаем
+	var: $i, ntg 1; #С какого числа ведем итерацию
+	var: $result, ntg 1; #Переменная результат
+
+	print: 'Введите число, по которому будет расчет факториала: ';
+	input:$n;
+	to: 'untg', $n; 
+
+	newtemp: ntg 1;
+label: &cycle_start;
+	calc: '*', $result, $i;
+	calc: 'inc', $i;
+	comp: '<=', $0, $i, $n; 
+jif: $0, &cycle_start;
+	forget:;	
+	print: 'Факториал ', $n, ' равен ', $result, '\n';
+	
+	
+	
+end: ntg 0;
+
+

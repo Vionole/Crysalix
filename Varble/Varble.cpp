@@ -45,7 +45,7 @@ int main()
     catch (const std::wstring& error_message) {
         wcout << endl << error_message << endl;
     }
-    system("pause");
+
     return 0;
 }
 

@@ -160,6 +160,20 @@ public:
 	bool validate(Machine* m, bool prevalidate) override;
 };
 
+class InstructJIF : public Instruct {
+public:
+	InstructJIF(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
+};
+
+class InstructJIFNOT : public Instruct {
+public:
+	InstructJIFNOT(vector<Var>* val);
+	void go(Machine* m, bool prego) override;
+	bool validate(Machine* m, bool prevalidate) override;
+};
+
 
 class Machine {
 public:
