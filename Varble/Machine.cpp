@@ -24,6 +24,12 @@ void free(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void label(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jump(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void input(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void change(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void to(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void calc(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void newtemp(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void forget(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void tcount(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Массив с функциями - инструкциями
@@ -38,7 +44,13 @@ func functions[] = {
 	&free,
 	&label,
 	&jump,
-	&input
+	&input,
+	&change,
+	&to,
+	&calc,
+	&newtemp,
+	&forget,
+	&tcount
 };
 
 Machine::Machine(map<wstring, Var> in, bool dbg) {
@@ -444,136 +456,101 @@ void input(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 }
 
-/*
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// INPUT
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructINPUT::InstructINPUT(vector<Var>* val) {
-	this->name = L"INPUT";
-	this->values = *val;
-}
-
-void InstructINPUT::go(Machine* m, bool prego = false) {
-	if (prego) {
-		++(*m).instruct_number;
-	}
-	else {
-		wstring str;
-		getline(wcin, str);
-		(*m).heap[this->values[0].getWStr()] = Var(str);
-		++(*m).instruct_number;
-	}
-}
-
-bool InstructINPUT::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
-		requiredVar(&this->values[0], m, &this->name, L"Первый");
-	}
-	else {
-		checkNotExistValue(& this->values[0], m);
-	}
-	return true;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CHANGE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructCHANGE::InstructCHANGE(vector<Var>* val) {
-	this->name = L"CHANGE";
-	this->values = *val;
-}
+void change(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"CHANGE";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[0], m);
+	}
 
-void InstructCHANGE::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).heap[this->values[0].getWStr()] = getValue(&this->values[1], &(*m).heap);
+		(*m).heap[(*i).parameters[0].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap);
 		++(*m).instruct_number;
 	}
-}
-
-bool InstructCHANGE::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
-		requiredVar(&this->values[0], m, &this->name, L"Первый");
-	}
-	else {
-		checkNotExistValue(&this->values[0], m);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TO
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructTO::InstructTO(vector<Var>* val) {
-	this->name = L"TO";
-	this->values = *val;
-}
+void to(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"TO";
+		int v[2]{ 2, 3 };
+		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[1], m);
+	}
 
-void InstructTO::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		wstring type = getValue(&this->values[0], &(*m).heap).toSTR().getWStr();
+		wstring type = getValue(&(*i).parameters[0], &(*m).heap).toSTR().getWStr();
 
-		if (this->values.size() == 2) {
+		if ((*i).parameters.size() == 2) {
 			if (type == L"NTG" || type == L"ntg") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[1], &(*m).heap).toNTG();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toNTG();
 			}
 			else if (type == L"UNTG" || type == L"untg") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[1], &(*m).heap).toUNTG();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toUNTG();
 			}
 			else if (type == L"DBL" || type == L"dbl") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[1], &(*m).heap).toDBL();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toDBL();
 			}
 			else if (type == L"CHR" || type == L"chr") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[1], &(*m).heap).toCHR();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toCHR();
 			}
 			else if (type == L"UCHR" || type == L"uchr") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[1], &(*m).heap).toUCHR();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toUCHR();
 			}
 			else if (type == L"BLN" || type == L"bln") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[1], &(*m).heap).toBLN();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toBLN();
 			}
 			else if (type == L"STR" || type == L"str") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[1], &(*m).heap).toSTR();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toSTR();
 			}
 			else if (type == L"ARR" || type == L"arr") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[1], &(*m).heap).toARR();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toARR();
 			}
 			else {
 				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": Тип данных " + type + L" неизвестен\n" };
 			}
 		}
-		else if (this->values.size() == 3) {
+		else if ((*i).parameters.size() == 3) {
 			if (type == L"NTG" || type == L"ntg") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap).toNTG();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], & (*m).heap).toNTG();
 			}
 			else if (type == L"UNTG" || type == L"untg") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap).toUNTG();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toUNTG();
 			}
 			else if (type == L"DBL" || type == L"dbl") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap).toDBL();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toDBL();
 			}
 			else if (type == L"CHR" || type == L"chr") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap).toCHR();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toCHR();
 			}
 			else if (type == L"UCHR" || type == L"uchr") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap).toUCHR();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toUCHR();
 			}
 			else if (type == L"BLN" || type == L"bln") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap).toBLN();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toBLN();
 			}
 			else if (type == L"STR" || type == L"str") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap).toSTR();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toSTR();
 			}
 			else if (type == L"ARR" || type == L"arr") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap).toARR();
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toARR();
 			}
 			else {
 				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": Тип данных " + type + L" неизвестен\n" };
@@ -581,36 +558,28 @@ void InstructTO::go(Machine* m, bool prego = false) {
 		}
 		++(*m).instruct_number;
 	}
-}
-
-bool InstructTO::validate(Machine* m, bool prevalidate = false) {
-
-	if (prevalidate) {
-		int v[2]{ 2, 3 };
-		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 0, 0, nullptr, v);
-		requiredVar(&this->values[1], m, &this->name, L"Второй");
-	}
-	else {
-		checkNotExistValue(&this->values[1], m);
-	}
-
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CALC
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructCALC::InstructCALC(vector<Var>* val) {
-	this->name = L"CALC";
-	this->values = *val;
-}
+void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"CALC";
+		int v[2]{ 2, 4 };
+		checkParameterCount(RANGE, (*i).parameters.size(), m, &name, 0, 0, v);
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 
-void InstructCALC::go(Machine* m, bool prego = false) {
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[1], m);
+	}
+
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		wstring type = getValue(&this->values[0], &(*m).heap).toSTR().getWStr();
+		wstring type = getValue(&(*i).parameters[0], &(*m).heap).toSTR().getWStr();
 		if (type != L"+"
 			&& type != L"-"
 			&& type != L"*"
@@ -628,222 +597,190 @@ void InstructCALC::go(Machine* m, bool prego = false) {
 			&& type != L"log"
 			&& type != L"ln"
 			&& type != L"fact"
-			&& type != L"root"){
+			&& type != L"root") {
 			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": математическая операция " + type + L" неизвестна\n" };
 		}
-		if (this->values.size() == 2) {
+		if ((*i).parameters.size() == 2) {
 			if (type == L"INC" || type == L"inc") {
-				(*m).heap[this->values[1].getWStr()] += Var(1);
+				(*m).heap[(*i).parameters[1].getWStr()] += Var(1);
 			}
 			else if (type == L"DEC" || type == L"dec") {
-				(*m).heap[this->values[1].getWStr()] -= Var(1);
+				(*m).heap[(*i).parameters[1].getWStr()] -= Var(1);
 			}
 			else if (type == L"FACT" || type == L"fact") {
-				int fact = (*m).heap[this->values[1].getWStr()].toUNTG().getUInt();
+				int fact = (*m).heap[(*i).parameters[1].getWStr()].toUNTG().getUInt();
 				unsigned long long int result = 1;
 				for (int i = 1; i <= fact; ++i) {
 					result *= i;
 				}
-				(*m).heap[this->values[1].getWStr()] = Var(result);
+				(*m).heap[(*i).parameters[1].getWStr()] = Var(result);
 			}
 			else if (type == L"LN" || type == L"ln") {
-				(*m).heap[this->values[1].getWStr()] = Var(log((*m).heap[this->values[1].getWStr()].toDBL().getDouble()));
+				(*m).heap[(*i).parameters[1].getWStr()] = Var(log((*m).heap[(*i).parameters[1].getWStr()].toDBL().getDouble()));
 			}
 			else {
 				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": математическая операция " + type + L" принимает 2 и больше параметров\n" };
 			}
 		}
-		if (this->values.size() == 3) {
+		if ((*i).parameters.size() == 3) {
 			if (type == L"INC" || type == L"inc") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap) + Var(1);
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) + Var(1);
 			}
 			else if (type == L"DEC" || type == L"dec") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap) - Var(1);
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) - Var(1);
 			}
 			else if (type == L"FACT" || type == L"fact") {
-				int fact = getValue(&this->values[2], &(*m).heap).toUNTG().getUInt();
+				int fact = getValue(&(*i).parameters[2], &(*m).heap).toUNTG().getUInt();
 				unsigned long long int result = 1;
 				for (int i = 1; i <= fact; ++i) {
 					result *= i;
 				}
-				(*m).heap[this->values[1].getWStr()] = Var(result);
+				(*m).heap[(*i).parameters[1].getWStr()] = Var(result);
 			}
 			else if (type == L"LN" || type == L"ln") {
-				(*m).heap[this->values[1].getWStr()] = Var(log(getValue(&this->values[2], &(*m).heap).toDBL().getDouble()));
+				(*m).heap[(*i).parameters[1].getWStr()] = Var(log(getValue(&(*i).parameters[2], &(*m).heap).toDBL().getDouble()));
 			}
 			else if (type == L"+") {
-				(*m).heap[this->values[1].getWStr()] += getValue(&this->values[2], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] += getValue(&(*i).parameters[2], &(*m).heap);
 			}
 			else if (type == L"-") {
-				(*m).heap[this->values[1].getWStr()] -= getValue(&this->values[2], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] -= getValue(&(*i).parameters[2], &(*m).heap);
 			}
 			else if (type == L"*") {
-				(*m).heap[this->values[1].getWStr()] *= getValue(&this->values[2], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] *= getValue(&(*i).parameters[2], &(*m).heap);
 			}
 			else if (type == L"/") {
-				(*m).heap[this->values[1].getWStr()] /= getValue(&this->values[2], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] /= getValue(&(*i).parameters[2], &(*m).heap);
 			}
 			else if (type == L"%") {
-				(*m).heap[this->values[1].getWStr()] %= getValue(&this->values[2], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] %= getValue(&(*i).parameters[2], &(*m).heap);
 			}
 			else if (type == L"^") {
-				(*m).heap[this->values[1].getWStr()] = Var(pow(getValue(&this->values[1], &(*m).heap).toDBL().getDouble(), getValue(&this->values[2], &(*m).heap).toDBL().getDouble()));
+				(*m).heap[(*i).parameters[1].getWStr()] = Var(pow(getValue(&(*i).parameters[1], &(*m).heap).toDBL().getDouble(), getValue(&(*i).parameters[2], &(*m).heap).toDBL().getDouble()));
 			}
 			else if (type == L"ROOT" || type == L"root") {
-				(*m).heap[this->values[1].getWStr()] = Var(pow(getValue(&this->values[1], &(*m).heap).toDBL().getDouble(), 1.0 / getValue(&this->values[2], &(*m).heap).toDBL().getDouble()));
+				(*m).heap[(*i).parameters[1].getWStr()] = Var(pow(getValue(&(*i).parameters[1], &(*m).heap).toDBL().getDouble(), 1.0 / getValue(&(*i).parameters[2], &(*m).heap).toDBL().getDouble()));
 			}
 			else if (type == L"LOG" || type == L"log") {
-				(*m).heap[this->values[1].getWStr()] = log(getValue(&this->values[1], &(*m).heap).toDBL().getDouble()) / log(getValue(&this->values[2], &(*m).heap).toDBL().getDouble());
+				(*m).heap[(*i).parameters[1].getWStr()] = log(getValue(&(*i).parameters[1], &(*m).heap).toDBL().getDouble()) / log(getValue(&(*i).parameters[2], &(*m).heap).toDBL().getDouble());
 
 			}
 		}
-		if (this->values.size() == 4) {
+		if ((*i).parameters.size() == 4) {
 			if (type == L"+") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap) + getValue(&this->values[3], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) + getValue(&(*i).parameters[3], &(*m).heap);
 			}
 			else if (type == L"-") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap) - getValue(&this->values[3], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) - getValue(&(*i).parameters[3], &(*m).heap);
 			}
 			else if (type == L"*") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap) * getValue(&this->values[3], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) * getValue(&(*i).parameters[3], &(*m).heap);
 			}
 			else if (type == L"/") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap) / getValue(&this->values[3], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) / getValue(&(*i).parameters[3], &(*m).heap);
 			}
 			else if (type == L"%") {
-				(*m).heap[this->values[1].getWStr()] = getValue(&this->values[2], &(*m).heap) % getValue(&this->values[3], &(*m).heap);
+				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) % getValue(&(*i).parameters[3], &(*m).heap);
 			}
 			else if (type == L"^") {
-				(*m).heap[this->values[1].getWStr()] = Var(pow(getValue(&this->values[2], &(*m).heap).toDBL().getDouble(), getValue(&this->values[3], &(*m).heap).toDBL().getDouble()));
+				(*m).heap[(*i).parameters[1].getWStr()] = Var(pow(getValue(&(*i).parameters[2], &(*m).heap).toDBL().getDouble(), getValue(&(*i).parameters[3], &(*m).heap).toDBL().getDouble()));
 			}
 			else if (type == L"ROOT" || type == L"root") {
-				(*m).heap[this->values[1].getWStr()] = Var(pow(getValue(&this->values[2], &(*m).heap).toDBL().getDouble(), 1.0 / getValue(&this->values[3], &(*m).heap).toDBL().getDouble()));
+				(*m).heap[(*i).parameters[1].getWStr()] = Var(pow(getValue(&(*i).parameters[2], &(*m).heap).toDBL().getDouble(), 1.0 / getValue(&(*i).parameters[3], &(*m).heap).toDBL().getDouble()));
 			}
 			else if (type == L"LOG" || type == L"log") {
-				(*m).heap[this->values[1].getWStr()] = log(getValue(&this->values[2], &(*m).heap).toDBL().getDouble()) / log(getValue(&this->values[3], &(*m).heap).toDBL().getDouble());
+				(*m).heap[(*i).parameters[1].getWStr()] = log(getValue(&(*i).parameters[2], &(*m).heap).toDBL().getDouble()) / log(getValue(&(*i).parameters[3], &(*m).heap).toDBL().getDouble());
 
 			}
 			else {
 				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": математическая операция " + type + L" принимает до 3 параметров\n" };
 			}
 		}
-		
+
 		++(*m).instruct_number;
 	}
-}
-
-bool InstructCALC::validate(Machine* m, bool prevalidate = false) {
-
-	if (prevalidate) {
-		int v[2]{ 2, 4 };
-		checkParameterCount(RANGE, this->values.size(), m, &this->name, 0, 0, v);
-		requiredVar(&this->values[1], m, &this->name, L"Второй");
-
-	}
-	else {
-		checkNotExistValue(&this->values[1], m);
-	}
-
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // NEWTEMP
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructNEWTEMP::InstructNEWTEMP(vector<Var>* val) {
-	this->name = L"NEWTEMP";
-	this->values = *val;
-}
+void newtemp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"NEWTEMP";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+	}
 
-void InstructNEWTEMP::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
 		int start = (*m).tmp_count;
-		(*m).tmp_count += getValue(&(this->values[0]), &(*m).heap).toUNTG().getUInt();
-		for (int i = start; i < (*m).tmp_count; ++i) {
-			(*m).heap[L"$" + to_wstring(i)] = Var();
+		(*m).tmp_count += getValue(&(*i).parameters[0], & (*m).heap).toUNTG().getUInt();
+		for (int it = start; it < (*m).tmp_count; ++it) {
+			(*m).heap[L"$" + to_wstring(it)] = Var();
 		}
 		++(*m).instruct_number;
 	}
-}
 
-bool InstructNEWTEMP::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FORGET
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructFORGET::InstructFORGET(vector<Var>* val) {
-	this->name = L"FORGET";
-	this->values = *val;
-}
+void forget(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"FORGET";
+		int v[2]{ 0, 1 };
+		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+	}
 
-void InstructFORGET::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		if (this->values.size() == 0) {
+		if ((*i).parameters.size() == 0) {
 			int start = (*m).tmp_count - 1;
 			(*m).tmp_count = 0;
-			for (int i = start; i >= (*m).tmp_count; --i) {
-				(*m).heap.erase(L"$" + to_wstring(i));
+			for (int it = start; it >= (*m).tmp_count; --it) {
+				(*m).heap.erase(L"$" + to_wstring(it));
 			}
 		}
-		else if (this->values.size() == 1) {
+		else if ((*i).parameters.size() == 1) {
 			int start = (*m).tmp_count - 1;
-			(*m).tmp_count -= getValue(&(this->values[0]), &(*m).heap).toUNTG().getUInt();
-			for (int i = start; i >= (*m).tmp_count; --i) {
-				(*m).heap.erase(L"$" + to_wstring(i));
+			(*m).tmp_count -= getValue(&(*i).parameters[0], &(*m).heap).toUNTG().getUInt();
+			for (int it = start; it >= (*m).tmp_count; --it) {
+				(*m).heap.erase(L"$" + to_wstring(it));
 			}
 		}
 		++(*m).instruct_number;
 	}
-}
 
-bool InstructFORGET::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		int v[2]{ 0, 1};
-		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 0, 0, nullptr, v);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TCOUNT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructTCOUNT::InstructTCOUNT(vector<Var>* val) {
-	this->name = L"TCOUNT";
-	this->values = *val;
-}
+void tcount(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"TCOUNT";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[0], m);
+	}
 
-void InstructTCOUNT::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).heap[this->values[0].toSTR().getWStr()] = Var((*m).tmp_count);
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = Var((*m).tmp_count);
 		++(*m).instruct_number;
 	}
+
 }
 
-bool InstructTCOUNT::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
-		requiredVar(&this->values[0], m, &this->name, L"Первый");
-	}
-	else {
-		checkNotExistValue(&this->values[0], m);
-	}
-	return true;
-}
-
+/*
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ISSET
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -33,7 +33,7 @@ public:
     Data data;
     vector<Var> arr;
     map<wstring, Var> mp;
-    Type type;
+    Type type = NIL;
     // онструкторы дл€ обычны типов данных
     Var();
     Var(unsigned long long int untg);

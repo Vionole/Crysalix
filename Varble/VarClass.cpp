@@ -3913,9 +3913,9 @@ bool operator!(const Var& a) {
 }
 
 void Unicode() {
-    _setmode(_fileno(stdout), _O_U16TEXT);
-    _setmode(_fileno(stdin), _O_U16TEXT);
-    _setmode(_fileno(stderr), _O_U16TEXT);
+    int result = _setmode(_fileno(stdout), _O_U16TEXT);
+    result = _setmode(_fileno(stdin), _O_U16TEXT);
+    result = _setmode(_fileno(stderr), _O_U16TEXT);
 }
 
 void swap(Var& a, Var& b) {

@@ -123,10 +123,10 @@ void Parser::parse(Machine& m) {
                         }
                     }
                     else {
-                        //Перебираем символы до тех пор, пока не найдем пробел
+                        //Перебираем символы до тех пор, пока не найдем двоеточие :
                         //Это конец наименования инструкции
                         if (instruction_parameters == false) {
-                            if (c == L' ') {
+                            if (c == L':') {
                                 str.erase(0, str.find_first_not_of(L" \n\r\t"));
                                 str.erase(str.find_last_not_of(L" \n\r\t") + 1);
                                 instruction.type = str;

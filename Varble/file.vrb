@@ -1,16 +1,11 @@
-label &1;
-label &2;
-var $var, ntg 10;
-var $1, ntg 10;
-var $2, ntg 10;
-var $3, ntg 10;
-var $4, ntg 10;
-var $5, ntg 10;
-var $6, ntg 10;
-free $1, $2, $3;
-var $1, ntg 10;
-input $6;
-print $6;
-end ntg 0;
+var: $1, ntg 2;
+newtemp: ntg3;
+newtemp: ntg2;
+tcount: $0;
+#print: $0, '\n';
+forget: ntg 4;
+tcount: $0;
+#print: $0, '\n';
+end: ntg 0;
 
 

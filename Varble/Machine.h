@@ -37,7 +37,7 @@ enum OP_CODE {
 };
 
 struct Instruction {
-	OP_CODE opCode;
+	OP_CODE opCode = NOP;
 	vector<Var> parameters;
 };
 
