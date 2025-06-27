@@ -11,6 +11,36 @@ const unsigned char MIN = 1;		//Минимальное количество параметров
 const unsigned char RANGE = 3;		//Параметры от минимального до максимального
 const unsigned char VARIANTS = 4;	//Варианты количества параметров
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Прототипы функций - инструкций
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void nop(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void end(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void pause(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void sleep(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void var(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void print(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void free(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void label(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void jump(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void input(Machine* m, Instruction* i, bool prevalidate, bool prego);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Массив с функциями - инструкциями
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+func functions[] = {
+	&nop,
+	&end,
+	&pause,
+	&sleep,
+	&var,
+	&print,
+	&free,
+	&label,
+	&jump,
+	&input
+};
+
 Machine::Machine(map<wstring, Var> in, bool dbg) {
 	this->in_data = in;
 	this->debug = dbg;
@@ -20,9 +50,7 @@ void Machine::prepare() {
 	this->instruct_count = instructions.size();
 	this->instruct_number = 0;
 	for (int i = 0; i < this->instruct_count; ++i) {
-		if (this->instructions[i]->validate(this, true)) {
-			this->instructions[i]->go(this, true);
-		}
+		functions[this->instructions[i].opCode](this, &instructions[i], true, true);
 	}
 	this->instruct_number = 0;
 }
@@ -33,17 +61,11 @@ Var Machine::go() {
 			throw wstring{ error_type_2 + to_wstring(this->instruct_number) + L": Неожиданный конец программы. Пропущена инструкция END\n" };
 		}
 
-
-		if (this->instructions[this->instruct_number]->validate(this, false)) {
-			try {
-				this->instructions[this->instruct_number]->go(this, false);
-			}
-			catch (const std::wstring& error_message) {
-				throw wstring{ error_message};
-			}
+		try {
+			functions[this->instructions[this->instruct_number].opCode](this, &instructions[this->instruct_number], false, false);
 		}
-		else {
-			throw wstring{ error_type + to_wstring(this->instruct_number + 1) + L": Неизвестная ошибка интерпретации\n" };
+		catch (const std::wstring& error_message) {
+				throw wstring{ error_message };
 		}
 	}
 	return this->ret_data;
@@ -196,57 +218,56 @@ void requiredLabel(Var* val, Machine* m, wstring* type, wstring num) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // NOP
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructNOP::InstructNOP(vector<Var>* val) {
-	this->name = L"NOP";
-	this->values = *val;
-}
-
-void InstructNOP::go(Machine* m, bool prego = false) {
-	++(*m).instruct_number;
-}
-
-bool InstructNOP::validate(Machine* m, bool prevalidate = false) {
+void nop(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 0);
+		wstring name = L"NOP";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 0);
 	}
-	return true;
+	else {
+		//Ничего
+	}
+
+	if (prego) {
+		//Ничего
+	}
+	else {
+		++(*m).instruct_number;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // END
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructEND::InstructEND(vector<Var>* val) {
-	this->name = L"END";
-	this->values = *val;
-}
+void end(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"END";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+	}
+	else {
+		//Ничего
+	}
 
-void InstructEND::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).ret_data = getValue(&this->values[0], &(*m).heap);
+		(*m).ret_data = getValue(&(*i).parameters[0], &(*m).heap);
 		(*m).instruct_number = -1;
 	}
-
-}
-
-bool InstructEND::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PAUSE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructPAUSE::InstructPAUSE(vector<Var>* val) {
-	this->name = L"PAUSE";
-	this->values = *val;
-}
+void pause(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"PAUSE";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 0);
+	}
+	else {
+		//Ничего
+	}
 
-void InstructPAUSE::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
@@ -256,183 +277,174 @@ void InstructPAUSE::go(Machine* m, bool prego = false) {
 	}
 }
 
-bool InstructPAUSE::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 0);
-	}
-	return true;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SLEEP
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructSLEEP::InstructSLEEP(vector<Var>* val) {
-	this->name = L"SLEEP";
-	this->values = *val;
-}
+void sleep(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"SLEEP";
+		if (prevalidate) {
+			checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		}
+	}
+	else {
+		//Ничего
+	}
 
-void InstructSLEEP::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		Sleep(getValue(&this->values[0], &(*m).heap).toUNTG().getUInt());
+		Sleep(getValue(&(*i).parameters[0], &(*m).heap).toUNTG().getUInt());
 		++(*m).instruct_number;
 	}
-}
-
-bool InstructSLEEP::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
-	}
-	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // VAR
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructVAR::InstructVAR(vector<Var>* val) {
-	this->name = L"VAR";
-	this->values = *val;
-}
+void var(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"VAR";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+	else {
+		checkExistValue(&(*i).parameters[0], m);
+	}
 
-void InstructVAR::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).heap[this->values[0].getWStr()] = getValue(&this->values[1], &(*m).heap);
+		(*m).heap[(*i).parameters[0].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap);
 		++(*m).instruct_number;
 	}
-}
-
-bool InstructVAR::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
-		requiredVar(&this->values[0], m, &this->name, L"Первый");
-	}
-	else {
-		checkExistValue(&this->values[0], m);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PRINT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructPRINT::InstructPRINT(vector<Var>* val) {
-	this->name = L"PRINT";
-	this->values = *val;
-}
+void print(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"PRINT";
+		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 1);
+	}
+	else {
+		//Ничего
+	}
 
-void InstructPRINT::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		for (auto& i : this->values)
+		for (Var& v : (*i).parameters)
 		{
-			wcout << getValue(&i, &(*m).heap);
+			wcout << getValue(&v, &(*m).heap);
 		}
 		++(*m).instruct_number;
 	}
-}
-
-bool InstructPRINT::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(MIN, this->values.size(), m, &this->name, 0, 1);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FREE
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructFREE::InstructFREE(vector<Var>* val) {
-	this->name = L"FREE";
-	this->values = *val;
-}
+void free(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"FREE";
+		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 1);
+		for (Var& i : (*i).parameters)
+		{
+			requiredVar(&i, m, &name, i.toSTR().getWStr());
+		}
+	}
+	else {
+		for (Var& v : (*i).parameters)
+		{
+			checkNotExistValue(&v, m);
+		}
+	}
 
-void InstructFREE::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		for (auto& i : this->values)
+		for (Var& v : (*i).parameters)
 		{
-			(*m).heap.erase(i.getWStr());
+			(*m).heap.erase(v.getWStr());
 		}
 		++(*m).instruct_number;
 	}
-}
-
-bool InstructFREE::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(MIN, this->values.size(), m, &this->name, 0, 1);
-		for (auto& i : this->values)
-		{
-			requiredVar(&i, m, &this->name, i.toSTR().getWStr());
-		}
-	}
-	else {
-		for (auto& i : this->values)
-		{
-			checkNotExistValue(&i, m);
-		}
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LABEL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructLABEL::InstructLABEL(vector<Var>* val) {
-	this->name = L"LABEL";
-	this->values = *val;
-}
+void label(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"LABEL";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		requiredLabel(&(*i).parameters[0], m, &name, L"Единственный");
+		checkExistLabel(&(*i).parameters[0], m);
+	}
+	else {
+		//Ничего
+	}
 
-void InstructLABEL::go(Machine* m, bool prego = false) {
 	if (prego) {
-		(*m).jmp_pointers[this->values[0].toSTR().getWStr()] = (*m).instruct_number;
+		(*m).jmp_pointers[(*i).parameters[0].toSTR().getWStr()] = (*m).instruct_number;
 		++(*m).instruct_number;
 	}
 	else {
 		++(*m).instruct_number;
 	}
-}
-
-bool InstructLABEL::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
-		requiredLabel(&this->values[0], m, &this->name, L"Единственный");
-		checkExistLabel(&this->values[0], m);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // JUMP
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructJUMP::InstructJUMP(vector<Var>* val) {
-	this->name = L"JUMP";
-	this->values = *val;
-}
+void jump(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"JUMP";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+	}
+	else {
+		//Ничего
+	}
 
-void InstructJUMP::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).instruct_number = getLabel(&this->values[0], &(*m).jmp_pointers).toUNTG().getUInt();
+		(*m).instruct_number = getLabel(&(*i).parameters[0], &(*m).jmp_pointers).toUNTG().getUInt();
 	}
 }
 
-bool InstructJUMP::validate(Machine* m, bool prevalidate = false) {
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// INPUT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void input(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 1);
+		wstring name = L"INPUT";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
-	return true;
+	else {
+		checkNotExistValue(&(*i).parameters[0], m);
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		wstring str;
+		getline(wcin, str);
+		(*m).heap[(*i).parameters[0].getWStr()] = Var(str);
+		++(*m).instruct_number;
+	}
 }
+
+/*
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INPUT
@@ -1100,3 +1112,34 @@ bool InstructJIFNOT::validate(Machine* m, bool prevalidate = false) {
 	}
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SPOINT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InstructSPOINT::InstructSPOINT(vector<Var>* val) {
+	this->name = L"InstructSPOINT";
+	this->values = *val;
+}
+
+void InstructSPOINT::go(Machine* m, bool prego = false) {
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		bool swtch = getValue(&this->values[0], &(*m).heap).toBLN().getBool();
+		if (swtch) {
+			++(*m).instruct_number;
+		}
+		else {
+			(*m).instruct_number = getLabel(&this->values[1], &(*m).jmp_pointers).toUNTG().getUInt();
+		}
+	}
+}
+
+bool InstructSPOINT::validate(Machine* m, bool prevalidate = false) {
+	if (prevalidate) {
+		int v[2]{ 1, 2 };
+		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 1, 2, nullptr, v);
+	}
+	return true;
+}*/

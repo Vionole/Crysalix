@@ -123,10 +123,10 @@ void Parser::parse(Machine& m) {
                         }
                     }
                     else {
-                        //Перебираем символы до тех пор, пока не найдем знак :
+                        //Перебираем символы до тех пор, пока не найдем пробел
                         //Это конец наименования инструкции
                         if (instruction_parameters == false) {
-                            if (c == L':') {
+                            if (c == L' ') {
                                 str.erase(0, str.find_first_not_of(L" \n\r\t"));
                                 str.erase(str.find_last_not_of(L" \n\r\t") + 1);
                                 instruction.type = str;
@@ -277,77 +277,83 @@ void Parser::parse(Machine& m) {
     }
     
     int i = 1;
+    Instruction inst;
     for (Lexeme& lexeme : lexemes) {
         if (lexeme.type == L"NOP" || lexeme.type == L"nop") {
-            m.instructions.push_back(new InstructNOP(&lexeme.parameters));
+            inst.opCode = NOP;
         }
         else if (lexeme.type == L"END" || lexeme.type == L"end") {
-            m.instructions.push_back(new InstructEND(&lexeme.parameters));
+            inst.opCode = END;
         }
         else if (lexeme.type == L"PAUSE" || lexeme.type == L"pause") {
-            m.instructions.push_back(new InstructPAUSE(&lexeme.parameters));
+            inst.opCode = PAUSE;
         }
         else if (lexeme.type == L"SLEEP" || lexeme.type == L"sleep") {
-            m.instructions.push_back(new InstructSLEEP(&lexeme.parameters));
+            inst.opCode = SLEEP;
         }
         else if (lexeme.type == L"VAR" || lexeme.type == L"var") {
-            m.instructions.push_back(new InstructVAR(&lexeme.parameters));
+            inst.opCode = VAR;
         }
         else if (lexeme.type == L"PRINT" || lexeme.type == L"print") {
-            m.instructions.push_back(new InstructPRINT(&lexeme.parameters));
+            inst.opCode = PRINT;
         }
         else if (lexeme.type == L"FREE" || lexeme.type == L"free") {
-            m.instructions.push_back(new InstructFREE(&lexeme.parameters));
+            inst.opCode = FREE;
         }
         else if (lexeme.type == L"LABEL" || lexeme.type == L"label") {
-            m.instructions.push_back(new InstructLABEL(&lexeme.parameters));
+            inst.opCode = LABEL;
         }
         else if (lexeme.type == L"JUMP" || lexeme.type == L"jump") {
-            m.instructions.push_back(new InstructJUMP(&lexeme.parameters));
+            inst.opCode = JUMP;
         }
         else if (lexeme.type == L"INPUT" || lexeme.type == L"input") {
-            m.instructions.push_back(new InstructINPUT(&lexeme.parameters));
+            inst.opCode = INPT;
         }
         else if (lexeme.type == L"CHANGE" || lexeme.type == L"change") {
-            m.instructions.push_back(new InstructCHANGE(&lexeme.parameters));
+            inst.opCode = CHANGE;
         }
         else if (lexeme.type == L"TO" || lexeme.type == L"to") {
-            m.instructions.push_back(new InstructTO(&lexeme.parameters));
+            inst.opCode = TO;
         }
         else if (lexeme.type == L"CALC" || lexeme.type == L"calc") {
-            m.instructions.push_back(new InstructCALC(&lexeme.parameters));
+            inst.opCode = CALC;
         }
         else if (lexeme.type == L"NEWTEMP" || lexeme.type == L"newtemp") {
-            m.instructions.push_back(new InstructNEWTEMP(&lexeme.parameters));
+            inst.opCode = NEWTEMP;
         }
         else if (lexeme.type == L"FORGET" || lexeme.type == L"forget") {
-            m.instructions.push_back(new InstructFORGET(&lexeme.parameters));
+            inst.opCode = FORGET;
         }
         else if (lexeme.type == L"TCOUNT" || lexeme.type == L"tcount") {
-            m.instructions.push_back(new InstructTCOUNT(&lexeme.parameters));
+            inst.opCode = TCOUNT;
         }
         else if (lexeme.type == L"ISSET" || lexeme.type == L"isset") {
-            m.instructions.push_back(new InstructISSET(&lexeme.parameters));
+            inst.opCode = ISSET;
         }
         else if (lexeme.type == L"TYPEOF" || lexeme.type == L"typeof") {
-            m.instructions.push_back(new InstructTYPEOF(&lexeme.parameters));
+            inst.opCode = TYPEOF;
         }
         else if (lexeme.type == L"COMP" || lexeme.type == L"comp") {
-            m.instructions.push_back(new InstructCOMP(&lexeme.parameters));
+            inst.opCode = COMP;
         }
         else if (lexeme.type == L"LOGIC" || lexeme.type == L"logic") {
-            m.instructions.push_back(new InstructLOGIC(&lexeme.parameters));
+            inst.opCode = LOGIC;
         }
         else if (lexeme.type == L"JIF" || lexeme.type == L"jif") {
-            m.instructions.push_back(new InstructJIF(&lexeme.parameters));
+            inst.opCode = JIF;
         }
         else if (lexeme.type == L"JIFNOT" || lexeme.type == L"jifnot") {
-            m.instructions.push_back(new InstructJIFNOT(&lexeme.parameters));
+            inst.opCode = JIFNOT;
+        }
+        else if (lexeme.type == L"SPOINT" || lexeme.type == L"spoint") {
+            inst.opCode = SPOINT;
         }
         else
         {
             throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i) + L": " + lexeme.type + L": Неизвестная инструкция\n" };
         }
+        inst.parameters = lexeme.parameters;
+        m.instructions.push_back(inst);
         ++i;
     }
 }
