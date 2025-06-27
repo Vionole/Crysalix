@@ -1,11 +1,37 @@
-var: $1, ntg 2;
-newtemp: ntg3;
-newtemp: ntg2;
-tcount: $0;
-#print: $0, '\n';
-forget: ntg 4;
-tcount: $0;
-#print: $0, '\n';
+#Циклический расчет факториала:
+	var: $n, ntg16; 	#Факториал чего считаем
+	var: $i, ntg 1; 	#С какого числа ведем итерацию
+	var: $result, ntg1; 	#Переменная результата
+	var: $j, ntg1; 		#Итератор главного цикла
+	var: $max, ntg1000000; 	#Максимальне количество итераций главного цикла.
+	newtemp: ntg 1;
+label: &main_loop;
+	#print: 'Введите число, по которому будет расчет факториала: ';
+	#input:$n;
+	to: 'untg', $n; 
+
+	newtemp: ntg 1;
+	label: &cycle_start;
+		calc: '*', $result, $i;
+		calc: 'inc', $i;
+		comp: '<=', $1, $i, $n; 
+	jif: $1, &cycle_start;
+	forget: ntg 1;	
+
+	#print: 'Факториал ', $n, ' равен ', $result, '\n';
+	
+#Сбрасывем значения переменных перед следующей итерации
+	change: $i, ntg 1;
+	change: $n, nil;
+	change: $result, ntg1;
+
+	calc: 'inc', $j;
+	comp: '<', $0, $j, $max; 
+jif: $0, &main_loop;	
+	
+#Освобождаем память, конец программы
+	forget:;
+	free: $n, $i, $result, $j, $max;
+#pause:;
+
 end: ntg 0;
-
-

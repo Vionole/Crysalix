@@ -30,6 +30,13 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void newtemp(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void forget(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void tcount(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void isset(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void typeof(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void comp(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void logic(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void jif(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void spoint(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Массив с функциями - инструкциями
@@ -50,7 +57,14 @@ func functions[] = {
 	&calc,
 	&newtemp,
 	&forget,
-	&tcount
+	&tcount,
+	&isset,
+	&typeof,
+	&comp,
+	&logic,
+	&jif,
+	&jifnot,
+	&spoint
 };
 
 Machine::Machine(map<wstring, Var> in, bool dbg) {
@@ -780,148 +794,125 @@ void tcount(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 
 }
 
-/*
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ISSET
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructISSET::InstructISSET(vector<Var>* val) {
-	this->name = L"ISSET";
-	this->values = *val;
-}
+void isset(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"ISSET";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[0], m);
+	}
 
-void InstructISSET::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		if ((*m).heap.find(this->values[1].toSTR().getWStr()) != (*m).heap.end()) {
-			(*m).heap[this->values[0].toSTR().getWStr()] = Var(true);
+		if ((*m).heap.find((*i).parameters[1].toSTR().getWStr()) != (*m).heap.end()) {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()] = Var(true);
 		}
 		else {
-			(*m).heap[this->values[0].toSTR().getWStr()] = Var(false);
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()] = Var(false);
 		}
 		++(*m).instruct_number;
 	}
-}
 
-bool InstructISSET::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
-		requiredVar(&this->values[0], m, &this->name, L"Первый");
-		requiredVar(&this->values[1], m, &this->name, L"Второй");
-	}
-	else {
-		checkNotExistValue(&this->values[0], m);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TYPEOF
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructTYPEOF::InstructTYPEOF(vector<Var>* val) {
-	this->name = L"TYPEOF";
-	this->values = *val;
-}
+void typeof(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 
-void InstructTYPEOF::go(Machine* m, bool prego = false) {
+	if (prevalidate) {
+		wstring name = L"TYPEOF";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[0], m);
+	}
+
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).heap[this->values[0].toSTR().getWStr()] = getValue(&(this->values[1]), &(*m).heap).typeOf();
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).typeOf();
 		++(*m).instruct_number;
 	}
-}
 
-bool InstructTYPEOF::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 2);
-		requiredVar(&this->values[0], m, &this->name, L"Первый");
-	}
-	else {
-		checkNotExistValue(&this->values[0], m);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // COMP
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructCOMP::InstructCOMP(vector<Var>* val) {
-	this->name = L"COMP";
-	this->values = *val;
-}
+void comp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"COMP";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 4);
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[1], m);
+	}
 
-void InstructCOMP::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		wstring type = getValue(&this->values[0], &(*m).heap).toSTR().getWStr();
-		if (type != L"=="
-			&& type != L"!="
-			&& type != L">"
-			&& type != L"<"
-			&& type != L">="
-			&& type != L"<="
-			&& type != L"!") {
-			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": операция сравнения " + type + L" неизвестна\n" };
-			}
+		wstring type = getValue(&(*i).parameters[0], &(*m).heap).toSTR().getWStr();
 
 		if (type == L"==") {
-			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) == getValue(&this->values[3], &(*m).heap);
+			(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) == getValue(&(*i).parameters[3], &(*m).heap);
 		}
 		else if (type == L"!=") {
-			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) != getValue(&this->values[3], &(*m).heap);
+			(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) != getValue(&(*i).parameters[3], &(*m).heap);
 		}
 		else if (type == L">") {
-			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) > getValue(&this->values[3], &(*m).heap);
+			(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) > getValue(&(*i).parameters[3], &(*m).heap);
 		}
 		else if (type == L"<") {
-			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) < getValue(&this->values[3], &(*m).heap);
+			(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) < getValue(&(*i).parameters[3], &(*m).heap);
 		}
 		else if (type == L">=") {
-			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) >= getValue(&this->values[3], &(*m).heap);
+			(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) >= getValue(&(*i).parameters[3], &(*m).heap);
 		}
 		else if (type == L"<=") {
-			(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap) <= getValue(&this->values[3], &(*m).heap);
+			(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) <= getValue(&(*i).parameters[3], &(*m).heap);
 		}
 		else {
-			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": математическая операция " + type + L" неизвестна\n" };
+			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": операция сравнения " + type + L" неизвестна\n" };
 		}
 		++(*m).instruct_number;
 	}
+
 }
-
-bool InstructCOMP::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		checkParameterCount(STRICTED, this->values.size(), m, &this->name, 4);
-		requiredVar(&this->values[1], m, &this->name, L"Второй");
-
-	}
-	else {
-		checkNotExistValue(&this->values[1], m);
-	}
-
-	return true;
-}
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LOGIC
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructLOGIC::InstructLOGIC(vector<Var>* val) {
-	this->name = L"LOGIC";
-	this->values = *val;
-}
 
-void InstructLOGIC::go(Machine* m, bool prego = false) {
+void logic(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"LOGIC";
+		int v[2]{ 3, 4 };
+		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[1], m);
+	}
+
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		wstring type = getValue(&this->values[0], &(*m).heap).toSTR().getWStr();
+		wstring type = getValue(&(*i).parameters[0], &(*m).heap).toSTR().getWStr();
 		if (type != L"NOT"
 			&& type != L"AND"
 			&& type != L"OR"
@@ -938,32 +929,32 @@ void InstructLOGIC::go(Machine* m, bool prego = false) {
 			&& type != L"xnor") {
 			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": логическая операция " + type + L" неизвестна\n" };
 		}
-		if (this->values.size() == 3) {
+		if ((*i).parameters.size() == 3) {
 			if (type == L"NOT" || type == L"not") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = !getValue(&this->values[2], &(*m).heap).toBLN().getBool();
+				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = !getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool();
 			}
 			else {
 				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": логическая операция " + type + L" принимет не менее 4 параметров\n" };
 			}
 		}
-		else if (this->values.size() == 4) {
+		else if ((*i).parameters.size() == 4) {
 			if (type == L"AND" || type == L"and") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap).toBLN().getBool() && getValue(&this->values[3], &(*m).heap).toBLN().getBool();
+				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool() && getValue(&(*i).parameters[3], &(*m).heap).toBLN().getBool();
 			}
 			else if (type == L"OR" || type == L"or") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap).toBLN().getBool() || getValue(&this->values[3], &(*m).heap).toBLN().getBool();
+				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool() || getValue(&(*i).parameters[3], &(*m).heap).toBLN().getBool();
 			}
 			else if (type == L"NAND" || type == L"nand") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = !(getValue(&this->values[2], &(*m).heap).toBLN().getBool() && getValue(&this->values[3], &(*m).heap).toBLN().getBool());
+				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = !(getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool() && getValue(&(*i).parameters[3], &(*m).heap).toBLN().getBool());
 			}
 			else if (type == L"NOR" || type == L"nor") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = !(getValue(&this->values[2], &(*m).heap).toBLN().getBool() || getValue(&this->values[3], &(*m).heap).toBLN().getBool());
+				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = !(getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool() || getValue(&(*i).parameters[3], &(*m).heap).toBLN().getBool());
 			}
 			else if (type == L"XOR" || type == L"xor") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = !(getValue(&this->values[2], &(*m).heap).toBLN().getBool()) != !(getValue(&this->values[3], &(*m).heap).toBLN().getBool());
+				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = !(getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool()) != !(getValue(&(*i).parameters[3], &(*m).heap).toBLN().getBool());
 			}
 			else if (type == L"XNOR" || type == L"xnor") {
-				(*m).heap[this->values[1].toSTR().getWStr()] = getValue(&this->values[2], &(*m).heap).toBLN().getBool() == getValue(&this->values[3], &(*m).heap).toBLN().getBool();
+				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool() == getValue(&(*i).parameters[3], &(*m).heap).toBLN().getBool();
 			}
 			else {
 				throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": логическая операция " + type + L" принимет не более 3 параметров\n" };
@@ -973,110 +964,75 @@ void InstructLOGIC::go(Machine* m, bool prego = false) {
 	}
 }
 
-bool InstructLOGIC::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		int v[2]{ 3, 4 };
-		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 0, 0, nullptr, v);
-		requiredVar(&this->values[1], m, &this->name, L"Второй");
-
-	}
-	else {
-		checkNotExistValue(&this->values[1], m);
-	}
-
-	return true;
-}
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // JIF
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructJIF::InstructJIF(vector<Var>* val) {
-	this->name = L"JIF";
-	this->values = *val;
-}
+void jif(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"JIF";
+		int v[2]{ 1, 2 };
+		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 1, 2, nullptr, v);
+	}
 
-void InstructJIF::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		bool swtch = getValue(&this->values[0], &(*m).heap).toBLN().getBool();
+		bool swtch = getValue(&(*i).parameters[0], &(*m).heap).toBLN().getBool();
 		if (swtch) {
-			(*m).instruct_number = getLabel(&this->values[1], &(*m).jmp_pointers).toUNTG().getUInt();
+			(*m).instruct_number = getLabel(&(*i).parameters[1], &(*m).jmp_pointers).toUNTG().getUInt();
 		}
 		else {
 			++(*m).instruct_number;
 		}
 	}
-}
-
-bool InstructJIF::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		int v[2]{ 1, 2 };
-		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 1, 2, nullptr, v);
-	}
-	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // JIFNOT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructJIFNOT::InstructJIFNOT(vector<Var>* val) {
-	this->name = L"InstructJIFNOT";
-	this->values = *val;
-}
+void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"JIFNOT";
+		int v[2]{ 1, 2 };
+		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 1, 2, nullptr, v);
+	}
 
-void InstructJIFNOT::go(Machine* m, bool prego = false) {
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		bool swtch = getValue(&this->values[0], &(*m).heap).toBLN().getBool();
+		bool swtch = getValue(&(*i).parameters[0], &(*m).heap).toBLN().getBool();
 		if (swtch) {
 			++(*m).instruct_number;
 		}
 		else {
-			(*m).instruct_number = getLabel(&this->values[1], &(*m).jmp_pointers).toUNTG().getUInt();
+			(*m).instruct_number = getLabel(&(*i).parameters[1], &(*m).jmp_pointers).toUNTG().getUInt();
 		}
 	}
 }
 
-bool InstructJIFNOT::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		int v[2]{ 1, 2 };
-		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 1, 2, nullptr, v);
-	}
-	return true;
-}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SPOINT
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-InstructSPOINT::InstructSPOINT(vector<Var>* val) {
-	this->name = L"InstructSPOINT";
-	this->values = *val;
-}
+void spoint(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"SPOINT";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		requiredVar(&(*i).parameters[0], m, &name, L"Единственный");
 
-void InstructSPOINT::go(Machine* m, bool prego = false) {
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[0], m);
+	}
+
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		bool swtch = getValue(&this->values[0], &(*m).heap).toBLN().getBool();
-		if (swtch) {
-			++(*m).instruct_number;
-		}
-		else {
-			(*m).instruct_number = getLabel(&this->values[1], &(*m).jmp_pointers).toUNTG().getUInt();
-		}
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = (*m).instruct_number;
+		++(*m).instruct_number;
 	}
 }
-
-bool InstructSPOINT::validate(Machine* m, bool prevalidate = false) {
-	if (prevalidate) {
-		int v[2]{ 1, 2 };
-		checkParameterCount(VARIANTS, this->values.size(), m, &this->name, 1, 2, nullptr, v);
-	}
-	return true;
-}*/
