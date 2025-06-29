@@ -37,6 +37,12 @@ void logic(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jif(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void pushb(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void popb(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void pushf(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void popf(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void erase(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void insrt(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Массив с функциями - инструкциями
@@ -64,7 +70,13 @@ func functions[] = {
 	&logic,
 	&jif,
 	&jifnot,
-	&dlabel
+	&dlabel,
+	&pushb,
+	&popb,
+	&pushf,
+	&popf,
+	&erase,
+	&insrt
 };
 
 Machine::Machine(map<wstring, Var> in, bool dbg) {
@@ -970,8 +982,6 @@ void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 }
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // DLABEL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -987,6 +997,150 @@ void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 	else {
 		(*m).jmp_pointers[(*i).parameters[0].toSTR().getWStr()] = (*m).instruct_number + 1;
+		++(*m).instruct_number;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// PUSHB
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void pushb(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"PUSHB";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()].pushb(getValue(&(*i).parameters[1], &(*m).heap));
+		++(*m).instruct_number;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// POPB
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void popb(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"POPB";
+		int v[2]{ 1, 2 };
+		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		if ((*i).parameters.size() == 2) {
+			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		}
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		if ((*i).parameters.size() == 1) {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()].popb();
+			++(*m).instruct_number;
+		}
+		else {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()] = (*m).heap[(*i).parameters[1].toSTR().getWStr()].popb();
+			++(*m).instruct_number;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// PUSHF
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void pushf(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"PUSHF";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()].pushf(getValue(&(*i).parameters[1], &(*m).heap));
+		++(*m).instruct_number;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// POPF
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void popf(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"POPF";
+		int v[2]{ 1, 2 };
+		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		if ((*i).parameters.size() == 2) {
+			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		}
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		if ((*i).parameters.size() == 1) {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()].popf();
+			++(*m).instruct_number;
+		}
+		else {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()] = (*m).heap[(*i).parameters[1].toSTR().getWStr()].popf();
+			++(*m).instruct_number;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ERASE
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void erase(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"ERASE";
+		int v[2]{ 2, 3 };
+		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		if ((*i).parameters.size() == 3) {
+			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		}
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		if ((*i).parameters.size() == 2) {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()].erase(getValue(&(*i).parameters[1], &(*m).heap));
+			++(*m).instruct_number;
+		}
+		else {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()] = (*m).heap[(*i).parameters[1].toSTR().getWStr()].erase(getValue(&(*i).parameters[2], &(*m).heap));
+			++(*m).instruct_number;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// INSERT
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void insrt(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"INSERT";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 3);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()].insert_vector(getValue(&(*i).parameters[2], &(*m).heap), getValue(&(*i).parameters[1], &(*m).heap));
 		++(*m).instruct_number;
 	}
 }

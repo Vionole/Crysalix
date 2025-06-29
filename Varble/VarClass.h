@@ -112,13 +112,18 @@ public:
     Var lower();
 
     void pushb(Var v);
-    void popb();
+    Var popb();
+    void pushf(Var val);
+    Var popf();
+
     void clear();
     void erase(int x);
-    void erase(Var x);
+    Var erase(Var x);
     void erase(wstring x);
     void erase(const wchar_t* x);
 
+    void insert_vector(Var x, Var val);
+    
     void insert(Var str, Var val);
     void insert(wstring str, Var val);
     void insert(const wchar_t* str, Var val);

@@ -659,7 +659,7 @@ Var Var::toSTR() const {
         return result;
     }
     else if (this->type == NIL) {
-        Var result = L"";
+        Var result = L"NIL";
         return result;
     }
     else if (this->type == UNKNOWN) {
@@ -667,7 +667,24 @@ Var Var::toSTR() const {
         return result;
     }
     else if (this->type == ARR) {
-        throw wstring{ L"Невозможно привести массив к типу STR" };
+        int size = this->arr.size();
+        wstring result = L"";
+        for (int i = 0; i < size; ++i) {
+            if (i == 0) {
+                result += L'[';
+                result += this->arr[i].toSTR().getWStr();
+                result += L", ";
+            }
+            else if (i + 1 == size) {
+                result += this->arr[i].toSTR().getWStr();
+                result += L']';
+            }
+            else {
+                result += this->arr[i].toSTR().getWStr();
+                result += L", ";
+            }
+        }
+        return result;
     }
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу STR" };
@@ -1185,16 +1202,40 @@ void Var::pushb(Var v) {
         this->arr.push_back(v);
     }
     else {
-        throw wstring{ L"Метод pushb() используетя только для типа ARR" };
+        throw wstring{ L"Метод PUSHB используетя только для типа ARR" };
     }
 }
 
-void Var::popb() {
+Var Var::popb() {
     if (this->type == ARR) {
+        Var result;
+        result = arr.back();
         this->arr.pop_back();
+        return result;
     }
     else {
-        throw wstring{ L"Метод popb() используетя только для типа ARR" };
+        throw wstring{ L"Метод POPB используетя только для типа ARR" };
+    }
+}
+
+void Var::pushf(Var val) {
+    if (this->type == ARR) {
+        this->arr.insert(this->arr.begin(), val);
+    }
+    else {
+        throw wstring{ L"Метод PUSHF используетя только для типа ARR" };
+    }
+}
+
+Var Var::popf() {
+    if (this->type == ARR) {
+        Var result;
+        result = this->arr[0];
+        this->arr.erase(this->arr.begin());
+        return result;
+    }
+    else {
+        throw wstring{ L"Метод PUSHF используетя только для типа ARR" };
     }
 }
 
@@ -1221,12 +1262,16 @@ void Var::erase(int x) {
         throw wstring{ L"Метод erase() используетя только для типа ARR" };
     }
 }
-void Var::erase(Var x) {
+Var Var::erase(Var x) {
     if (this->type == ARR) {
-        this->erase(x.getInt());
+        Var result = this->arr.at(x.toNTG().getInt());
+        this->erase(x.toNTG().getInt());
+        return result;
     }
     else if (this->type == MAP) {
-        this->mp.erase(x.getWStr());
+        Var result = this->mp.at(x.toSTR().getWStr());
+        this->mp.erase(x.toSTR().getWStr());
+        return result;
     }
     else {
         throw wstring{ L"Метод erase() используетя только для типов ARR, MAP" };
@@ -1246,6 +1291,15 @@ void Var::erase(const wchar_t* x) {
     }
     else {
         throw wstring{ L"Метод erase() используетя только для типа MAP" };
+    }
+}
+
+void Var::insert_vector(Var x, Var val) {
+    if (this->type == ARR) {
+        this->arr.insert(this->arr.begin() + x.toNTG().getInt(), val);
+    }
+    else {
+        throw wstring{ L"Метод insert() используетя только для типа ARR" };
     }
 }
 
@@ -1318,9 +1372,28 @@ wostream& operator<< (wostream& wos, const Var& var)
     case NIL:
         return wos << L"NIL";
         break;
-    case ARR:
-        return wos << L"ARRAY";
+    case ARR: 
+    {
+        int size = var.arr.size();
+        wstring str = L"";
+        for (int i = 0; i < size; ++i) {
+            if (i == 0) {
+                str += L'[';
+                str += var.arr[i].toSTR().getWStr();
+                str += L", ";
+            }
+            else if (i + 1 == size) {
+                str += var.arr[i].toSTR().getWStr();
+                str += L']';
+            }
+            else {
+                str += var.arr[i].toSTR().getWStr();
+                str += L", ";
+            }
+        }
+        return wos << str;
         break;
+    }
     case MAP:
         return wos << L"MAP";
     default:

@@ -197,6 +197,12 @@ void Parser::parse(Machine& m) {
                 else if (lexemes[i].str_parameters[j].substr(0, 4) == L"UCHR" || lexemes[i].str_parameters[j].substr(0, 4) == L"uchr") {
                     lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 4)).toUCHR());
                 }
+                else if (lexemes[i].str_parameters[j] == L"ARR" || lexemes[i].str_parameters[j] == L"arr") {
+                    lexemes[i].parameters.push_back(Var(vector<Var>()));
+                }
+                else if (lexemes[i].str_parameters[j] == L"MAP" || lexemes[i].str_parameters[j] == L"map") {
+                    lexemes[i].parameters.push_back(Var(map<wstring, Var>()));
+                }
                 else if (lexemes[i].str_parameters[j] == L"TRUE" || lexemes[i].str_parameters[j] == L"true") {
                     lexemes[i].parameters.push_back(Var(true));
                 }
@@ -368,6 +374,24 @@ void Parser::parse(Machine& m) {
         }
         else if (lexeme.type == L"DLABEL" || lexeme.type == L"dlabel") {
             inst.opCode = DLABEL;
+        }
+        else if (lexeme.type == L"PUSHB" || lexeme.type == L"pushb") {
+            inst.opCode = PUSHB;
+        }
+        else if (lexeme.type == L"POPB" || lexeme.type == L"popb") {
+            inst.opCode = POPB;
+        }
+        else if (lexeme.type == L"PUSHF" || lexeme.type == L"pushf") {
+            inst.opCode = PUSHF;
+        }
+        else if (lexeme.type == L"POPF" || lexeme.type == L"popf") {
+            inst.opCode = POPF;
+        }
+        else if (lexeme.type == L"ERASE" || lexeme.type == L"erase") {
+            inst.opCode = ERASE;
+        }
+        else if (lexeme.type == L"INSERT" || lexeme.type == L"insert") {
+            inst.opCode = INSRT;
         }
         else
         {

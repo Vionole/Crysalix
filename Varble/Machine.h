@@ -33,7 +33,13 @@ enum OP_CODE {
 	LOGIC,
 	JIF,
 	JIFNOT,
-	DLABEL
+	DLABEL,
+	PUSHB,
+	POPB,
+	PUSHF,
+	POPF,
+	ERASE,
+	INSRT
 };
 
 struct Instruction {
