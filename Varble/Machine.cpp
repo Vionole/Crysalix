@@ -36,7 +36,7 @@ void comp(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void logic(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jif(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego);
-void spoint(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Массив с функциями - инструкциями
@@ -64,7 +64,7 @@ func functions[] = {
 	&logic,
 	&jif,
 	&jifnot,
-	&spoint
+	&dlabel
 };
 
 Machine::Machine(map<wstring, Var> in, bool dbg) {
@@ -145,18 +145,6 @@ void checkExistValue(Var* val, Machine* m) {
 	if ((*val).type == STR && (*val).getWStr()[0] == L'$') {
 		if ((*m).heap.find((*val).getWStr()) != (*m).heap.end()) {
 			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": Переменная " + (*val).getWStr() + L" уже определена\n" };
-		}
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// checkNotExistValue
-// Проверяет отсутствие существования переменной
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void checkNotExistValue(Var* val, Machine* m) {
-	if ((*val).type == STR && (*val).getWStr()[0] == L'$') {
-		if ((*m).heap.find((*val).getWStr()) == (*m).heap.end()) {
-			throw wstring{ error_type + to_wstring((*m).instruct_number + 1) + L": Переменная " + (*val).getWStr() + L" не определена\n" };
 		}
 	}
 }
@@ -385,10 +373,7 @@ void free(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		}
 	}
 	else {
-		for (Var& v : (*i).parameters)
-		{
-			checkNotExistValue(&v, m);
-		}
+
 	}
 
 	if (prego) {
@@ -418,7 +403,7 @@ void label(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 
 	if (prego) {
-		(*m).jmp_pointers[(*i).parameters[0].toSTR().getWStr()] = (*m).instruct_number;
+		(*m).jmp_pointers[(*i).parameters[0].toSTR().getWStr()] = (*m).instruct_number + 1;
 		++(*m).instruct_number;
 	}
 	else {
@@ -455,9 +440,6 @@ void input(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
-	else {
-		checkNotExistValue(&(*i).parameters[0], m);
-	}
 
 	if (prego) {
 		++(*m).instruct_number;
@@ -479,9 +461,6 @@ void change(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
-	else {
-		checkNotExistValue(&(*i).parameters[0], m);
-	}
 
 	if (prego) {
 		++(*m).instruct_number;
@@ -501,9 +480,6 @@ void to(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		int v[2]{ 2, 3 };
 		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
-	}
-	else {
-		checkNotExistValue(&(*i).parameters[1], m);
 	}
 
 	if (prego) {
@@ -584,9 +560,6 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(RANGE, (*i).parameters.size(), m, &name, 0, 0, v);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 
-	}
-	else {
-		checkNotExistValue(&(*i).parameters[1], m);
 	}
 
 	if (prego) {
@@ -780,9 +753,6 @@ void tcount(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
-	else {
-		checkNotExistValue(&(*i).parameters[0], m);
-	}
 
 	if (prego) {
 		++(*m).instruct_number;
@@ -803,9 +773,6 @@ void isset(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
-	}
-	else {
-		checkNotExistValue(&(*i).parameters[0], m);
 	}
 
 	if (prego) {
@@ -833,9 +800,6 @@ void typeof(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
-	else {
-		checkNotExistValue(&(*i).parameters[0], m);
-	}
 
 	if (prego) {
 		++(*m).instruct_number;
@@ -855,9 +819,6 @@ void comp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		wstring name = L"COMP";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 4);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
-	}
-	else {
-		checkNotExistValue(&(*i).parameters[1], m);
 	}
 
 	if (prego) {
@@ -903,9 +864,6 @@ void logic(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 
-	}
-	else {
-		checkNotExistValue(&(*i).parameters[1], m);
 	}
 
 	if (prego) {
@@ -1015,24 +973,20 @@ void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// SPOINT
+// DLABEL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void spoint(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
-		wstring name = L"SPOINT";
+		wstring name = L"DLABEL";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
-		requiredVar(&(*i).parameters[0], m, &name, L"Единственный");
-
-	}
-	else {
-		checkNotExistValue(&(*i).parameters[0], m);
+		requiredLabel(&(*i).parameters[0], m, &name, L"Единственный");
 	}
 
 	if (prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = (*m).instruct_number;
+		(*m).jmp_pointers[(*i).parameters[0].toSTR().getWStr()] = (*m).instruct_number + 1;
 		++(*m).instruct_number;
 	}
 }

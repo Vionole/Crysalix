@@ -264,6 +264,27 @@ void Parser::parse(Machine& m) {
                         }
                     }
                     lexemes[i].parameters.push_back(Var(new_str));
+                } //Пытаемся равботать с числами, если не указан тип данных
+                else if (lexemes[i].str_parameters[j][0] == L'0'
+                    || lexemes[i].str_parameters[j][0] == L'1'
+                    || lexemes[i].str_parameters[j][0] == L'2'
+                    || lexemes[i].str_parameters[j][0] == L'3'
+                    || lexemes[i].str_parameters[j][0] == L'4'
+                    || lexemes[i].str_parameters[j][0] == L'5'
+                    || lexemes[i].str_parameters[j][0] == L'6'
+                    || lexemes[i].str_parameters[j][0] == L'7'
+                    || lexemes[i].str_parameters[j][0] == L'8'
+                    || lexemes[i].str_parameters[j][0] == L'9'
+                    || lexemes[i].str_parameters[j][0] == L'+'
+                    || lexemes[i].str_parameters[j][0] == L'-') {
+                    Var numberdbl = Var(lexemes[i].str_parameters[j]).toDBL();
+                    Var numberntg = Var(lexemes[i].str_parameters[j]).toNTG();
+                    if (numberdbl == numberntg) {
+                        lexemes[i].parameters.push_back(numberntg);
+                    }
+                    else {
+                        lexemes[i].parameters.push_back(numberdbl);
+                    }
                 }
                 else {
                     throw wstring{lexemes[i].str_parameters[j] + L": Неизвестный литерал"};
@@ -345,8 +366,8 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"JIFNOT" || lexeme.type == L"jifnot") {
             inst.opCode = JIFNOT;
         }
-        else if (lexeme.type == L"SPOINT" || lexeme.type == L"spoint") {
-            inst.opCode = SPOINT;
+        else if (lexeme.type == L"DLABEL" || lexeme.type == L"dlabel") {
+            inst.opCode = DLABEL;
         }
         else
         {

@@ -33,7 +33,7 @@ enum OP_CODE {
 	LOGIC,
 	JIF,
 	JIFNOT,
-	SPOINT
+	DLABEL
 };
 
 struct Instruction {
@@ -42,45 +42,6 @@ struct Instruction {
 };
 
 typedef void (*func)(Machine* m, Instruction* i, bool prevalidate, bool prego);
-
-/*
-
-
-class InstructCOMP : public Instruct {
-public:
-	InstructCOMP(vector<Var>* val);
-	void go(Machine* m, bool prego) override;
-	bool validate(Machine* m, bool prevalidate) override;
-};
-
-class InstructLOGIC : public Instruct {
-public:
-	InstructLOGIC(vector<Var>* val);
-	void go(Machine* m, bool prego) override;
-	bool validate(Machine* m, bool prevalidate) override;
-};
-
-class InstructJIF : public Instruct {
-public:
-	InstructJIF(vector<Var>* val);
-	void go(Machine* m, bool prego) override;
-	bool validate(Machine* m, bool prevalidate) override;
-};
-
-class InstructJIFNOT : public Instruct {
-public:
-	InstructJIFNOT(vector<Var>* val);
-	void go(Machine* m, bool prego) override;
-	bool validate(Machine* m, bool prevalidate) override;
-};
-
-class InstructSPOINT : public Instruct {
-public:
-	InstructSPOINT(vector<Var>* val);
-	void go(Machine* m, bool prego) override;
-	bool validate(Machine* m, bool prevalidate) override;
-}; */
-
 
 class Machine {
 public:
