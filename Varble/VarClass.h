@@ -137,6 +137,7 @@ public:
     Var join(const wchar_t* delim);
     
     void merge(Var val);
+    Var csize();
     //Вывод данных через поток
     friend wostream& operator<< (wostream& os, const Var& var);
 

@@ -684,7 +684,12 @@ Var Var::toSTR() const {
                 result += L", ";
             }
         }
-        return result;
+        if (result == L"") {
+            return L"[]";
+        }
+        else {
+            return result;
+        }
     }
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу STR" };
@@ -1340,6 +1345,20 @@ void Var::merge(Var val) {
     }
 }
 
+Var Var::csize() {
+    if (this->type == ARR) {
+        Var sz = this->arr.size();
+        return sz;
+    }
+    else if (this->type == MAP) {
+        Var sz = this->mp.size();
+        return sz;
+    }
+    else {
+        throw wstring{ L"Метод csize() используетя только для типа ARR, MAP" };
+    }
+}
+
 wostream& operator<< (wostream& wos, const Var& var)
 {
     switch (var.type) {
@@ -1391,7 +1410,12 @@ wostream& operator<< (wostream& wos, const Var& var)
                 str += L", ";
             }
         }
-        return wos << str;
+        if (str == L"") {
+            return wos << L"[]";
+        }
+        else {
+            return wos << str;
+        }
         break;
     }
     case MAP:

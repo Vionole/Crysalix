@@ -37,12 +37,15 @@ void logic(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jif(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void arr(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void pushb(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void popb(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void pushf(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void popf(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void erase(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void insrt(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void clear(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Массив с функциями - инструкциями
@@ -71,12 +74,15 @@ func functions[] = {
 	&jif,
 	&jifnot,
 	&dlabel,
+	&arr,
 	&pushb,
 	&popb,
 	&pushf,
 	&popf,
 	&erase,
-	&insrt
+	&insrt,
+	&clear,
+	&sizearr
 };
 
 Machine::Machine(map<wstring, Var> in, bool dbg) {
@@ -1001,6 +1007,42 @@ void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ARR
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"ARRAY";
+		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+	else {
+		checkExistValue(&(*i).parameters[0], m);
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		int dimensions = (*i).parameters.size() - 1;
+		Var result = Var();
+		for (int iter = dimensions; iter > 0; --iter) {
+			int dimension = getValue(&(*i).parameters[iter], &(*m).heap).toUNTG().getUInt();
+			vector<Var> v;
+			Var arr = Var(v);
+			for (int j = 0; j < dimension; ++j) {
+				arr.pushb(result);
+			}
+			result = arr;
+		}
+		
+		(*m).heap[(*i).parameters[0].getWStr()] = result;
+		++(*m).instruct_number;
+	}
+
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PUSHB
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1141,6 +1183,45 @@ void insrt(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 	else {
 		(*m).heap[(*i).parameters[0].toSTR().getWStr()].insert_vector(getValue(&(*i).parameters[2], &(*m).heap), getValue(&(*i).parameters[1], &(*m).heap));
+		++(*m).instruct_number;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CLEAR
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void clear(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"CLEAR";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		requiredVar(&(*i).parameters[0], m, &name, L"Единственный");
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()].clear();
+		++(*m).instruct_number;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SIZE
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"SIZE";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = (*m).heap[(*i).parameters[1].toSTR().getWStr()].csize();
 		++(*m).instruct_number;
 	}
 }

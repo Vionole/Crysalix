@@ -375,6 +375,9 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"DLABEL" || lexeme.type == L"dlabel") {
             inst.opCode = DLABEL;
         }
+        else if (lexeme.type == L"ARRAY" || lexeme.type == L"array") {
+            inst.opCode = ARRAY;
+        }
         else if (lexeme.type == L"PUSHB" || lexeme.type == L"pushb") {
             inst.opCode = PUSHB;
         }
@@ -392,6 +395,12 @@ void Parser::parse(Machine& m) {
         }
         else if (lexeme.type == L"INSERT" || lexeme.type == L"insert") {
             inst.opCode = INSRT;
+        }
+        else if (lexeme.type == L"CLEAR" || lexeme.type == L"clear") {
+            inst.opCode = CLEAR;
+        }
+        else if (lexeme.type == L"SIZE" || lexeme.type == L"size") {
+            inst.opCode = SIZEARR;
         }
         else
         {

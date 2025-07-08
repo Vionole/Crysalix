@@ -34,12 +34,15 @@ enum OP_CODE {
 	JIF,
 	JIFNOT,
 	DLABEL,
+	ARRAY,
 	PUSHB,
 	POPB,
 	PUSHF,
 	POPF,
 	ERASE,
-	INSRT
+	INSRT,
+	CLEAR,
+	SIZEARR
 };
 
 struct Instruction {
