@@ -21,9 +21,10 @@ pushb: $3, $1;
 print: $3, '\n';
 
 var: $value, 666;
-setval: $value, $3, 1, 3, 1;
+size: $value, $2;
+#setval: $value, $3, 1, 3, 1;
 
-print: $3, '\n';
+print: $value, '\n';
 ##
 	#Циклический расчет факториала:
 	var: $n, ntg16; 	#Факториал чего считаем

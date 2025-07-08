@@ -381,8 +381,8 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"ARRAY" || lexeme.type == L"array") {
             inst.opCode = ARRAY;
         }
-        else if (lexeme.type == L"VALSTOARR" || lexeme.type == L"valstoarr") {
-            inst.opCode = VALSTOARR;
+        else if (lexeme.type == L"VTOARR" || lexeme.type == L"vtoarr") {
+            inst.opCode = VTOARR;
         }
         else if (lexeme.type == L"PUSHB" || lexeme.type == L"pushb") {
             inst.opCode = PUSHB;

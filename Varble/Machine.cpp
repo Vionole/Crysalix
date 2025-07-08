@@ -39,7 +39,7 @@ void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void swap(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void arr(Machine* m, Instruction* i, bool prevalidate, bool prego);
-void valstoarr(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void vtoarr(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void pushb(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void popb(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void pushf(Machine* m, Instruction* i, bool prevalidate, bool prego);
@@ -80,7 +80,7 @@ func functions[] = {
 	&dlabel,
 	&swap,
 	&arr,
-	&valstoarr,
+	&vtoarr,
 	&pushb,
 	&popb,
 	&pushf,
@@ -1077,12 +1077,12 @@ void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// VALSTOARR
+// VTOARR
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void valstoarr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+void vtoarr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
-		wstring name = L"VALSTOARR";
+		wstring name = L"VTOARR";
 		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
