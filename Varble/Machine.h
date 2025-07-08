@@ -34,7 +34,9 @@ enum OP_CODE {
 	JIF,
 	JIFNOT,
 	DLABEL,
+	SWAP,
 	ARRAY,
+	VALSTOARR,
 	PUSHB,
 	POPB,
 	PUSHF,
@@ -42,7 +44,9 @@ enum OP_CODE {
 	ERASE,
 	INSRT,
 	CLEAR,
-	SIZEARR
+	SIZEARR,
+	GETVAL,
+	SETVAL
 };
 
 struct Instruction {

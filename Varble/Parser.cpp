@@ -270,7 +270,7 @@ void Parser::parse(Machine& m) {
                         }
                     }
                     lexemes[i].parameters.push_back(Var(new_str));
-                } //ѕытаемс€ равботать с числами, если не указан тип данных
+                } //ѕытаемс€ работать с числами, если не указан тип данных
                 else if (lexemes[i].str_parameters[j][0] == L'0'
                     || lexemes[i].str_parameters[j][0] == L'1'
                     || lexemes[i].str_parameters[j][0] == L'2'
@@ -375,8 +375,14 @@ void Parser::parse(Machine& m) {
         else if (lexeme.type == L"DLABEL" || lexeme.type == L"dlabel") {
             inst.opCode = DLABEL;
         }
+        else if (lexeme.type == L"SWAP" || lexeme.type == L"swap") {
+            inst.opCode = SWAP;
+        }
         else if (lexeme.type == L"ARRAY" || lexeme.type == L"array") {
             inst.opCode = ARRAY;
+        }
+        else if (lexeme.type == L"VALSTOARR" || lexeme.type == L"valstoarr") {
+            inst.opCode = VALSTOARR;
         }
         else if (lexeme.type == L"PUSHB" || lexeme.type == L"pushb") {
             inst.opCode = PUSHB;
@@ -401,6 +407,12 @@ void Parser::parse(Machine& m) {
         }
         else if (lexeme.type == L"SIZE" || lexeme.type == L"size") {
             inst.opCode = SIZEARR;
+        }
+        else if (lexeme.type == L"GETVAL" || lexeme.type == L"getval") {
+            inst.opCode = GETVAL;
+        }
+        else if (lexeme.type == L"SETVAL" || lexeme.type == L"setval") {
+            inst.opCode = SETVAL;
         }
         else
         {

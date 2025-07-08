@@ -37,7 +37,9 @@ void logic(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jif(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void swap(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void arr(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void valstoarr(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void pushb(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void popb(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void pushf(Machine* m, Instruction* i, bool prevalidate, bool prego);
@@ -46,6 +48,8 @@ void erase(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void insrt(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void clear(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void getval(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void setval(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Массив с функциями - инструкциями
@@ -74,7 +78,9 @@ func functions[] = {
 	&jif,
 	&jifnot,
 	&dlabel,
+	&swap,
 	&arr,
+	&valstoarr,
 	&pushb,
 	&popb,
 	&pushf,
@@ -82,7 +88,9 @@ func functions[] = {
 	&erase,
 	&insrt,
 	&clear,
-	&sizearr
+	&sizearr,
+	&getval,
+	&setval
 };
 
 Machine::Machine(map<wstring, Var> in, bool dbg) {
@@ -1007,8 +1015,33 @@ void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SWAP
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void swap(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"SWAP";
+		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		Var firstval = getValue(&(*i).parameters[0], &(*m).heap);
+		Var secondval = getValue(&(*i).parameters[1], &(*m).heap);
+		swap(firstval, secondval);
+
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = firstval;
+		(*m).heap[(*i).parameters[1].toSTR().getWStr()] = secondval;
+		++(*m).instruct_number;
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ARR
+// ARRAY
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
@@ -1038,6 +1071,37 @@ void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		}
 		
 		(*m).heap[(*i).parameters[0].getWStr()] = result;
+		++(*m).instruct_number;
+	}
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// VALSTOARR
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void valstoarr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"VALSTOARR";
+		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 2);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+	}
+	else {
+		checkExistValue(&(*i).parameters[0], m);
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		int size = (*i).parameters.size() - 1;
+		vector<Var> v;
+		Var arr = Var(v);
+		for (int iter = 1; iter <= size; ++iter) {
+			arr.pushb(getValue(&(*i).parameters[iter], &(*m).heap));
+		}
+
+		(*m).heap[(*i).parameters[0].getWStr()] = arr;
 		++(*m).instruct_number;
 	}
 
@@ -1222,6 +1286,68 @@ void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 	else {
 		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = (*m).heap[(*i).parameters[1].toSTR().getWStr()].csize();
+		++(*m).instruct_number;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GETVAL
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void getval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"GETVAL";
+		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 3);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		int dimensions = (*i).parameters.size() - 2;
+		Var result = (*m).heap[(*i).parameters[1].toSTR().getWStr()];
+		for (int iter = 0; iter  < dimensions; ++iter) {
+			int dimension = getValue(&(*i).parameters[iter + 2], &(*m).heap).toUNTG().getUInt();
+			Var res = result[dimension];
+			result = res;
+		}
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = result;
+		++(*m).instruct_number;
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SETVAL
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void setval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"SETVAL";
+		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 3);
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+
+		int dimensions = (*i).parameters.size() - 2;
+		Var* result = &((*m).heap[(*i).parameters[1].toSTR().getWStr()]);
+
+		for (int iter = 0; iter < dimensions; ++iter) {
+			int dimension = getValue(&(*i).parameters[iter + 2], &(*m).heap).toUNTG().getUInt();
+			if (iter == dimensions - 1) {
+				(*result)[getValue(&(*i).parameters[iter + 2], &(*m).heap)] = getValue(&(*i).parameters[0], &(*m).heap);
+				break;
+			}
+			Var* res = &(*result)[dimension];
+			result = res;
+		}
+
 		++(*m).instruct_number;
 	}
 }
