@@ -12,8 +12,31 @@
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
+    wstring filename = L"";
+    if (argc < 2) {
+        //Если не передан параметр при запуске, смотрим файл настроек
+        std::wifstream infile(L"autoexec.ini");
+        if (infile) {
+            infile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+            std::wstringstream wss;
+            wss << infile.rdbuf();
+            filename = wss.str();
+        }
+        else {
+            wcout << L"0.1 alpha";
+            return 0;
+        }
+        infile.close();
+
+    }
+
+    //берем параметр при вызове, это имя файла скрипта для запуска
+    if (filename == L"") {
+        filename = wstring(argv[1], argv[1] + strlen(argv[1]));
+    }
+
     //Поднятие приоритета процесса
     SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
 
@@ -26,7 +49,7 @@ int main()
         Machine mchn(map, false);
 
         //Загружаем и парсим исходный код
-        Parser p(L"file.vrb");
+        Parser p(filename);
         p.fileLoad();
         auto begin = chrono::high_resolution_clock::now();
         p.parse(mchn);
@@ -45,7 +68,6 @@ int main()
     catch (const std::wstring& error_message) {
         wcout << endl << error_message << endl;
     }
-
     return 0;
 }
 
