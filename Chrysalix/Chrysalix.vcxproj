@@ -22,8 +22,9 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{ce38a9f0-f6a6-4dc7-9301-afc85aad0e3b}</ProjectGuid>
-    <RootNamespace>Varble</RootNamespace>
+    <RootNamespace>Chrysalix</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Chrysalix</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -135,7 +136,7 @@
   <ItemGroup>
     <ClCompile Include="Machine.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="Varble.cpp" />
+    <ClCompile Include="Chrysalix.cpp" />
     <ClCompile Include="VarClass.cpp" />
   </ItemGroup>
   <ItemGroup>
