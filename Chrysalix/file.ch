@@ -22,7 +22,7 @@ print: $3, '\n';
 
 var: $value, 666;
 size: $value, $2;
-#setval: $value, $3, 1, 3, 1;
+setval: $value, $5, 1, 3, 1;
 
 print: $value, '\n';
 ##
