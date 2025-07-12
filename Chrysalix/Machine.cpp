@@ -102,7 +102,7 @@ void Machine::prepare() {
 			functions[this->instructions[i].opCode](this, &instructions[i], true, true);
 		}
 		catch (const std::wstring& error_message) {
-			throw wstring{ L"Îøèáêà âûïîëíåíèÿ èíñòğóêöèè " + to_wstring(this->instruct_number + 1) + L": " + error_message };
+			throw wstring{ L"Îøèáêà âûïîëíåíèÿ èíñòğóêöèè " + to_wstring(this->instruct_number + 1) + L"(" + this->instructions[i].as_string + L"): " + error_message };
 		}
 	}
 	this->instruct_number = 0;
@@ -111,14 +111,14 @@ void Machine::prepare() {
 Var Machine::go() {
 	while (this->instruct_number != -1) {
 		if (this->instruct_number >= this->instruct_count) {
-			throw wstring{ L"Îøèáêà ïîñëå âûïîëíåíèÿ èíñòğóêöèè " + to_wstring(this->instruct_number) + L": Íåîæèäàííûé êîíåö ïğîãğàììû. Ïğîïóùåíà èíñòğóêöèÿ END\n" };
+			throw wstring{ L"Îøèáêà ïîñëå âûïîëíåíèÿ èíñòğóêöèè " + to_wstring(this->instruct_number) + L"(" + this->instructions[this->instruct_number - 1].as_string + L"): " + L"Íåîæèäàííûé êîíåö ïğîãğàììû. Ïğîïóùåíà èíñòğóêöèÿ END\n" };
 		}
 
 		try {
 			functions[this->instructions[this->instruct_number].opCode](this, &instructions[this->instruct_number], false, false);
 		}
 		catch (const std::wstring& error_message) {
-				throw wstring{ L"Îøèáêà âûïîëíåíèÿ èíñòğóêöèè " + to_wstring(this->instruct_number + 1) + L": " + error_message };
+				throw wstring{ L"Îøèáêà âûïîëíåíèÿ èíñòğóêöèè " + to_wstring(this->instruct_number + 1) + L"(" + this->instructions[this->instruct_number].as_string + L"): " + error_message };
 		}
 	}
 	return this->ret_data;

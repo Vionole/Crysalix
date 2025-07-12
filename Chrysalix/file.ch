@@ -1,4 +1,4 @@
-
+##
 var: $1, ARR;
 var: $2, ARR;
 var: $3, ARR;
@@ -22,7 +22,7 @@ print: $3, '\n';
 
 var: $value, 666;
 size: $value, $2;
-setval: $value, $5, 1, 3, 1;
+setval: $value, $3, 1, 3, 1;
 
 print: $value, '\n';
 ##
@@ -60,5 +60,4 @@ jif: $0, &main_loop;
 	forget:;
 	free: $n, $i, $result, $j, $max;
 pause:;
-##
 end: ntg 0;

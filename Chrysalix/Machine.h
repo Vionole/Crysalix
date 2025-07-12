@@ -52,6 +52,7 @@ enum OP_CODE {
 struct Instruction {
 	OP_CODE opCode = NOP;
 	vector<Var> parameters;
+	wstring as_string;
 };
 
 typedef void (*func)(Machine* m, Instruction* i, bool prevalidate, bool prego);
