@@ -1,4 +1,4 @@
-
+п»ї
 #include <vector>
 #include <map>
 #include <string>
@@ -123,7 +123,7 @@ long long int Var::getInt() const {
         return this->data.ntg;
     }
     else {
-        throw wstring{ L"Переменная не является знаковой целочисленной" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ Р·РЅР°РєРѕРІРѕР№ С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕР№" };
     }
 }
 
@@ -132,7 +132,7 @@ unsigned long long int Var::getUInt() const {
         return this->data.untg;
     }
     else {
-        throw wstring{ L"Переменная не является беззнаковой целочисленной" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ Р±РµР·Р·РЅР°РєРѕРІРѕР№ С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕР№" };
     }
 }
 
@@ -141,7 +141,7 @@ long double Var::getDouble() const {
         return this->data.dbl;
     }
     else {
-        throw wstring{ L"Переменная не является числом с плавающей точкой" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ С‡РёСЃР»РѕРј СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№" };
     }
 }
 
@@ -150,7 +150,7 @@ char Var::getChar() const {
         return this->data.chr;
     }
     else {
-        throw wstring{ L"Переменная не является символьной" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ СЃРёРјРІРѕР»СЊРЅРѕР№" };
     }
 }
 
@@ -159,7 +159,7 @@ unsigned char Var::getUChar() const {
         return this->data.uchr;
     }
     else {
-        throw wstring{ L"Переменная не является беззнаковой символьной" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ Р±РµР·Р·РЅР°РєРѕРІРѕР№ СЃРёРјРІРѕР»СЊРЅРѕР№" };
     }
 }
 
@@ -168,7 +168,7 @@ bool Var::getBool() const {
         return this->data.bln;
     }
     else {
-        throw wstring{ L"Переменная не является булевой" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ Р±СѓР»РµРІРѕР№" };
     }
 }
 
@@ -177,7 +177,7 @@ wstring Var::getWStr() const {
         return this->data.str;
     }
     else {
-        throw wstring{ L"Переменная не является строкой" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ СЃС‚СЂРѕРєРѕР№" };
     }
 }
 
@@ -186,7 +186,7 @@ vector<Var> Var::getArr() const {
         return this->arr;
     }
     else {
-        throw wstring{ L"Переменная не является массивом" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ РјР°СЃСЃРёРІРѕРј" };
     }
 }
 
@@ -195,7 +195,7 @@ map<wstring, Var> Var::getMap() const {
         return this->mp;
     }
     else {
-        throw wstring{ L"Переменная не является словарем" };
+        throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ РЅРµ СЏРІР»СЏРµС‚СЃСЏ СЃР»РѕРІР°СЂРµРј" };
     }
 }
 
@@ -243,7 +243,7 @@ Var Var::toNTG() const {
         }
         catch (exception& err)
         {
-            throw wstring{ L"Не удалось привести строку к типу NTG" };
+            throw wstring{ L"РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРёРІРµСЃС‚Рё СЃС‚СЂРѕРєСѓ Рє С‚РёРїСѓ NTG" };
         }
     }
     else if (this->type == NIL) {
@@ -255,10 +255,10 @@ Var Var::toNTG() const {
         return result;
     }
     else if (this->type == ARR) {
-        throw wstring{ L"Невозможно привести массив к типу NTG" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё РјР°СЃСЃРёРІ Рє С‚РёРїСѓ NTG" };
     }
     else if (this->type == MAP) {
-        throw wstring{ L"Невозможно привести словарь к типу NTG" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё СЃР»РѕРІР°СЂСЊ Рє С‚РёРїСѓ NTG" };
     }
 }
 
@@ -308,7 +308,7 @@ Var Var::toUNTG() const {
         }
         catch (exception& err)
         {
-            throw wstring{ L"Не удалось привести строку к типу UNTG" };
+            throw wstring{ L"РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРёРІРµСЃС‚Рё СЃС‚СЂРѕРєСѓ Рє С‚РёРїСѓ UNTG" };
         }
     }
     else if (this->type == NIL) {
@@ -320,10 +320,10 @@ Var Var::toUNTG() const {
         return result;
     }
     else if (this->type == ARR) {
-        throw wstring{ L"Невозможно привести массив к типу UNTG" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё РјР°СЃСЃРёРІ Рє С‚РёРїСѓ UNTG" };
     }
     else if (this->type == MAP) {
-        throw wstring{ L"Невозможно привести словарь к типу UNTG" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё СЃР»РѕРІР°СЂСЊ Рє С‚РёРїСѓ UNTG" };
     }
 }
 
@@ -373,7 +373,7 @@ Var Var::toDBL() const {
         }
         catch (exception& err)
         {
-            throw wstring{ L"Не удалось привести строку к типу DBL" };
+            throw wstring{ L"РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРёРІРµСЃС‚Рё СЃС‚СЂРѕРєСѓ Рє С‚РёРїСѓ DBL" };
         }
     }
     else if (this->type == NIL) {
@@ -385,10 +385,10 @@ Var Var::toDBL() const {
         return result;
     }
     else if (this->type == ARR) {
-        throw wstring{ L"Невозможно привести массив к типу DBL" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё РјР°СЃСЃРёРІ Рє С‚РёРїСѓ DBL" };
     }
     else if (this->type == MAP) {
-        throw wstring{ L"Невозможно привести словарь к типу DBL" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё СЃР»РѕРІР°СЂСЊ Рє С‚РёРїСѓ DBL" };
     }
 }
 
@@ -438,7 +438,7 @@ Var Var::toCHR() const {
         }
         catch (exception& err)
         {
-            throw wstring{ L"Не удалось привести строку к типу CHR" };
+            throw wstring{ L"РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРёРІРµСЃС‚Рё СЃС‚СЂРѕРєСѓ Рє С‚РёРїСѓ CHR" };
         }
     }
     else if (this->type == NIL) {
@@ -450,10 +450,10 @@ Var Var::toCHR() const {
         return result;
     }
     else if (this->type == ARR) {
-        throw wstring{ L"Невозможно привести массив к типу CHR" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё РјР°СЃСЃРёРІ Рє С‚РёРїСѓ CHR" };
     }
     else if (this->type == MAP) {
-        throw wstring{ L"Невозможно привести словарь к типу CHR" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё СЃР»РѕРІР°СЂСЊ Рє С‚РёРїСѓ CHR" };
     }
 }
 
@@ -503,7 +503,7 @@ Var Var::toUCHR() const {
         }
         catch (exception& err)
         {
-            throw wstring{ L"Не удалось привести строку к типу UCHR" };
+            throw wstring{ L"РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРёРІРµСЃС‚Рё СЃС‚СЂРѕРєСѓ Рє С‚РёРїСѓ UCHR" };
         }
     }
     else if (this->type == NIL) {
@@ -515,10 +515,10 @@ Var Var::toUCHR() const {
         return result;
     }
     else if (this->type == ARR) {
-        throw wstring{ L"Невозможно привести массив к типу UCHR" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё РјР°СЃСЃРёРІ Рє С‚РёРїСѓ UCHR" };
     }
     else if (this->type == MAP) {
-        throw wstring{ L"Невозможно привести словарь к типу UCHR" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё СЃР»РѕРІР°СЂСЊ Рє С‚РёРїСѓ UCHR" };
     }
 }
 
@@ -692,7 +692,7 @@ Var Var::toSTR() const {
         }
     }
     else if (this->type == MAP) {
-        throw wstring{ L"Невозможно привести словарь к типу STR" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё СЃР»РѕРІР°СЂСЊ Рє С‚РёРїСѓ STR" };
     }
 }
 
@@ -755,7 +755,7 @@ Var Var::toARR() const {
         return *this;
     }
     else if (this->type == MAP) {
-        throw wstring{ L"Невозможно привести словарь к типу ARR" };
+        throw wstring{ L"РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІРµСЃС‚Рё СЃР»РѕРІР°СЂСЊ Рє С‚РёРїСѓ ARR" };
     }
 }
 
@@ -861,7 +861,7 @@ Var& Var::operator[](int ind) {
         }
         catch (exception& err)
         {
-            throw wstring{ L"Индекс находится вне диапазона" };
+            throw wstring{ L"РРЅРґРµРєСЃ РЅР°С…РѕРґРёС‚СЃСЏ РІРЅРµ РґРёР°РїР°Р·РѕРЅР°" };
         }
     }
     else if (this->type == STR) {
@@ -872,11 +872,11 @@ Var& Var::operator[](int ind) {
         }
         catch (exception& err)
         {
-            throw wstring{ L"Индекс находится вне диапазона" };
+            throw wstring{ L"РРЅРґРµРєСЃ РЅР°С…РѕРґРёС‚СЃСЏ РІРЅРµ РґРёР°РїР°Р·РѕРЅР°" };
         }
     }
     else {
-        throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+        throw wstring{ L"РћРїРµСЂР°С‚РѕСЂ [] РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR, MAP" };
     }
 }
 Var& Var::operator[](const wchar_t* str) {
@@ -885,11 +885,11 @@ Var& Var::operator[](const wchar_t* str) {
             return this->mp.at(str);
         }
         else {
-            throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+            throw wstring{ L"РћРїРµСЂР°С‚РѕСЂ [] РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR, MAP" };
         }
     }
     catch (exception& err) {
-        throw wstring{ L"Индекс словаря не существует" };
+        throw wstring{ L"РРЅРґРµРєСЃ СЃР»РѕРІР°СЂСЏ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚" };
     }
 }
 Var& Var::operator[](wstring str) {
@@ -898,11 +898,11 @@ Var& Var::operator[](wstring str) {
             return this->mp.at(str);
         }
         else {
-            throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+            throw wstring{ L"РћРїРµСЂР°С‚РѕСЂ [] РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR, MAP" };
         }
     }
     catch (exception& err) {
-        throw wstring{ L"Индекс словаря не существует" };
+        throw wstring{ L"РРЅРґРµРєСЃ СЃР»РѕРІР°СЂСЏ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚" };
     }
 }
 Var& Var::operator[](Var v) {
@@ -913,7 +913,7 @@ Var& Var::operator[](Var v) {
             }
             catch (exception& err)
             {
-                throw wstring{ L"Индекс находится вне диапазона" };
+                throw wstring{ L"РРЅРґРµРєСЃ РЅР°С…РѕРґРёС‚СЃСЏ РІРЅРµ РґРёР°РїР°Р·РѕРЅР°" };
             }
         }
         else if (this->type == STR) {
@@ -924,11 +924,11 @@ Var& Var::operator[](Var v) {
             }
             catch (exception& err)
             {
-                throw wstring{ L"Индекс находится вне диапазона" };
+                throw wstring{ L"РРЅРґРµРєСЃ РЅР°С…РѕРґРёС‚СЃСЏ РІРЅРµ РґРёР°РїР°Р·РѕРЅР°" };
             }
         }
         else {
-            throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+            throw wstring{ L"РћРїРµСЂР°С‚РѕСЂ [] РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR, MAP" };
         }
     }
     else if (v.type == STR) {
@@ -937,11 +937,11 @@ Var& Var::operator[](Var v) {
                 return this->mp.at(v.getWStr());
             } 
             else {
-                throw wstring{ L"Оператор [] используетя только для типов STR, ARR, MAP" };
+                throw wstring{ L"РћРїРµСЂР°С‚РѕСЂ [] РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR, MAP" };
             }
         }
         catch (exception& err) {
-            throw wstring{ L"Индекс словаря не существует" };
+            throw wstring{ L"РРЅРґРµРєСЃ СЃР»РѕРІР°СЂСЏ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚" };
         }
     }
 }
@@ -957,7 +957,7 @@ Var Var::len() {
         return Var(this->mp.size());
     }
     else {
-        throw wstring{ L"Метод len() используетя только для типов STR, ARR, MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ len() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR, MAP" };
     }
 }
 
@@ -976,7 +976,7 @@ Var Var::rev() {
         return result;
     }
     else {
-        throw wstring{ L"Метод rev() используетя только для типов STR, ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ rev() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR" };
     }
 }
 
@@ -998,7 +998,7 @@ Var Var::slice(int x, int y) {
         return res;
     }
     else {
-        throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ slice() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR" };
     }
 }
 Var Var::slice(Var x, Var y) {
@@ -1009,7 +1009,7 @@ Var Var::slice(Var x, Var y) {
         return this->slice(x.getInt(), y.getInt());
     }
     else {
-        throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ slice() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ STR, ARR" };
     }
 }
 
@@ -1019,7 +1019,7 @@ Var Var::in(Var sent) {
         return Var(exists);
     } 
     else {
-        throw wstring{ L"Метод in() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ in() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 Var Var::in(const wchar_t* sent) {
@@ -1028,7 +1028,7 @@ Var Var::in(const wchar_t* sent) {
         return Var(exists);
     }
     else {
-        throw wstring{ L"Метод in() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ in() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 Var Var::in(wstring sent) {
@@ -1037,7 +1037,7 @@ Var Var::in(wstring sent) {
         return Var(exists);
     }
     else {
-        throw wstring{ L"Метод in() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ in() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 
@@ -1050,7 +1050,7 @@ Var Var::ltrim() {
         return Var(str);
     }
     else {
-        throw wstring{ L"Метод ltrim() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ ltrim() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 Var Var::rtrim() {
@@ -1060,7 +1060,7 @@ Var Var::rtrim() {
         return Var(str);
     }
     else {
-        throw wstring{ L"Метод rtrim() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ rtrim() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 Var Var::trim() {
@@ -1071,7 +1071,7 @@ Var Var::trim() {
         return Var(str);
     }
     else {
-        throw wstring{ L"Метод trim() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ trim() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 
@@ -1086,7 +1086,7 @@ Var Var::repl(Var substr, Var newsubstr) {
         return Var(s);
     }
     else {
-        throw wstring{ L"Метод repl() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ repl() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 Var Var::repl(const wchar_t* substr, const wchar_t* newsubstr) {
@@ -1102,7 +1102,7 @@ Var Var::repl(const wchar_t* substr, const wchar_t* newsubstr) {
         return Var(s);
     }
     else {
-        throw wstring{ L"Метод repl() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ repl() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 Var Var::repl(wstring substr, const wstring newsubstr) {
@@ -1116,7 +1116,7 @@ Var Var::repl(wstring substr, const wstring newsubstr) {
         return Var(s);
     }
     else {
-        throw wstring{ L"Метод repl() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ repl() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 
@@ -1148,7 +1148,7 @@ Var Var::split(Var delim) {
         return result;
     }
     else {
-        throw wstring{ L"Метод split() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ split() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 Var Var::split(wstring delim) {
@@ -1170,7 +1170,7 @@ Var Var::join(Var delim) {
         return Var(str);
     }
     else {
-        throw wstring{ L"Метод join() используетя только для типа ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ join() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR" };
     }
 }
 Var Var::join(wstring delim) {
@@ -1187,7 +1187,7 @@ Var Var::upper() {
         return Var(str);
     }
     else {
-        throw wstring{ L"Метод upper() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ upper() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 
@@ -1198,7 +1198,7 @@ Var Var::lower() {
         return Var(str);
     }
     else {
-        throw wstring{ L"Метод lower() используетя только для типа STR" };
+        throw wstring{ L"РњРµС‚РѕРґ lower() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° STR" };
     }
 }
 
@@ -1207,7 +1207,7 @@ void Var::pushb(Var v) {
         this->arr.push_back(v);
     }
     else {
-        throw wstring{ L"Метод PUSHB используетя только для типа ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ PUSHB РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR" };
     }
 }
 
@@ -1219,7 +1219,7 @@ Var Var::popb() {
         return result;
     }
     else {
-        throw wstring{ L"Метод POPB используетя только для типа ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ POPB РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR" };
     }
 }
 
@@ -1228,7 +1228,7 @@ void Var::pushf(Var val) {
         this->arr.insert(this->arr.begin(), val);
     }
     else {
-        throw wstring{ L"Метод PUSHF используетя только для типа ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ PUSHF РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR" };
     }
 }
 
@@ -1240,7 +1240,7 @@ Var Var::popf() {
         return result;
     }
     else {
-        throw wstring{ L"Метод PUSHF используетя только для типа ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ PUSHF РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR" };
     }
 }
 
@@ -1252,7 +1252,7 @@ void Var::clear() {
         this->mp.clear();
     }
     else {
-        throw wstring{ L"Метод clear() используетя только для типов ARR, MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ clear() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ ARR, MAP" };
     }
 
 }
@@ -1264,7 +1264,7 @@ void Var::erase(int x) {
         this->arr.erase(it);
     }
     else {
-        throw wstring{ L"Метод erase() используетя только для типа ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ erase() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR" };
     }
 }
 Var Var::erase(Var x) {
@@ -1279,7 +1279,7 @@ Var Var::erase(Var x) {
         return result;
     }
     else {
-        throw wstring{ L"Метод erase() используетя только для типов ARR, MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ erase() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїРѕРІ ARR, MAP" };
     }
 }
 void Var::erase(wstring x) {
@@ -1287,7 +1287,7 @@ void Var::erase(wstring x) {
         this->mp.erase(x);
     }
     else {
-        throw wstring{ L"Метод erase() используетя только для типа MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ erase() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° MAP" };
     }
 }
 void Var::erase(const wchar_t* x) {
@@ -1295,7 +1295,7 @@ void Var::erase(const wchar_t* x) {
         this->mp.erase(x);
     }
     else {
-        throw wstring{ L"Метод erase() используетя только для типа MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ erase() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° MAP" };
     }
 }
 
@@ -1304,7 +1304,7 @@ void Var::insert_vector(Var x, Var val) {
         this->arr.insert(this->arr.begin() + x.toNTG().getInt(), val);
     }
     else {
-        throw wstring{ L"Метод insert() используетя только для типа ARR" };
+        throw wstring{ L"РњРµС‚РѕРґ insert() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR" };
     }
 }
 
@@ -1313,7 +1313,7 @@ void Var::insert(Var str, Var val) {
         this->mp[str.getWStr()] = val;
     }
     else {
-        throw wstring{ L"Метод insert() используетя только для типа MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ insert() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° MAP" };
     }
 }
 void Var::insert(wstring str, Var val) {
@@ -1321,7 +1321,7 @@ void Var::insert(wstring str, Var val) {
         this->mp[str] = val;
     }
     else {
-        throw wstring{ L"Метод insert() используетя только для типа MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ insert() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° MAP" };
     }
 }
 void Var::insert(const wchar_t* str, Var val) {
@@ -1329,7 +1329,7 @@ void Var::insert(const wchar_t* str, Var val) {
         this->mp[str] = val;
     }
     else {
-        throw wstring{ L"Метод insert() используетя только для типа MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ insert() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° MAP" };
     }
 }
 
@@ -1341,7 +1341,7 @@ void Var::merge(Var val) {
         this->mp.insert(val.mp.begin(), val.mp.end());
     } 
     else {
-        throw wstring{ L"Метод merge() используетя только для типа ARR, MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ merge() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR, MAP" };
     }
 }
 
@@ -1355,7 +1355,7 @@ Var Var::csize() {
         return sz;
     }
     else {
-        throw wstring{ L"Метод csize() используетя только для типа ARR, MAP" };
+        throw wstring{ L"РњРµС‚РѕРґ csize() РёСЃРїРѕР»СЊР·СѓРµС‚СЏ С‚РѕР»СЊРєРѕ РґР»СЏ С‚РёРїР° ARR, MAP" };
     }
 }
 
@@ -1583,10 +1583,10 @@ Var operator+(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1627,10 +1627,10 @@ Var operator+(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1671,10 +1671,10 @@ Var operator+(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1715,10 +1715,10 @@ Var operator+(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1759,10 +1759,10 @@ Var operator+(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1803,10 +1803,10 @@ Var operator+(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1848,10 +1848,10 @@ Var operator+(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1863,10 +1863,10 @@ Var operator+(const Var& a, const Var& b)
         return result;
     }
     else if (a.type == ARR) {
-        throw wstring{ L"Массив не поддерживает данной операции" };
+        throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else if (a.type == MAP) {
-        throw wstring{ L"Cловарь не поддерживает данной операции" };
+        throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else {
         Var result;
@@ -1911,10 +1911,10 @@ Var operator-(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1955,10 +1955,10 @@ Var operator-(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -1999,10 +1999,10 @@ Var operator-(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2043,10 +2043,10 @@ Var operator-(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2087,10 +2087,10 @@ Var operator-(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2131,10 +2131,10 @@ Var operator-(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2176,10 +2176,10 @@ Var operator-(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2191,10 +2191,10 @@ Var operator-(const Var& a, const Var& b)
         return result;
     }
     else if (a.type == ARR) {
-        throw wstring{ L"Массив не поддерживает данной операции" };
+        throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else if (a.type == MAP) {
-        throw wstring{ L"Cловарь не поддерживает данной операции" };
+        throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else {
         Var result;
@@ -2238,10 +2238,10 @@ Var operator*(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2282,10 +2282,10 @@ Var operator*(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2326,10 +2326,10 @@ Var operator*(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2370,10 +2370,10 @@ Var operator*(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2414,10 +2414,10 @@ Var operator*(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2458,10 +2458,10 @@ Var operator*(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2503,10 +2503,10 @@ Var operator*(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2518,10 +2518,10 @@ Var operator*(const Var& a, const Var& b)
         return result;
     }
     else if (a.type == ARR) {
-        throw wstring{ L"Массив не поддерживает данной операции" };
+        throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else if (a.type == MAP) {
-        throw wstring{ L"Cловарь не поддерживает данной операции" };
+        throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else {
         Var result;
@@ -2565,10 +2565,10 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2609,10 +2609,10 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2653,10 +2653,10 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2697,10 +2697,10 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2741,10 +2741,10 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2785,10 +2785,10 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2830,10 +2830,10 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2845,10 +2845,10 @@ Var operator/(const Var& a, const Var& b)
         return result;
     }
     else if (a.type == ARR) {
-        throw wstring{ L"Массив не поддерживает данной операции" };
+        throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else if (a.type == MAP) {
-        throw wstring{ L"Cловарь не поддерживает данной операции" };
+        throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else {
         Var result;
@@ -2892,10 +2892,10 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2936,10 +2936,10 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -2980,10 +2980,10 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -3024,10 +3024,10 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -3068,10 +3068,10 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -3112,10 +3112,10 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -3157,10 +3157,10 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             Var result;
@@ -3172,10 +3172,10 @@ Var operator%(const Var& a, const Var& b)
         return result;
     }
     else if (a.type == ARR) {
-        throw wstring{ L"Массив не поддерживает данной операции" };
+        throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else if (a.type == MAP) {
-        throw wstring{ L"Cловарь не поддерживает данной операции" };
+        throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else {
         Var result;
@@ -3235,10 +3235,10 @@ bool operator==(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3270,10 +3270,10 @@ bool operator==(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3305,10 +3305,10 @@ bool operator==(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3340,10 +3340,10 @@ bool operator==(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3375,10 +3375,10 @@ bool operator==(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3410,10 +3410,10 @@ bool operator==(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3445,10 +3445,10 @@ bool operator==(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3463,10 +3463,10 @@ bool operator==(const Var& a, const Var& b) {
         }
     }
     else if (a.type == ARR) {
-        throw wstring{ L"Массив не поддерживает данной операции" };
+        throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else if (a.type == MAP) {
-        throw wstring{ L"Cловарь не поддерживает данной операции" };
+        throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else {
         return false;
@@ -3504,10 +3504,10 @@ bool operator>(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3539,10 +3539,10 @@ bool operator>(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3574,10 +3574,10 @@ bool operator>(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3609,10 +3609,10 @@ bool operator>(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3644,10 +3644,10 @@ bool operator>(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3679,10 +3679,10 @@ bool operator>(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3714,10 +3714,10 @@ bool operator>(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3727,10 +3727,10 @@ bool operator>(const Var& a, const Var& b) {
             return false;
     }
     else if (a.type == ARR) {
-        throw wstring{ L"Массив не поддерживает данной операции" };
+        throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else if (a.type == MAP) {
-        throw wstring{ L"Cловарь не поддерживает данной операции" };
+        throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else {
         return false;
@@ -3768,10 +3768,10 @@ bool operator<(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3803,10 +3803,10 @@ bool operator<(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3838,10 +3838,10 @@ bool operator<(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3873,10 +3873,10 @@ bool operator<(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3908,10 +3908,10 @@ bool operator<(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3943,10 +3943,10 @@ bool operator<(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3978,10 +3978,10 @@ bool operator<(const Var& a, const Var& b) {
             return false;
         }
         else if (b.type == ARR) {
-            throw wstring{ L"Массив не поддерживает данной операции" };
+            throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else if (b.type == MAP) {
-            throw wstring{ L"Cловарь не поддерживает данной операции" };
+            throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
         }
         else {
             return false;
@@ -3991,10 +3991,10 @@ bool operator<(const Var& a, const Var& b) {
         return false;
     }
     else if (a.type == ARR) {
-        throw wstring{ L"Массив не поддерживает данной операции" };
+        throw wstring{ L"РњР°СЃСЃРёРІ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else if (a.type == MAP) {
-        throw wstring{ L"Cловарь не поддерживает данной операции" };
+        throw wstring{ L"CР»РѕРІР°СЂСЊ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РґР°РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё" };
     }
     else {
         return false;

@@ -1,14 +1,14 @@
-#include "Machine.h"
+п»ї#include "Machine.h"
 #include "windows.h"
 #include <cmath>
 
-const unsigned char STRICTED = 0;	//Только определенно количество параметров
-const unsigned char MIN = 1;		//Минимальное количество параметров
-const unsigned char RANGE = 3;		//Параметры от минимального до максимального
-const unsigned char VARIANTS = 4;	//Варианты количества параметров
+const unsigned char STRICTED = 0;	//РўРѕР»СЊРєРѕ РѕРїСЂРµРґРµР»РµРЅРЅРѕ РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°СЂР°РјРµС‚СЂРѕРІ
+const unsigned char MIN = 1;		//РњРёРЅРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°СЂР°РјРµС‚СЂРѕРІ
+const unsigned char RANGE = 3;		//РџР°СЂР°РјРµС‚СЂС‹ РѕС‚ РјРёРЅРёРјР°Р»СЊРЅРѕРіРѕ РґРѕ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ
+const unsigned char VARIANTS = 4;	//Р’Р°СЂРёР°РЅС‚С‹ РєРѕР»РёС‡РµСЃС‚РІР° РїР°СЂР°РјРµС‚СЂРѕРІ
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Прототипы функций - инструкций
+// РџСЂРѕС‚РѕС‚РёРїС‹ С„СѓРЅРєС†РёР№ - РёРЅСЃС‚СЂСѓРєС†РёР№
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void nop(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void end(Machine* m, Instruction* i, bool prevalidate, bool prego);
@@ -48,7 +48,7 @@ void getval(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void setval(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Массив с функциями - инструкциями
+// РњР°СЃСЃРёРІ СЃ С„СѓРЅРєС†РёСЏРјРё - РёРЅСЃС‚СЂСѓРєС†РёСЏРјРё
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 func functions[] = {
 	&nop,
@@ -102,7 +102,7 @@ void Machine::prepare() {
 			functions[this->instructions[i].opCode](this, &instructions[i], true, true);
 		}
 		catch (const std::wstring& error_message) {
-			throw wstring{ L"Ошибка выполнения инструкции " + to_wstring(this->instruct_number + 1) + L"(" + this->instructions[i].as_string + L"): " + error_message };
+			throw wstring{ L"РћС€РёР±РєР° РІС‹РїРѕР»РЅРµРЅРёСЏ РёРЅСЃС‚СЂСѓРєС†РёРё " + to_wstring(this->instruct_number + 1) + L"(" + this->instructions[i].as_string + L"): " + error_message };
 		}
 	}
 	this->instruct_number = 0;
@@ -111,14 +111,14 @@ void Machine::prepare() {
 Var Machine::go() {
 	while (this->instruct_number != -1) {
 		if (this->instruct_number >= this->instruct_count) {
-			throw wstring{ L"Ошибка после выполнения инструкции " + to_wstring(this->instruct_number) + L"(" + this->instructions[this->instruct_number - 1].as_string + L"): " + L"Неожиданный конец программы. Пропущена инструкция END\n" };
+			throw wstring{ L"РћС€РёР±РєР° РїРѕСЃР»Рµ РІС‹РїРѕР»РЅРµРЅРёСЏ РёРЅСЃС‚СЂСѓРєС†РёРё " + to_wstring(this->instruct_number) + L"(" + this->instructions[this->instruct_number - 1].as_string + L"): " + L"РќРµРѕР¶РёРґР°РЅРЅС‹Р№ РєРѕРЅРµС† РїСЂРѕРіСЂР°РјРјС‹. РџСЂРѕРїСѓС‰РµРЅР° РёРЅСЃС‚СЂСѓРєС†РёСЏ END\n" };
 		}
 
 		try {
 			functions[this->instructions[this->instruct_number].opCode](this, &instructions[this->instruct_number], false, false);
 		}
 		catch (const std::wstring& error_message) {
-				throw wstring{ L"Ошибка выполнения инструкции " + to_wstring(this->instruct_number + 1) + L"(" + this->instructions[this->instruct_number].as_string + L"): " + error_message };
+				throw wstring{ L"РћС€РёР±РєР° РІС‹РїРѕР»РЅРµРЅРёСЏ РёРЅСЃС‚СЂСѓРєС†РёРё " + to_wstring(this->instruct_number + 1) + L"(" + this->instructions[this->instruct_number].as_string + L"): " + error_message };
 		}
 	}
 	return this->ret_data;
@@ -126,7 +126,7 @@ Var Machine::go() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // getValue 
-// Возвращает значение параметра по имени переменной или литералу
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РїРѕ РёРјРµРЅРё РїРµСЂРµРјРµРЅРЅРѕР№ РёР»Рё Р»РёС‚РµСЂР°Р»Сѓ
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Var getValue(Var *val, map<wstring, Var>* heap) {
 	if ((*val).type == STR && (*val).getWStr()[0] == L'$') {
@@ -134,7 +134,7 @@ Var getValue(Var *val, map<wstring, Var>* heap) {
 			return (*heap).at((*val).getWStr());
 		}
 		catch (std::out_of_range& ex) {
-			throw wstring{L"Переменная " + (*val).getWStr() + L" не определена\n" };
+			throw wstring{L"РџРµСЂРµРјРµРЅРЅР°СЏ " + (*val).getWStr() + L" РЅРµ РѕРїСЂРµРґРµР»РµРЅР°\n" };
 		}
 	}
 	else {
@@ -144,7 +144,7 @@ Var getValue(Var *val, map<wstring, Var>* heap) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // getLabel
-// Возвращает значение параметра по имени переменной или литералу
+// Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РїРѕ РёРјРµРЅРё РїРµСЂРµРјРµРЅРЅРѕР№ РёР»Рё Р»РёС‚РµСЂР°Р»Сѓ
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Var getLabel(Var* val, map<wstring, int>* pointers) {
 	if ((*val).type == STR && (*val).getWStr()[0] == L'&') {
@@ -152,7 +152,7 @@ Var getLabel(Var* val, map<wstring, int>* pointers) {
 			return (*pointers).at((*val).getWStr());
 		}
 		catch (std::out_of_range& ex) {
-			throw wstring{ L"Метка " + (*val).getWStr() + L" не определена\n" };
+			throw wstring{ L"РњРµС‚РєР° " + (*val).getWStr() + L" РЅРµ РѕРїСЂРµРґРµР»РµРЅР°\n" };
 		}
 	}
 	else {
@@ -162,63 +162,63 @@ Var getLabel(Var* val, map<wstring, int>* pointers) {
 }
 
 
-//Хелперы валидации инструкций
+//РҐРµР»РїРµСЂС‹ РІР°Р»РёРґР°С†РёРё РёРЅСЃС‚СЂСѓРєС†РёР№
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // checkExistValue
-// Проверяет существование переменной
+// РџСЂРѕРІРµСЂСЏРµС‚ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void checkExistValue(Var* val, Machine* m) {
 	if ((*val).type == STR && (*val).getWStr()[0] == L'$') {
 		if ((*m).heap.find((*val).getWStr()) != (*m).heap.end()) {
-			throw wstring{ L"Переменная " + (*val).getWStr() + L" уже определена\n" };
+			throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ " + (*val).getWStr() + L" СѓР¶Рµ РѕРїСЂРµРґРµР»РµРЅР°\n" };
 		}
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // checkNotExistValue
-// Проверяет отсутствие существования переменной
+// РџСЂРѕРІРµСЂСЏРµС‚ РѕС‚СЃСѓС‚СЃС‚РІРёРµ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ РїРµСЂРµРјРµРЅРЅРѕР№
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void checkNotExistValue(Var* val, Machine* m) {
 	if ((*val).type == STR && (*val).getWStr()[0] == L'$') {
 		if ((*m).heap.find((*val).getWStr()) == (*m).heap.end()) {
-			throw wstring{ L"Переменная " + (*val).getWStr() + L" не определена\n" };
+			throw wstring{ L"РџРµСЂРµРјРµРЅРЅР°СЏ " + (*val).getWStr() + L" РЅРµ РѕРїСЂРµРґРµР»РµРЅР°\n" };
 		}
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // checkExistLabel
-// Проверяет существование метки
+// РџСЂРѕРІРµСЂСЏРµС‚ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ РјРµС‚РєРё
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void checkExistLabel(Var* val, Machine* m) {
 	if ((*val).type == STR && (*val).getWStr()[0] == L'&') {
 		if ((*m).jmp_pointers.find((*val).getWStr()) != (*m).jmp_pointers.end()) {
-			throw wstring{ L"Метка " + (*val).getWStr() + L" уже определена\n" };
+			throw wstring{ L"РњРµС‚РєР° " + (*val).getWStr() + L" СѓР¶Рµ РѕРїСЂРµРґРµР»РµРЅР°\n" };
 		}
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // checkParameterCount
-// Проверяет соответствие количества инструкций
+// РџСЂРѕРІРµСЂСЏРµС‚ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ РєРѕР»РёС‡РµСЃС‚РІР° РёРЅСЃС‚СЂСѓРєС†РёР№
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void checkParameterCount(unsigned char type, int count, Machine *m, wstring* name, int stricted = 0, int min = 0, int range[] = nullptr, int variant[] = nullptr) {
 	switch (type) {
 		case STRICTED:
 			if (count != stricted) {
-				throw wstring{ L"Инструкция " + *name + L" принимает " + to_wstring(stricted) + L" параметр(а)(ов)\n" };
+				throw wstring{ L"РРЅСЃС‚СЂСѓРєС†РёСЏ " + *name + L" РїСЂРёРЅРёРјР°РµС‚ " + to_wstring(stricted) + L" РїР°СЂР°РјРµС‚СЂ(Р°)(РѕРІ)\n" };
 			}
 			break;
 		case MIN:
 			if (count < min) {
-				throw wstring{ L"Инструкция " + *name + L" принимает не меньше " + to_wstring(min) + L" параметра(ов)\n" };
+				throw wstring{ L"РРЅСЃС‚СЂСѓРєС†РёСЏ " + *name + L" РїСЂРёРЅРёРјР°РµС‚ РЅРµ РјРµРЅСЊС€Рµ " + to_wstring(min) + L" РїР°СЂР°РјРµС‚СЂР°(РѕРІ)\n" };
 			}
 			break;
 		case RANGE:
 			if (count < range[0] || count > range[1]) {
-				throw wstring{ L"Инструкция " + *name + L" принимает от " + to_wstring(range[0]) + L" до " + to_wstring(range[1]) + L" параметра(ов)\n" };
+				throw wstring{ L"РРЅСЃС‚СЂСѓРєС†РёСЏ " + *name + L" РїСЂРёРЅРёРјР°РµС‚ РѕС‚ " + to_wstring(range[0]) + L" РґРѕ " + to_wstring(range[1]) + L" РїР°СЂР°РјРµС‚СЂР°(РѕРІ)\n" };
 			}
 			break;
 		case VARIANTS: {
@@ -238,33 +238,33 @@ void checkParameterCount(unsigned char type, int count, Machine *m, wstring* nam
 							params_str += L", ";
 						}
 					}
-					throw wstring{ L"Инструкция " + *name + L" может принимать следующее число параметров: " + params_str + L"\n" };
+					throw wstring{ L"РРЅСЃС‚СЂСѓРєС†РёСЏ " + *name + L" РјРѕР¶РµС‚ РїСЂРёРЅРёРјР°С‚СЊ СЃР»РµРґСѓСЋС‰РµРµ С‡РёСЃР»Рѕ РїР°СЂР°РјРµС‚СЂРѕРІ: " + params_str + L"\n" };
 				}
 			}
 			break;
 		default:
-			throw wstring{ L"Указан неверный вариант валидации параметров" };
+			throw wstring{ L"РЈРєР°Р·Р°РЅ РЅРµРІРµСЂРЅС‹Р№ РІР°СЂРёР°РЅС‚ РІР°Р»РёРґР°С†РёРё РїР°СЂР°РјРµС‚СЂРѕРІ" };
 			break;
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // requiredVar
-// Проверяет то, что требуется переменная
+// РџСЂРѕРІРµСЂСЏРµС‚ С‚Рѕ, С‡С‚Рѕ С‚СЂРµР±СѓРµС‚СЃСЏ РїРµСЂРµРјРµРЅРЅР°СЏ
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void requiredVar(Var* val, Machine* m, wstring* type, wstring num) {
 	if ((*val).type != STR || (*val).getWStr()[0] != L'$') {
-		throw wstring{ num + L" параметр инструкции " + (*type) + L" должен быть именем переменной\n" };
+		throw wstring{ num + L" РїР°СЂР°РјРµС‚СЂ РёРЅСЃС‚СЂСѓРєС†РёРё " + (*type) + L" РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РёРјРµРЅРµРј РїРµСЂРµРјРµРЅРЅРѕР№\n" };
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // requiredLabel
-// Проверяет то, что требуется метка
+// РџСЂРѕРІРµСЂСЏРµС‚ С‚Рѕ, С‡С‚Рѕ С‚СЂРµР±СѓРµС‚СЃСЏ РјРµС‚РєР°
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void requiredLabel(Var* val, Machine* m, wstring* type, wstring num) {
 	if ((*val).type != STR || (*val).getWStr()[0] != L'&') {
-		throw wstring{ num + L" параметр инструкции " + (*type) + L" должен быть именем метки\n" };
+		throw wstring{ num + L" РїР°СЂР°РјРµС‚СЂ РёРЅСЃС‚СЂСѓРєС†РёРё " + (*type) + L" РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РёРјРµРЅРµРј РјРµС‚РєРё\n" };
 	}
 }
 
@@ -277,11 +277,11 @@ void nop(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 0);
 	}
 	else {
-		//Ничего
+		//РќРёС‡РµРіРѕ
 	}
 
 	if (prego) {
-		//Ничего
+		//РќРёС‡РµРіРѕ
 	}
 	else {
 		++(*m).instruct_number;
@@ -297,7 +297,7 @@ void end(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
 	}
 	else {
-		//Ничего
+		//РќРёС‡РµРіРѕ
 	}
 
 	if (prego) {
@@ -318,7 +318,7 @@ void pause(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 0);
 	}
 	else {
-		//Ничего
+		//РќРёС‡РµРіРѕ
 	}
 
 	if (prego) {
@@ -341,7 +341,7 @@ void sleep(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		}
 	}
 	else {
-		//Ничего
+		//РќРёС‡РµРіРѕ
 	}
 
 	if (prego) {
@@ -360,7 +360,7 @@ void var(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"VAR";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkExistValue(&(*i).parameters[0], m);
@@ -384,7 +384,7 @@ void print(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 1);
 	}
 	else {
-		//Ничего
+		//РќРёС‡РµРіРѕ
 	}
 
 	if (prego) {
@@ -437,11 +437,11 @@ void label(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"LABEL";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
-		requiredLabel(&(*i).parameters[0], m, &name, L"Единственный");
+		requiredLabel(&(*i).parameters[0], m, &name, L"Р•РґРёРЅСЃС‚РІРµРЅРЅС‹Р№");
 		checkExistLabel(&(*i).parameters[0], m);
 	}
 	else {
-		//Ничего
+		//РќРёС‡РµРіРѕ
 	}
 
 	if (prego) {
@@ -462,7 +462,7 @@ void jump(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
 	}
 	else {
-		//Ничего
+		//РќРёС‡РµРіРѕ
 	}
 
 	if (prego) {
@@ -480,7 +480,7 @@ void input(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"INPUT";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -504,7 +504,7 @@ void change(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"CHANGE";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -527,7 +527,7 @@ void to(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		wstring name = L"TO";
 		int v[2]{ 2, 3 };
 		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[1], m);
@@ -565,7 +565,7 @@ void to(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).toARR();
 			}
 			else {
-				throw wstring{ L"Тип данных " + type + L" неизвестен\n" };
+				throw wstring{ L"РўРёРї РґР°РЅРЅС‹С… " + type + L" РЅРµРёР·РІРµСЃС‚РµРЅ\n" };
 			}
 		}
 		else if ((*i).parameters.size() == 3) {
@@ -594,7 +594,7 @@ void to(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toARR();
 			}
 			else {
-				throw wstring{ L"Тип данных " + type + L" неизвестен\n" };
+				throw wstring{ L"РўРёРї РґР°РЅРЅС‹С… " + type + L" РЅРµРёР·РІРµСЃС‚РµРЅ\n" };
 			}
 		}
 		++(*m).instruct_number;
@@ -609,7 +609,7 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		wstring name = L"CALC";
 		int v[2]{ 2, 4 };
 		checkParameterCount(RANGE, (*i).parameters.size(), m, &name, 0, 0, v);
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 
 	}
 	else {
@@ -639,7 +639,7 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 			&& type != L"ln"
 			&& type != L"fact"
 			&& type != L"root") {
-			throw wstring{ L"Математическая операция " + type + L" неизвестна\n" };
+			throw wstring{ L"РњР°С‚РµРјР°С‚РёС‡РµСЃРєР°СЏ РѕРїРµСЂР°С†РёСЏ " + type + L" РЅРµРёР·РІРµСЃС‚РЅР°\n" };
 		}
 		if ((*i).parameters.size() == 2) {
 			if (type == L"INC" || type == L"inc") {
@@ -660,7 +660,7 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 				(*m).heap[(*i).parameters[1].getWStr()] = Var(log((*m).heap[(*i).parameters[1].getWStr()].toDBL().getDouble()));
 			}
 			else {
-				throw wstring{ L"Математическая операция " + type + L" принимает 2 и больше параметров\n" };
+				throw wstring{ L"РњР°С‚РµРјР°С‚РёС‡РµСЃРєР°СЏ РѕРїРµСЂР°С†РёСЏ " + type + L" РїСЂРёРЅРёРјР°РµС‚ 2 Рё Р±РѕР»СЊС€Рµ РїР°СЂР°РјРµС‚СЂРѕРІ\n" };
 			}
 		}
 		if ((*i).parameters.size() == 3) {
@@ -734,7 +734,7 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 
 			}
 			else {
-				throw wstring{ L"Математическая операция " + type + L" принимает до 3 параметров\n" };
+				throw wstring{ L"РњР°С‚РµРјР°С‚РёС‡РµСЃРєР°СЏ РѕРїРµСЂР°С†РёСЏ " + type + L" РїСЂРёРЅРёРјР°РµС‚ РґРѕ 3 РїР°СЂР°РјРµС‚СЂРѕРІ\n" };
 			}
 		}
 
@@ -805,7 +805,7 @@ void tcount(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"TCOUNT";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -828,8 +828,8 @@ void isset(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"ISSET";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -858,7 +858,7 @@ void typeof(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"TYPEOF";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -881,7 +881,7 @@ void comp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"COMP";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 4);
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[1], m);
@@ -912,7 +912,7 @@ void comp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 			(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) <= getValue(&(*i).parameters[3], &(*m).heap);
 		}
 		else {
-			throw wstring{ L"Операция сравнения " + type + L" неизвестна\n" };
+			throw wstring{ L"РћРїРµСЂР°С†РёСЏ СЃСЂР°РІРЅРµРЅРёСЏ " + type + L" РЅРµРёР·РІРµСЃС‚РЅР°\n" };
 		}
 		++(*m).instruct_number;
 	}
@@ -928,7 +928,7 @@ void logic(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		wstring name = L"LOGIC";
 		int v[2]{ 3, 4 };
 		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 
 	}
 	else {
@@ -954,14 +954,14 @@ void logic(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 			&& type != L"nor"
 			&& type != L"xor"
 			&& type != L"xnor") {
-			throw wstring{ L"Логическая операция " + type + L" неизвестна\n" };
+			throw wstring{ L"Р›РѕРіРёС‡РµСЃРєР°СЏ РѕРїРµСЂР°С†РёСЏ " + type + L" РЅРµРёР·РІРµСЃС‚РЅР°\n" };
 		}
 		if ((*i).parameters.size() == 3) {
 			if (type == L"NOT" || type == L"not") {
 				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = !getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool();
 			}
 			else {
-				throw wstring{ L"Логическая операция " + type + L" принимет не менее 4 параметров\n" };
+				throw wstring{ L"Р›РѕРіРёС‡РµСЃРєР°СЏ РѕРїРµСЂР°С†РёСЏ " + type + L" РїСЂРёРЅРёРјРµС‚ РЅРµ РјРµРЅРµРµ 4 РїР°СЂР°РјРµС‚СЂРѕРІ\n" };
 			}
 		}
 		else if ((*i).parameters.size() == 4) {
@@ -984,7 +984,7 @@ void logic(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 				(*m).heap[(*i).parameters[1].toSTR().getWStr()] = getValue(&(*i).parameters[2], &(*m).heap).toBLN().getBool() == getValue(&(*i).parameters[3], &(*m).heap).toBLN().getBool();
 			}
 			else {
-				throw wstring{ L"Логическая операция " + type + L" принимет не более 3 параметров\n" };
+				throw wstring{ L"Р›РѕРіРёС‡РµСЃРєР°СЏ РѕРїРµСЂР°С†РёСЏ " + type + L" РїСЂРёРЅРёРјРµС‚ РЅРµ Р±РѕР»РµРµ 3 РїР°СЂР°РјРµС‚СЂРѕРІ\n" };
 			}
 		}
 		++(*m).instruct_number;
@@ -1046,7 +1046,7 @@ void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"DLABEL";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
-		requiredLabel(&(*i).parameters[0], m, &name, L"Единственный");
+		requiredLabel(&(*i).parameters[0], m, &name, L"Р•РґРёРЅСЃС‚РІРµРЅРЅС‹Р№");
 	}
 
 	if (prego) {
@@ -1065,8 +1065,8 @@ void swap(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"SWAP";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -1095,7 +1095,7 @@ void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"ARRAY";
 		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkExistValue(&(*i).parameters[0], m);
@@ -1131,7 +1131,7 @@ void vtoarr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"VTOARR";
 		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkExistValue(&(*i).parameters[0], m);
@@ -1161,7 +1161,7 @@ void pushb(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"PUSHB";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 
 	}
 	else {
@@ -1185,9 +1185,9 @@ void popb(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		wstring name = L"POPB";
 		int v[2]{ 1, 2 };
 		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 		if ((*i).parameters.size() == 2) {
-			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+			requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 		}
 	}
 	else {
@@ -1219,7 +1219,7 @@ void pushf(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"PUSHF";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -1242,9 +1242,9 @@ void popf(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		wstring name = L"POPF";
 		int v[2]{ 1, 2 };
 		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 		if ((*i).parameters.size() == 2) {
-			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+			requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 		}
 	}
 	else {
@@ -1277,9 +1277,9 @@ void erase(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		wstring name = L"ERASE";
 		int v[2]{ 2, 3 };
 		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 		if ((*i).parameters.size() == 3) {
-			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+			requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 		}
 	}
 	else {
@@ -1311,7 +1311,7 @@ void insrt(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"INSERT";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 3);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -1333,7 +1333,7 @@ void clear(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"CLEAR";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
-		requiredVar(&(*i).parameters[0], m, &name, L"Единственный");
+		requiredVar(&(*i).parameters[0], m, &name, L"Р•РґРёРЅСЃС‚РІРµРЅРЅС‹Р№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -1355,8 +1355,8 @@ void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"SIZE";
 		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -1380,8 +1380,8 @@ void getval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"GETVAL";
 		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 3);
-		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[0], m, &name, L"РџРµСЂРІС‹Р№");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[0], m);
@@ -1413,7 +1413,7 @@ void setval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"SETVAL";
 		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 3);
-		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		requiredVar(&(*i).parameters[1], m, &name, L"Р’С‚РѕСЂРѕР№");
 	}
 	else {
 		checkNotExistValue(&(*i).parameters[1], m);

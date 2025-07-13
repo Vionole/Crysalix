@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <string>
 #include <vector>
 #include <map>
@@ -34,7 +34,7 @@ public:
     vector<Var> arr;
     map<wstring, Var> mp;
     Type type = NIL;
-    //Конструкторы для обычны типов данных
+    //РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ РґР»СЏ РѕР±С‹С‡РЅС‹ С‚РёРїРѕРІ РґР°РЅРЅС‹С…
     Var();
     Var(unsigned long long int untg);
     Var(long long int ntg);
@@ -62,7 +62,7 @@ public:
     Var(vector<Var> v);
     Var(map<wstring, Var> m);
 
-    //Геттеры обычных типов данных
+    //Р“РµС‚С‚РµСЂС‹ РѕР±С‹С‡РЅС‹С… С‚РёРїРѕРІ РґР°РЅРЅС‹С…
     long long int getInt() const;
     unsigned long long int getUInt() const;
     long double getDouble() const;
@@ -73,7 +73,7 @@ public:
     vector<Var> getArr() const;
     map<wstring, Var> getMap() const;
 
-    //Приведение типов
+    //РџСЂРёРІРµРґРµРЅРёРµ С‚РёРїРѕРІ
     Var toNTG() const;
     Var toUNTG() const;
     Var toDBL() const;
@@ -83,11 +83,11 @@ public:
     Var toSTR() const;
     Var toARR() const;
 
-    //Вывод данных и типа
+    //Р’С‹РІРѕРґ РґР°РЅРЅС‹С… Рё С‚РёРїР°
     void print();
     wstring typeOf();
 
-    //Работа с массивами, словарями и строками
+    //Р Р°Р±РѕС‚Р° СЃ РјР°СЃСЃРёРІР°РјРё, СЃР»РѕРІР°СЂСЏРјРё Рё СЃС‚СЂРѕРєР°РјРё
     Var& operator[](int ind);
     Var& operator[](const wchar_t* str);
     Var& operator[](wstring str);
@@ -138,10 +138,10 @@ public:
     
     void merge(Var val);
     Var csize();
-    //Вывод данных через поток
+    //Р’С‹РІРѕРґ РґР°РЅРЅС‹С… С‡РµСЂРµР· РїРѕС‚РѕРє
     friend wostream& operator<< (wostream& os, const Var& var);
 
-    //Перегрузка присваивания
+    //РџРµСЂРµРіСЂСѓР·РєР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
     Var& operator= (const Var& var);
 
     Var& operator= (const unsigned long long int& var);
@@ -168,7 +168,7 @@ public:
     Var& operator= (vector<Var> v);
     Var& operator= (map<wstring, Var> m);
 
-    //Математические операторы
+    //РњР°С‚РµРјР°С‚РёС‡РµСЃРєРёРµ РѕРїРµСЂР°С‚РѕСЂС‹
     friend Var operator+(const Var& a, const Var& b);
     friend Var operator-(const Var& a, const Var& b);
     friend Var operator*(const Var& a, const Var& b);
@@ -181,7 +181,7 @@ public:
     friend Var operator/=(Var& a, const Var& b);
     friend Var operator%=(Var& a, const Var& b);
 
-    //Логичекие операторы
+    //Р›РѕРіРёС‡РµРєРёРµ РѕРїРµСЂР°С‚РѕСЂС‹
     friend bool operator==(const Var& a, const Var& b);
     friend bool operator!=(const Var& a, const Var& b);
     friend bool operator>(const Var& a, const Var& b);
