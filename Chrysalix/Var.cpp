@@ -1,4 +1,4 @@
-﻿
+﻿#pragma once
 #include <vector>
 #include <map>
 #include <string>
@@ -6,7 +6,8 @@
 #include <fstream>
 #include <io.h>
 #include <fcntl.h>
-#include "VarClass.h"
+
+#include "Var.h"
 
 using namespace std;
 

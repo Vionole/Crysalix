@@ -1,3 +1,7 @@
+vtoarr: $arr, 1, 2, 3;
+print: $arr, '\n';
+pushb: $arr, 4;
+print: $arr, '\n';
 ##
 var: $1, ARR;
 var: $2, ARR;
@@ -31,7 +35,7 @@ print: $value, '\n';
 	var: $i, ntg 1; 	#С какого числа ведем итерацию
 	var: $result, ntg1; 	#Переменная результата
 	var: $j, ntg1; 		#Итератор главного цикла
-	var: $max, ntg100; 	#Максимальне количество итераций главного цикла.
+	var: $max, ntg10; 	#Максимальне количество итераций главного цикла.
 	newtemp: ntg 1;
 label: &main_loop;
 	print: 'Введите число, по которому будет расчет факториала: ';
@@ -53,10 +57,10 @@ label: &main_loop;
 	change: $result, ntg1;
 
 	calc: 'inc', $j;
-	comp: '<', $0, $j, $max; 
+	comp: '<', $0, $j, $max;
 jif: $0, &main_loop;	
 	
-		#Освобождаем память, конец программы
+	#Освобождаем память, конец программы
 	forget:;
 	free: $n, $i, $result, $j, $max;
 pause:;

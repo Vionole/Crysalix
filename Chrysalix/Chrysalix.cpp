@@ -1,4 +1,5 @@
-﻿#include <iostream>
+﻿#pragma once
+#include <iostream>
 #include <io.h>
 #include <sstream>
 #include <fstream>
@@ -6,7 +7,7 @@
 #include <fcntl.h>
 #include "windows.h"
 #include <chrono>
-#include "VarClass.h"
+
 #include "Machine.h"
 #include "Parser.h"
 
@@ -14,6 +15,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+    
     wstring filename = L"";
     if (argc < 2) {
         //Если не передан параметр при запуске, смотрим файл настроек
@@ -24,6 +26,7 @@ int main(int argc, char* argv[])
             wss << infile.rdbuf();
             filename = wss.str();
         }
+        //Если файла настроек нет, выводим версию программы
         else {
             wcout << L"0.1 alpha";
             return 0;
@@ -68,6 +71,7 @@ int main(int argc, char* argv[])
     catch (const std::wstring& error_message) {
         wcout << endl << error_message << endl;
     }
+    
     return 0;
 }
 

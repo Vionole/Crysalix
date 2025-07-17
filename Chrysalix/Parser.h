@@ -3,7 +3,8 @@
 #include <vector>
 #include <map>
 #include <iostream>
-#include "VarClass.h"
+
+#include "Var.h"
 #include "Machine.h"
 
 using namespace std;

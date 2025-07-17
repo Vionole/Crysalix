@@ -7,9 +7,8 @@
 #include <vector>
 #include <map>
 #include <iostream>
+
 #include "Parser.h"
-#include "VarClass.h"
-#include "Machine.h"
 
 using namespace std;
 
@@ -174,10 +173,10 @@ void Parser::parse(Machine& m) {
 
 
     //Парсим параметры, превращая литералы в объект VAR со значением
-    int size = lexemes.size();
+    int size = (int)lexemes.size();
     for (int i = 0; i < size; ++i) {
         try {
-            int params_size = lexemes[i].str_parameters.size();
+            int params_size = (int)lexemes[i].str_parameters.size();
             for (int j = 0; j < params_size; ++j) {
                 if (lexemes[i].str_parameters[j][0] == L'$' || lexemes[i].str_parameters[j][0] == L'&') {
                     lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j]));

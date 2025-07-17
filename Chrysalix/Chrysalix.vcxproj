@@ -137,12 +137,18 @@
     <ClCompile Include="Machine.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Chrysalix.cpp" />
-    <ClCompile Include="VarClass.cpp" />
+    <ClCompile Include="InstructionFunctions.cpp" />
+    <ClCompile Include="ValidateHelper.cpp" />
+    <ClCompile Include="Var.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CTables.h" />
+    <ClInclude Include="InstructionFunctions.h" />
+    <ClInclude Include="Instruction.h" />
     <ClInclude Include="Machine.h" />
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="VarClass.h" />
+    <ClInclude Include="ValidateHelper.h" />
+    <ClInclude Include="Var.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,43 @@
+#pragma once
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Опкоды инструкций
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+enum OP_CODE {
+	NOP,
+	END,
+	PAUSE,
+	SLEEP,
+	VAR,
+	PRINT,
+	FREE,
+	LABEL,
+	JUMP,
+	INPT,
+	CHANGE,
+	TO,
+	CALC,
+	NEWTEMP,
+	FORGET,
+	TCOUNT,
+	ISSET,
+	TYPEOF,
+	COMP,
+	LOGIC,
+	JIF,
+	JIFNOT,
+	DLABEL,
+	SWAP,
+	ARRAY,
+	VTOARR,
+	PUSHB,
+	POPB,
+	PUSHF,
+	POPF,
+	ERASE,
+	INSRT,
+	CLEAR,
+	SIZEARR,
+	GETVAL,
+	SETVAL
+};
