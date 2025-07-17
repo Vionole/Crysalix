@@ -1,31 +1,21 @@
 ﻿#pragma once
-
-#include <sstream>
-#include <fstream>
-#include <codecvt>
+#include <iostream>
 
 #include "Parser.h"
 #include "CTable.h"
+#include "Helpers.h"
 
 using namespace std;
 
-Parser::Parser(wstring file_name) {
-	this->file = file_name;
-}
-
-void Parser::fileLoad() {
+void Parser::fileLoad(wstring file_name) {
     //Чтение файла в кодировке UTF-8
-    std::wifstream infile(this->file);
-    if (infile) {
-        infile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-        std::wstringstream wss;
-        wss << infile.rdbuf();
-        this->file_content = wss.str();
+    this->file = file_name;
+    try {
+        this->file_content = loadFile(this->file);
     }
-    else {
-        throw wstring{ L"Файл " + this->file + L" не найден\n" };
+    catch (const std::wstring& error_message) {
+        wcout << error_message;
     }
-    infile.close();
 }
 
 void Parser::parse(Machine& m) {

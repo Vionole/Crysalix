@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\Helpers">
+      <UniqueIdentifier>{9e990a6f-a3a0-463d-958f-2be000371d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\MachineEngine">
+      <UniqueIdentifier>{5bb4e0e8-a18f-478c-a684-fe55b872f07e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Instructions">
+      <UniqueIdentifier>{0ed2834a-d5a2-459b-85ca-04cab2b9d9a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chrysalix.cpp">
@@ -27,34 +36,37 @@
     <ClCompile Include="Parser.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="InstructionFunctions.cpp">
-      <Filter>Исходные файлы</Filter>
+    <ClCompile Include="CharsetHelper.cpp">
+      <Filter>Исходные файлы\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="DataHelper.cpp">
+      <Filter>Исходные файлы\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="ValidateHelper.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Var.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Machine.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Parser.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Instruction.h">
+    <ClInclude Include="Helpers.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Instruction.h">
+      <Filter>Файлы заголовков\MachineEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Machine.h">
+      <Filter>Файлы заголовков\MachineEngine</Filter>
     </ClInclude>
     <ClInclude Include="CTable.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Instructions</Filter>
     </ClInclude>
     <ClInclude Include="InstructionFunctions.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="ValidateHelper.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Instructions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

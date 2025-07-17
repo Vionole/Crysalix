@@ -15,8 +15,7 @@ public:
 	wstring file;
 	wstring file_content;
 	
-	Parser(wstring file_name);
-	void fileLoad();
+	void fileLoad(wstring file_name);
 	void parse(Machine& m);
 
 };

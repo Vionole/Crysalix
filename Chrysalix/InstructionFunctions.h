@@ -4,7 +4,7 @@
 #include <cmath>
 #include "windows.h"
 
-#include "ValidateHelper.h"
+#include "Helpers.h"
 
 typedef void (*func)(Machine* m, Instruction* i, bool prevalidate, bool prego);
 

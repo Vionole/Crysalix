@@ -4,8 +4,6 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <io.h>
-#include <fcntl.h>
 
 #include "Var.h"
 
@@ -4008,12 +4006,6 @@ bool operator>=(const Var& a, const Var& b) {
 
 bool operator!(const Var& a) {
     return !(a.toBLN().getBool());
-}
-
-void Unicode() {
-    int result = _setmode(_fileno(stdout), _O_U16TEXT);
-    result = _setmode(_fileno(stdin), _O_U16TEXT);
-    result = _setmode(_fileno(stderr), _O_U16TEXT);
 }
 
 void swap(Var& a, Var& b) {

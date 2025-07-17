@@ -11,6 +11,7 @@
 
 #include "Machine.h"
 #include "Parser.h"
+#include "Helpers.h"
 
 using namespace std;
 
@@ -20,20 +21,13 @@ int main(int argc, char* argv[])
     wstring filename = L"";
     if (argc < 2) {
         //Если не передан параметр при запуске, смотрим файл настроек
-        std::wifstream infile(L"autoexec.ini");
-        if (infile) {
-            infile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-            std::wstringstream wss;
-            wss << infile.rdbuf();
-            filename = wss.str();
+        try {
+            filename = loadFile(L"autoexec.ini");
         }
-        //Если файла настроек нет, выводим версию программы
-        else {
+        catch (const std::wstring& error_message) {
             wcout << L"0.1 alpha";
             return 0;
         }
-        infile.close();
-
     }
 
     //берем параметр при вызове, это имя файла скрипта для запуска
@@ -53,9 +47,9 @@ int main(int argc, char* argv[])
         Machine mchn(map, false);
 
         //Загружаем и парсим исходный код
-        Parser p(filename);
-        p.fileLoad();
         //auto begin = chrono::high_resolution_clock::now();
+        Parser p = Parser();
+        p.fileLoad(filename);
         p.parse(mchn);
         //auto end = chrono::high_resolution_clock::now();
         //auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - begin);

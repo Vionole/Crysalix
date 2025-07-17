@@ -134,10 +134,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataHelper.cpp" />
     <ClCompile Include="Machine.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Chrysalix.cpp" />
-    <ClCompile Include="InstructionFunctions.cpp" />
+    <ClCompile Include="CharsetHelper.cpp" />
     <ClCompile Include="ValidateHelper.cpp" />
     <ClCompile Include="Var.cpp" />
   </ItemGroup>
@@ -147,7 +148,7 @@
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="Machine.h" />
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="ValidateHelper.h" />
+    <ClInclude Include="Helpers.h" />
     <ClInclude Include="Var.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
