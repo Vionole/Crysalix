@@ -1,6 +1,6 @@
 ﻿#pragma once
+
 #include "Machine.h"
-#include "Instruction.h"
 
 const unsigned char STRICTED = 0;	//Только определенно количество параметров
 const unsigned char MIN = 1;		//Минимальное количество параметров

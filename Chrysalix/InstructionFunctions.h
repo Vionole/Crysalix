@@ -1,13 +1,9 @@
 ﻿#pragma once
-#include <vector>
-#include <map>
-#include <string>
+
 #include <iostream>
 #include <cmath>
 #include "windows.h"
 
-#include "Instruction.h"
-#include "Machine.h"
 #include "ValidateHelper.h"
 
 typedef void (*func)(Machine* m, Instruction* i, bool prevalidate, bool prego);

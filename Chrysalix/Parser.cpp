@@ -1,12 +1,8 @@
 ﻿#pragma once
+
 #include <sstream>
 #include <fstream>
 #include <codecvt>
-#include <fcntl.h>
-#include <string>
-#include <vector>
-#include <map>
-#include <iostream>
 
 #include "Parser.h"
 

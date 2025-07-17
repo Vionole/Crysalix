@@ -1,13 +1,7 @@
 ﻿#pragma once
-#include <string>
-#include <vector>
-#include <map>
-#include <iostream>
 
 #include "Var.h"
 #include "Machine.h"
-
-using namespace std;
 
 class Lexeme {
 public:

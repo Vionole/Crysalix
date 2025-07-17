@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include <map>
-#include <vector>
 
 #include "Machine.h"
 #include "InstructionFunctions.h"

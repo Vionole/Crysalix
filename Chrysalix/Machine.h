@@ -1,9 +1,6 @@
 ﻿#pragma once
 
-#include "Var.h"
 #include "Instruction.h"
-
-using namespace std;
 
 class Machine {
 public:

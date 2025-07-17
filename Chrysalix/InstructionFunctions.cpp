@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include <vector>
+/*#include <vector>
 #include <map>
 #include <string>
 #include <iostream>
 #include <cmath>
 
-/*#include "InstructionFunctions.h"
+#include "InstructionFunctions.h"
 
 using namespace std;
 
