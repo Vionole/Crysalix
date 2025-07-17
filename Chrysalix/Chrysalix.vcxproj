@@ -142,7 +142,7 @@
     <ClCompile Include="Var.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CTables.h" />
+    <ClInclude Include="CTable.h" />
     <ClInclude Include="InstructionFunctions.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="Machine.h" />

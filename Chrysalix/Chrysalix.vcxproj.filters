@@ -47,7 +47,7 @@
     <ClInclude Include="Instruction.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="CTables.h">
+    <ClInclude Include="CTable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="InstructionFunctions.h">

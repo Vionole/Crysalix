@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "CTables.h"
+#include "CTable.h"
 #include "Var.h"
 
 struct Instruction {
