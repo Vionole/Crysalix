@@ -10,12 +10,7 @@ using namespace std;
 void Parser::fileLoad(wstring file_name) {
     //Чтение файла в кодировке UTF-8
     this->file = file_name;
-    try {
-        this->file_content = loadFile(this->file);
-    }
-    catch (const std::wstring& error_message) {
-        wcout << error_message;
-    }
+    this->file_content = loadFile(this->file);
 }
 
 void Parser::parse(Machine& m) {
