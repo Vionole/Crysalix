@@ -61,7 +61,6 @@ struct CTable {
         {L"LABEL", OP_CODE::LABEL}, {L"label", OP_CODE::LABEL},
         {L"JUMP", OP_CODE::JUMP}, {L"jump", OP_CODE::JUMP},
         {L"INPUT", OP_CODE::INPT}, {L"input", OP_CODE::INPT},
-        {L"INPUT", OP_CODE::INPT}, {L"input", OP_CODE::INPT},
         {L"CHANGE", OP_CODE::CHANGE}, {L"change", OP_CODE::CHANGE},
         {L"TO", OP_CODE::TO}, {L"to", OP_CODE::TO},
         {L"CALC", OP_CODE::CALC}, {L"calc", OP_CODE::CALC},

@@ -53,7 +53,7 @@ void Parser::parse(Machine& m) {
                 first_comment_char = false;
             }
             else {
-                //Если предыдущий знак  не был # и у нас длинный кооментарий
+                //Если предыдущий знак  не был # и у нас длинный комментарий
                 if (is_long_comment == true) {
                     //Если текущий знак # ставим флаг первого знака комментария
                     if (c == L'#') {
@@ -128,8 +128,8 @@ void Parser::parse(Machine& m) {
                         else {
                             //Парсим параметры инструкции. Если у нас запятая, параметр кончился.
                             if (c == ',') {
-                                str.erase(0, str.find_first_not_of(L" \n\r\t"));
-                                str.erase(str.find_last_not_of(L" \n\r\t") + 1);
+                                //str.erase(0, str.find_first_not_of(L" \n\r\t"));
+                                //str.erase(str.find_last_not_of(L" \n\r\t") + 1);
                                 if (str != L"") {
                                     instruction.str_parameters.push_back(str);
                                     str = L"";
@@ -137,8 +137,8 @@ void Parser::parse(Machine& m) {
                             }
                             //если точка с запятой, инструкция вообще кончилась
                             else if (c == ';') {
-                                str.erase(0, str.find_first_not_of(L" \n\r\t"));
-                                str.erase(str.find_last_not_of(L" \n\r\t") + 1);
+                                //str.erase(0, str.find_first_not_of(L" \n\r\t"));
+                                //str.erase(str.find_last_not_of(L" \n\r\t") + 1);
                                 if (str != L"") {
                                     instruction.str_parameters.push_back(str);
                                     str = L"";
@@ -165,43 +165,46 @@ void Parser::parse(Machine& m) {
         try {
             int params_size = (int)lexemes[i].str_parameters.size();
             for (int j = 0; j < params_size; ++j) {
-                if (lexemes[i].str_parameters[j][0] == L'$' || lexemes[i].str_parameters[j][0] == L'&') {
-                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j]));
+                wstring temp = lexemes[i].str_parameters[j];
+                temp.erase(0, temp.find_first_not_of(L" \n\r\t"));
+                temp.erase(temp.find_last_not_of(L" \n\r\t") + 1);
+                if (temp[0] == L'$' || temp[0] == L'&') {
+                    lexemes[i].parameters.push_back(Var(temp));
                 }
-                else if (lexemes[i].str_parameters[j].substr(0, 3) == L"NTG" || lexemes[i].str_parameters[j].substr(0, 3) == L"ntg") {
-                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 3)).toNTG());
+                else if (temp.substr(0, 3) == L"NTG" || temp.substr(0, 3) == L"ntg") {
+                    lexemes[i].parameters.push_back(Var(temp.erase(0, 3)).toNTG());
                 }
-                else if (lexemes[i].str_parameters[j].substr(0, 4) == L"UNTG" || lexemes[i].str_parameters[j].substr(0, 4) == L"untg") {
-                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 4)).toUNTG());
+                else if (temp.substr(0, 4) == L"UNTG" || temp.substr(0, 4) == L"untg") {
+                    lexemes[i].parameters.push_back(Var(temp.erase(0, 4)).toUNTG());
                 }
-                else if (lexemes[i].str_parameters[j].substr(0, 3) == L"DBL" || lexemes[i].str_parameters[j].substr(0, 3) == L"dbl") {
-                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 3)).toDBL());
+                else if (temp.substr(0, 3) == L"DBL" || temp.substr(0, 3) == L"dbl") {
+                    lexemes[i].parameters.push_back(Var(temp.erase(0, 3)).toDBL());
                 }
-                else if (lexemes[i].str_parameters[j].substr(0, 3) == L"CHR" || lexemes[i].str_parameters[j].substr(0, 3) == L"chr") {
-                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 3)).toCHR());
+                else if (temp.substr(0, 3) == L"CHR" || temp.substr(0, 3) == L"chr") {
+                    lexemes[i].parameters.push_back(Var(temp.erase(0, 3)).toCHR());
                 }
-                else if (lexemes[i].str_parameters[j].substr(0, 4) == L"UCHR" || lexemes[i].str_parameters[j].substr(0, 4) == L"uchr") {
-                    lexemes[i].parameters.push_back(Var(lexemes[i].str_parameters[j].erase(0, 4)).toUCHR());
+                else if (temp.substr(0, 4) == L"UCHR" || temp.substr(0, 4) == L"uchr") {
+                    lexemes[i].parameters.push_back(Var(temp.erase(0, 4)).toUCHR());
                 }
-                else if (lexemes[i].str_parameters[j] == L"ARR" || lexemes[i].str_parameters[j] == L"arr") {
+                else if (temp == L"ARR" || temp == L"arr") {
                     lexemes[i].parameters.push_back(Var(vector<Var>()));
                 }
-                else if (lexemes[i].str_parameters[j] == L"MAP" || lexemes[i].str_parameters[j] == L"map") {
+                else if (temp == L"MAP" || temp == L"map") {
                     lexemes[i].parameters.push_back(Var(map<wstring, Var>()));
                 }
-                else if (lexemes[i].str_parameters[j] == L"TRUE" || lexemes[i].str_parameters[j] == L"true") {
+                else if (temp == L"TRUE" || temp == L"true") {
                     lexemes[i].parameters.push_back(Var(true));
                 }
-                else if (lexemes[i].str_parameters[j] == L"FALSE" || lexemes[i].str_parameters[j] == L"false") {
+                else if (temp == L"FALSE" || temp == L"false") {
                     lexemes[i].parameters.push_back(Var(false));
                 }
-                else if (lexemes[i].str_parameters[j] == L"NIL" || lexemes[i].str_parameters[j] == L"nil") {
+                else if (temp == L"NIL" || temp == L"nil") {
                     lexemes[i].parameters.push_back(Var());
                 }
-                else if (lexemes[i].str_parameters[j][0] == L'\'') {
-                    wstring temp = lexemes[i].str_parameters[j];
-                    wstring str = temp.erase(0, temp.find_first_not_of(L"\'"));
-                    str = temp.erase(temp.find_last_not_of(L"\'") + 1);
+                else if (temp[0] == L'\'') {
+                    wstring s_temp = temp;
+                    wstring str = s_temp.erase(0, s_temp.find_first_not_of(L"\'"));
+                    str = s_temp.erase(temp.find_last_not_of(L"\'") + 1);
                    
                     wstring new_str = L"";
                     bool escape_ch = false;
@@ -258,20 +261,20 @@ void Parser::parse(Machine& m) {
                     }
                     lexemes[i].parameters.push_back(Var(new_str));
                 } //Пытаемся работать с числами, если не указан тип данных
-                else if (lexemes[i].str_parameters[j][0] == L'0'
-                    || lexemes[i].str_parameters[j][0] == L'1'
-                    || lexemes[i].str_parameters[j][0] == L'2'
-                    || lexemes[i].str_parameters[j][0] == L'3'
-                    || lexemes[i].str_parameters[j][0] == L'4'
-                    || lexemes[i].str_parameters[j][0] == L'5'
-                    || lexemes[i].str_parameters[j][0] == L'6'
-                    || lexemes[i].str_parameters[j][0] == L'7'
-                    || lexemes[i].str_parameters[j][0] == L'8'
-                    || lexemes[i].str_parameters[j][0] == L'9'
-                    || lexemes[i].str_parameters[j][0] == L'+'
-                    || lexemes[i].str_parameters[j][0] == L'-') {
-                    Var numberdbl = Var(lexemes[i].str_parameters[j]).toDBL();
-                    Var numberntg = Var(lexemes[i].str_parameters[j]).toNTG();
+                else if (temp[0] == L'0'
+                    || temp[0] == L'1'
+                    || temp[0] == L'2'
+                    || temp[0] == L'3'
+                    || temp[0] == L'4'
+                    || temp[0] == L'5'
+                    || temp[0] == L'6'
+                    || temp[0] == L'7'
+                    || temp[0] == L'8'
+                    || temp[0] == L'9'
+                    || temp[0] == L'+'
+                    || temp[0] == L'-') {
+                    Var numberdbl = Var(temp).toDBL();
+                    Var numberntg = Var(temp).toNTG();
                     if (numberdbl == numberntg) {
                         lexemes[i].parameters.push_back(numberntg);
                     }
@@ -280,7 +283,7 @@ void Parser::parse(Machine& m) {
                     }
                 }
                 else {
-                    throw wstring{lexemes[i].str_parameters[j] + L": Неизвестный литерал"};
+                    throw wstring{temp + L": Неизвестный литерал"};
 
                 }
             }

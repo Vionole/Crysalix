@@ -40,7 +40,7 @@ print: $value, '\n';
 label: &main_loop;
 	print: 'Введите число, по которому будет расчет факториала: ';
 	input:$n;
-	to: 'untg', $n; 
+	to: 'untg', $n;; 
 
 	newtemp: ntg 1;
 	label: &cycle_start;
