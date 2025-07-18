@@ -204,7 +204,7 @@ void Parser::parse(Machine& m) {
                 else if (temp[0] == L'\'') {
                     wstring s_temp = temp;
                     wstring str = s_temp.erase(0, s_temp.find_first_not_of(L"\'"));
-                    str = s_temp.erase(temp.find_last_not_of(L"\'") + 1);
+                    str = s_temp.erase(s_temp.find_last_not_of(L"\'") + 1);
                    
                     wstring new_str = L"";
                     bool escape_ch = false;

@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
     }
     catch (const std::wstring& error_message) {
         wcout << endl << error_message << endl;
+        system("pause");
     }
     
     return 0;
