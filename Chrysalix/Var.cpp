@@ -1273,9 +1273,14 @@ void Var::erase(int x) {
 }
 Var Var::erase(Var x) {
     if (this->type == ARR) {
-        Var result = this->arr.at(x.toNTG().getInt());
-        this->erase(x.toNTG().getInt());
-        return result;
+        try {
+            Var result = this->arr.at(x.toNTG().getInt());
+            this->erase(x.toNTG().getInt());
+            return result;
+        }
+        catch (std::out_of_range& ex) {
+            throw wstring{ L"Индекс " + x.toSTR().getWStr() + L" не существует\n"};
+        }
     }
     else if (this->type == MAP) {
         Var result = this->mp.at(x.toSTR().getWStr());
@@ -1305,6 +1310,9 @@ void Var::erase(const wchar_t* x) {
 
 void Var::insert_vector(Var x, Var val) {
     if (this->type == ARR) {
+        if (x < 0 || x > arr.size()) {
+            throw wstring{ L"Индекс " + x.toSTR().getWStr() + L" не существует\n" };
+        }
         this->arr.insert(this->arr.begin() + x.toNTG().getInt(), val);
     }
     else {
