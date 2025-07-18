@@ -1218,8 +1218,13 @@ void getval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		Var result = (*m).heap[(*i).parameters[1].toSTR().getWStr()];
 		for (int iter = 0; iter  < dimensions; ++iter) {
 			int dimension = getValue(&(*i).parameters[iter + 2], &(*m).heap).toUNTG().getUInt();
-			Var res = result[dimension];
-			result = res;
+			try {
+				Var res = result.getArr().at(dimension);
+				result = res;
+			}
+			catch (std::out_of_range& ex) {
+				throw wstring{ L"Индекс " + to_wstring(dimension) + L" не существует\n" };
+			}
 		}
 		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = result;
 		++(*m).instruct_number;
