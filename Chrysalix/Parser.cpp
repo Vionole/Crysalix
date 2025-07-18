@@ -302,7 +302,7 @@ void Parser::parse(Machine& m) {
     for (Lexeme& lexeme : lexemes) {
         try {
             inst.opCode = table.opCodeMap.at(lexeme.type);
-            inst.as_string = lexeme.type + L": ";
+            inst.as_string = lexeme.type + L":";
         }
         catch (std::out_of_range& ex) {
             throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i) + L": " + lexeme.type + L": Неизвестная инструкция\n" };
@@ -313,7 +313,7 @@ void Parser::parse(Machine& m) {
         for (int param = 0; param < max_size; ++param) {
             inst.as_string += lexeme.str_parameters[param];
             if (param != max_size - 1) {
-                inst.as_string += L", ";
+                inst.as_string += L",";
             }
         }
         inst.as_string += L";";

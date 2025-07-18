@@ -672,7 +672,12 @@ Var Var::toSTR() const {
             if (i == 0) {
                 result += L'[';
                 result += this->arr[i].toSTR().getWStr();
-                result += L", ";
+                if (size != 1) {
+                    result += L", ";
+                }
+                else {
+                    result += L"]";
+                }
             }
             else if (i + 1 == size) {
                 result += this->arr[i].toSTR().getWStr();
@@ -1398,7 +1403,12 @@ wostream& operator<< (wostream& wos, const Var& var)
             if (i == 0) {
                 str += L'[';
                 str += var.arr[i].toSTR().getWStr();
-                str += L", ";
+                if (size != 1) {
+                    str += L", ";
+                }
+                else {
+                    str += L"]";
+                }
             }
             else if (i + 1 == size) {
                 str += var.arr[i].toSTR().getWStr();
