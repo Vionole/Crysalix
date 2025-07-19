@@ -47,6 +47,7 @@ void clear(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void getval(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void setval(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void slice(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Массив с функциями - инструкциями
@@ -87,7 +88,8 @@ func functions[] = {
 	&clear,
 	&sizearr,
 	&getval,
-	&setval
+	&setval,
+	&slice
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +105,7 @@ void nop(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 
 	if (prego) {
-		//Ничего
+		++(*m).instruct_number;
 	}
 	else {
 		++(*m).instruct_number;
@@ -760,7 +762,6 @@ void comp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LOGIC
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void logic(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"LOGIC";
@@ -928,7 +929,6 @@ void swap(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ARRAY
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"ARRAY";
@@ -964,7 +964,6 @@ void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // VTOARR
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void vtoarr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"VTOARR";
@@ -1213,7 +1212,6 @@ void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // GETVAL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void getval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"GETVAL";
@@ -1252,7 +1250,6 @@ void getval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SETVAL
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void setval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"SETVAL";
@@ -1281,6 +1278,49 @@ void setval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 			result = res;
 		}
 
+		++(*m).instruct_number;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SLICE
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void slice(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"SPLIT";
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 4);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[0], m);
+		checkNotExistValue(&(*i).parameters[1], m);
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		Var x = getValue(&(*i).parameters[2], &(*m).heap);
+		Var y = getValue(&(*i).parameters[3], &(*m).heap);
+
+		if (x < 0) {
+			throw wstring{ L"Параметр " + (*i).parameters[2].toSTR().getWStr() + L" меньше нуля\n"};
+		}
+		if (y < 0) {
+			throw wstring{ L"Параметр " + (*i).parameters[3].toSTR().getWStr() + L" меньше нуля\n" };
+		}
+		if (y < x) {
+			throw wstring{ L"Параметр " + (*i).parameters[2].toSTR().getWStr() + L" больше параметра " + (*i).parameters[3].toSTR().getWStr() + L"\n" };
+		}
+		if (x > (*m).heap[(*i).parameters[1].toSTR().getWStr()].csize() - 1) {
+			throw wstring{ L"Индекс " + (*i).parameters[2].toSTR().getWStr() + L" не существует\n" };
+		}
+		if (y > (*m).heap[(*i).parameters[1].toSTR().getWStr()].csize() - 1) {
+			throw wstring{ L"Индекс " + (*i).parameters[3].toSTR().getWStr() + L" не существует\n" };
+		}
+
+		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).slice(x, y);
 		++(*m).instruct_number;
 	}
 }

@@ -100,7 +100,7 @@ public:
     Var in(Var sent);
     Var in(const wchar_t* sent);
     Var in(wstring sent);
-
+   
     Var slice(int x, int y);
     Var slice(Var x, Var y);
 
