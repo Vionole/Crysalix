@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
             filename = loadFile(L"autoexec.ini");
         }
         catch (const std::wstring& error_message) {
+            wstring temp = error_message;
             wcout << L"0.1 alpha";
             return 0;
         }

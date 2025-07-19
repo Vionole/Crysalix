@@ -5,8 +5,8 @@
 class Machine {
 public:
 	bool debug;
-	int tmp_count;
-	int instruct_number;
+	unsigned int tmp_count;
+	unsigned int instruct_number;
 
 	map<wstring, Var> in_data;
 	Var ret_data;

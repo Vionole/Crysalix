@@ -193,6 +193,4 @@ public:
     friend bool operator!(const Var& a);
 };
 
-
-void Unicode();
 void swap(Var& a, Var& b);

@@ -300,11 +300,12 @@ void Parser::parse(Machine& m) {
             inst.as_string = lexeme.type + L":";
         }
         catch (std::out_of_range& ex) {
+            string temp = ex.what();
             throw wstring{ L"Синтаксическая ошибка в инструкции " + to_wstring(i) + L": " + lexeme.type + L": Неизвестная инструкция\n" };
         }
 
         inst.parameters = lexeme.parameters;
-        int max_size = lexeme.str_parameters.size();
+        int max_size = (int)lexeme.str_parameters.size();
         for (int param = 0; param < max_size; ++param) {
             inst.as_string += lexeme.str_parameters[param];
             if (param != max_size - 1) {

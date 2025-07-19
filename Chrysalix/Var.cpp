@@ -103,7 +103,7 @@ Var::Var(wstring t, int i) {
         this->mp = map<wstring, Var>();
     }
     else {
-        this->type == UNKNOWN;
+        this->type = UNKNOWN;
     }
 }
 
@@ -242,6 +242,7 @@ Var Var::toNTG() const {
         }
         catch (exception& err)
         {
+            string temp = err.what();
             throw wstring{ L"Не удалось привести строку к типу NTG" };
         }
     }
@@ -259,6 +260,7 @@ Var Var::toNTG() const {
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу NTG" };
     }
+    return Var();
 }
 
 Var Var::toUNTG() const {
@@ -307,6 +309,7 @@ Var Var::toUNTG() const {
         }
         catch (exception& err)
         {
+            string temp = err.what();
             throw wstring{ L"Не удалось привести строку к типу UNTG" };
         }
     }
@@ -324,6 +327,7 @@ Var Var::toUNTG() const {
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу UNTG" };
     }
+    return Var();
 }
 
 Var Var::toDBL() const {
@@ -372,6 +376,7 @@ Var Var::toDBL() const {
         }
         catch (exception& err)
         {
+            string temp = err.what();
             throw wstring{ L"Не удалось привести строку к типу DBL" };
         }
     }
@@ -389,6 +394,7 @@ Var Var::toDBL() const {
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу DBL" };
     }
+    return Var();
 }
 
 Var Var::toCHR() const {
@@ -432,11 +438,12 @@ Var Var::toCHR() const {
         try {
             Var result;
             result.type = CHR;
-            result.data.chr = stoll(this->data.str);
+            result.data.chr = (char)stoll(this->data.str);
             return result;
         }
         catch (exception& err)
         {
+            string temp = err.what();
             throw wstring{ L"Не удалось привести строку к типу CHR" };
         }
     }
@@ -454,6 +461,8 @@ Var Var::toCHR() const {
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу CHR" };
     }
+
+    return Var();
 }
 
 Var Var::toUCHR() const {
@@ -497,11 +506,12 @@ Var Var::toUCHR() const {
         try {
             Var result;
             result.type = UCHR;
-            result.data.uchr = stoll(this->data.str);
+            result.data.uchr = (unsigned char)stoll(this->data.str);
             return result;
         }
         catch (exception& err)
         {
+            string temp = err.what();
             throw wstring{ L"Не удалось привести строку к типу UCHR" };
         }
     }
@@ -519,6 +529,7 @@ Var Var::toUCHR() const {
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу UCHR" };
     }
+    return Var();
 }
 
 Var Var::toBLN() const {
@@ -605,6 +616,7 @@ Var Var::toBLN() const {
 
         return result;
     }
+    return Var();
 }
 
 Var Var::toSTR() const {
@@ -666,7 +678,7 @@ Var Var::toSTR() const {
         return result;
     }
     else if (this->type == ARR) {
-        int size = this->arr.size();
+        int size = (int)this->arr.size();
         wstring result = L"";
         for (int i = 0; i < size; ++i) {
             if (i == 0) {
@@ -698,6 +710,7 @@ Var Var::toSTR() const {
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу STR" };
     }
+    return Var();
 }
 
 Var Var::toARR() const {
@@ -761,6 +774,7 @@ Var Var::toARR() const {
     else if (this->type == MAP) {
         throw wstring{ L"Невозможно привести словарь к типу ARR" };
     }
+    return Var();
 }
 
 
@@ -865,6 +879,7 @@ Var& Var::operator[](int ind) {
         }
         catch (exception& err)
         {
+            string temp = err.what();
             throw wstring{ L"Индекс находится вне диапазона" };
         }
     }
@@ -876,6 +891,7 @@ Var& Var::operator[](int ind) {
         }
         catch (exception& err)
         {
+            string temp = err.what();
             throw wstring{ L"Индекс находится вне диапазона" };
         }
     }
@@ -893,6 +909,7 @@ Var& Var::operator[](const wchar_t* str) {
         }
     }
     catch (exception& err) {
+        string temp = err.what();
         throw wstring{ L"Индекс словаря не существует" };
     }
 }
@@ -906,28 +923,31 @@ Var& Var::operator[](wstring str) {
         }
     }
     catch (exception& err) {
+        string temp = err.what();
         throw wstring{ L"Индекс словаря не существует" };
     }
 }
 Var& Var::operator[](Var v) {
-    if (v.type == NTG) {
+    if (v.type == NTG || v.type == UNTG) {
         if (this->type == ARR) {
             try {
-                return this->arr.at(v.getInt());
+                return this->arr.at(v.toNTG().getInt());
             }
             catch (exception& err)
             {
+                string temp = err.what();
                 throw wstring{ L"Индекс находится вне диапазона" };
             }
         }
         else if (this->type == STR) {
             try {
-                wstring str(1, this->data.str.at(v.getInt()));
+                wstring str(1, this->data.str.at(v.toNTG().getInt()));
                 Var* chr = new Var(str);
                 return *chr;
             }
             catch (exception& err)
             {
+                string temp = err.what();
                 throw wstring{ L"Индекс находится вне диапазона" };
             }
         }
@@ -945,9 +965,14 @@ Var& Var::operator[](Var v) {
             }
         }
         catch (exception& err) {
+            string temp = err.what();
             throw wstring{ L"Индекс словаря не существует" };
         }
     }
+    else {
+        throw wstring{ L"Оператор [] принимает только типы NTG, UNTG, STR" };
+    }
+    return v;
 }
 
 Var Var::len() {
@@ -1007,10 +1032,10 @@ Var Var::slice(int x, int y) {
 }
 Var Var::slice(Var x, Var y) {
     if (this->type == STR) {
-        return this->slice(x.getInt(), y.getInt());
+        return this->slice((int)x.getInt(), (int)y.getInt());
     }
     else if (this->type == ARR) {
-        return this->slice(x.getInt(), y.getInt());
+        return this->slice((int)x.getInt(), (int)y.getInt());
     }
     else {
         throw wstring{ L"Метод slice() используетя только для типов STR, ARR" };
@@ -1274,11 +1299,12 @@ void Var::erase(int x) {
 Var Var::erase(Var x) {
     if (this->type == ARR) {
         try {
-            Var result = this->arr.at(x.toNTG().getInt());
-            this->erase(x.toNTG().getInt());
+            Var result = this->arr.at((int)x.toNTG().getInt());
+            this->erase((int)x.toNTG().getInt());
             return result;
         }
         catch (std::out_of_range& ex) {
+            string temp = ex.what();
             throw wstring{ L"Индекс " + x.toSTR().getWStr() + L" не существует\n"};
         }
     }
@@ -1405,7 +1431,7 @@ wostream& operator<< (wostream& wos, const Var& var)
         break;
     case ARR: 
     {
-        int size = var.arr.size();
+        int size = (int)var.arr.size();
         wstring str = L"";
         for (int i = 0; i < size; ++i) {
             if (i == 0) {
@@ -2570,7 +2596,7 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.ntg / b.data.bln);
+            Var result(a.data.ntg / (long long int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -2614,7 +2640,7 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.untg / b.data.bln);
+            Var result(a.data.untg / (unsigned long long int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -2658,7 +2684,7 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.dbl / b.data.bln);
+            Var result(a.data.dbl / (double)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -2702,7 +2728,7 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.chr / b.data.bln);
+            Var result(a.data.chr / (char)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -2746,7 +2772,7 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.uchr / b.data.bln);
+            Var result(a.data.uchr / (unsigned char)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -2770,31 +2796,31 @@ Var operator/(const Var& a, const Var& b)
     }
     else if (a.type == BLN) {
         if (b.type == NTG) {
-            Var result(a.data.bln / b.data.ntg);
+            Var result((int)a.data.bln / b.data.ntg);
             return result;
         }
         else if (b.type == UNTG) {
-            Var result(a.data.bln / b.data.untg);
+            Var result((unsigned long long int)a.data.bln / b.data.untg);
             return result;
         }
         else if (b.type == DBL) {
-            Var result(a.data.bln / b.data.dbl);
+            Var result((int)a.data.bln / (int)b.data.dbl);
             return result;
         }
         else if (b.type == CHR) {
-            Var result(a.data.bln / b.data.chr);
+            Var result((char)a.data.bln / b.data.chr);
             return result;
         }
         else if (b.type == UCHR) {
-            Var result(a.data.bln / b.data.uchr);
+            Var result((unsigned char)a.data.bln / b.data.uchr);
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.bln / b.data.bln);
+            Var result((int)a.data.bln / (int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
-            Var result(a.data.bln / b.toBLN().getBool());
+            Var result((int)a.data.bln / (int)b.toBLN().getBool());
             return result;
         }
         else if (b.type == NIL) {
@@ -2835,7 +2861,7 @@ Var operator/(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.toBLN().getBool() / b.data.bln);
+            Var result((int)a.toBLN().getBool() / (int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -2897,7 +2923,7 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.ntg % b.data.bln);
+            Var result(a.data.ntg % (long long int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -2941,7 +2967,7 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.untg % b.data.bln);
+            Var result(a.data.untg % (unsigned long long int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -2985,7 +3011,7 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.toNTG().getInt() % b.data.bln);
+            Var result(a.toNTG().getInt() % (long long int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -3029,7 +3055,7 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.chr % b.data.bln);
+            Var result(a.data.chr % (char)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -3073,7 +3099,7 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.uchr % b.data.bln);
+            Var result(a.data.uchr % (unsigned char)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -3097,31 +3123,31 @@ Var operator%(const Var& a, const Var& b)
     }
     else if (a.type == BLN) {
         if (b.type == NTG) {
-            Var result(a.data.bln % b.data.ntg);
+            Var result((long long int)a.data.bln % b.data.ntg);
             return result;
         }
         else if (b.type == UNTG) {
-            Var result(a.data.bln % b.data.untg);
+            Var result((unsigned long long int)a.data.bln % b.data.untg);
             return result;
         }
         else if (b.type == DBL) {
-            Var result(a.data.bln % b.toBLN().getBool());
+            Var result((int)a.data.bln % (int)b.toBLN().getBool());
             return result;
         }
         else if (b.type == CHR) {
-            Var result(a.data.bln % b.data.chr);
+            Var result((char)a.data.bln % b.data.chr);
             return result;
         }
         else if (b.type == UCHR) {
-            Var result(a.data.bln % b.data.uchr);
+            Var result((unsigned char)a.data.bln % b.data.uchr);
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.data.bln % b.data.bln);
+            Var result((int)a.data.bln % (int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
-            Var result(a.data.bln % b.toBLN().getBool());
+            Var result((int)a.data.bln % (int)b.toBLN().getBool());
             return result;
         }
         else if (b.type == NIL) {
@@ -3162,7 +3188,7 @@ Var operator%(const Var& a, const Var& b)
             return result;
         }
         else if (b.type == BLN) {
-            Var result(a.toBLN().getBool() % b.data.bln);
+            Var result((int)a.toBLN().getBool() % (int)b.data.bln);
             return result;
         }
         else if (b.type == STR) {
@@ -3243,7 +3269,7 @@ bool operator==(const Var& a, const Var& b) {
             return a.data.ntg == b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.ntg == b.data.bln;
+            return a.data.ntg == (const long long int)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.ntg == b.toNTG().getInt();
@@ -3278,7 +3304,7 @@ bool operator==(const Var& a, const Var& b) {
             return a.data.untg == b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.untg == b.data.bln;
+            return a.data.untg == (const unsigned long long int)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.untg == b.toNTG().getInt();
@@ -3313,7 +3339,7 @@ bool operator==(const Var& a, const Var& b) {
             return a.data.dbl == b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.dbl == b.data.bln;
+            return a.data.dbl == (const long double)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.dbl == b.toDBL().getDouble();
@@ -3348,7 +3374,7 @@ bool operator==(const Var& a, const Var& b) {
             return a.data.chr == b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.chr == b.data.bln;
+            return a.data.chr == (const char)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.chr == b.toCHR().getChar();
@@ -3383,7 +3409,7 @@ bool operator==(const Var& a, const Var& b) {
             return a.data.uchr == b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.uchr == b.data.bln;
+            return a.data.uchr == (const unsigned char)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.uchr == b.toUCHR().getUChar();
@@ -3403,19 +3429,19 @@ bool operator==(const Var& a, const Var& b) {
     }
     else if (a.type == BLN) {
         if (b.type == NTG) {
-            return a.data.bln == b.data.ntg;
+            return  (const long long int)a.data.bln == b.data.ntg;
         }
         else if (b.type == UNTG) {
-            return a.data.bln == b.data.untg;
+            return (const unsigned long long int)a.data.bln == b.data.untg;
         }
         else if (b.type == DBL) {
-            return a.data.bln == b.data.dbl;
+            return (const int)a.data.bln == (const int)b.data.dbl;
         }
         else if (b.type == CHR) {
-            return a.data.bln == b.data.chr;
+            return (const char)a.data.bln == b.data.chr;
         }
         else if (b.type == UCHR) {
-            return a.data.bln == b.data.uchr;
+            return (const unsigned char)a.data.bln == b.data.uchr;
         }
         else if (b.type == BLN) {
             return a.data.bln == b.data.bln;
@@ -3500,7 +3526,7 @@ bool operator>(const Var& a, const Var& b) {
             return a.data.ntg > b.data.ntg;
         }
         else if (b.type == UNTG) {
-            return a.data.ntg > b.data.untg;
+            return a.data.ntg > (long long int)b.data.untg;
         }
         else if (b.type == DBL) {
             return a.data.ntg > b.data.dbl;
@@ -3512,7 +3538,7 @@ bool operator>(const Var& a, const Var& b) {
             return a.data.ntg > b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.ntg > b.data.bln;
+            return a.data.ntg > (long long int)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.ntg > b.toNTG().getInt();
@@ -3532,7 +3558,7 @@ bool operator>(const Var& a, const Var& b) {
     }
     else if (a.type == UNTG) {
         if (b.type == NTG) {
-            return a.data.untg > b.data.ntg;
+            return a.data.untg > (unsigned long long int)b.data.ntg;
         }
         else if (b.type == UNTG) {
             return a.data.untg > b.data.untg;
@@ -3547,10 +3573,10 @@ bool operator>(const Var& a, const Var& b) {
             return a.data.untg > b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.untg > b.data.bln;
+            return a.data.untg > (unsigned long long int)b.data.bln;
         }
         else if (b.type == STR) {
-            return a.data.untg > b.toNTG().getInt();
+            return a.data.untg > b.toUNTG().getUInt();
         }
         else if (b.type == NIL) {
             return false;
@@ -3582,7 +3608,7 @@ bool operator>(const Var& a, const Var& b) {
             return a.data.dbl > b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.dbl > b.data.bln;
+            return a.data.dbl > (long double)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.dbl > b.toDBL().getDouble();
@@ -3617,7 +3643,7 @@ bool operator>(const Var& a, const Var& b) {
             return a.data.chr > b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.chr > b.data.bln;
+            return a.data.chr > (char)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.chr > b.toCHR().getChar();
@@ -3652,7 +3678,7 @@ bool operator>(const Var& a, const Var& b) {
             return a.data.uchr > b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.uchr > b.data.bln;
+            return a.data.uchr > (unsigned char)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.uchr > b.toUCHR().getUChar();
@@ -3672,19 +3698,19 @@ bool operator>(const Var& a, const Var& b) {
     }
     else if (a.type == BLN) {
         if (b.type == NTG) {
-            return a.data.bln > b.data.ntg;
+            return (long long int)a.data.bln > b.data.ntg;
         }
         else if (b.type == UNTG) {
-            return a.data.bln > b.data.untg;
+            return (unsigned long long int)a.data.bln > b.data.untg;
         }
         else if (b.type == DBL) {
-            return a.data.bln > b.data.dbl;
+            return (long double)a.data.bln > b.data.dbl;
         }
         else if (b.type == CHR) {
-            return a.data.bln > b.data.chr;
+            return (char)a.data.bln > b.data.chr;
         }
         else if (b.type == UCHR) {
-            return a.data.bln > b.data.uchr;
+            return (unsigned char)a.data.bln > b.data.uchr;
         }
         else if (b.type == BLN) {
             return a.data.bln > b.data.bln;
@@ -3764,7 +3790,7 @@ bool operator<(const Var& a, const Var& b) {
             return a.data.ntg < b.data.ntg;
         }
         else if (b.type == UNTG) {
-            return a.data.ntg < b.data.untg;
+            return a.data.ntg < (long long int)b.data.untg;
         }
         else if (b.type == DBL) {
             return a.data.ntg < b.data.dbl;
@@ -3776,7 +3802,7 @@ bool operator<(const Var& a, const Var& b) {
             return a.data.ntg < b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.ntg < b.data.bln;
+            return a.data.ntg < (long long int)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.ntg < b.toNTG().getInt();
@@ -3796,7 +3822,7 @@ bool operator<(const Var& a, const Var& b) {
     }
     else if (a.type == UNTG) {
         if (b.type == NTG) {
-            return a.data.untg < b.data.ntg;
+            return a.data.untg < (unsigned long long int)b.data.ntg;
         }
         else if (b.type == UNTG) {
             return a.data.untg < b.data.untg;
@@ -3811,10 +3837,10 @@ bool operator<(const Var& a, const Var& b) {
             return a.data.untg < b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.untg < b.data.bln;
+            return a.data.untg < (unsigned long long int)b.data.bln;
         }
         else if (b.type == STR) {
-            return a.data.untg < b.toNTG().getInt();
+            return a.data.untg < b.toUNTG().getUInt();
         }
         else if (b.type == NIL) {
             return false;
@@ -3846,7 +3872,7 @@ bool operator<(const Var& a, const Var& b) {
             return a.data.dbl < b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.dbl < b.data.bln;
+            return a.data.dbl < (long double)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.dbl < b.toDBL().getDouble();
@@ -3881,7 +3907,7 @@ bool operator<(const Var& a, const Var& b) {
             return a.data.chr < b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.chr < b.data.bln;
+            return a.data.chr < (char)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.chr < b.toCHR().getChar();
@@ -3916,7 +3942,7 @@ bool operator<(const Var& a, const Var& b) {
             return a.data.uchr < b.data.uchr;
         }
         else if (b.type == BLN) {
-            return a.data.uchr < b.data.bln;
+            return a.data.uchr < (unsigned char)b.data.bln;
         }
         else if (b.type == STR) {
             return a.data.uchr < b.toUCHR().getUChar();
@@ -3936,19 +3962,19 @@ bool operator<(const Var& a, const Var& b) {
     }
     else if (a.type == BLN) {
         if (b.type == NTG) {
-            return a.data.bln < b.data.ntg;
+            return (long long int)a.data.bln < b.data.ntg;
         }
         else if (b.type == UNTG) {
-            return a.data.bln < b.data.untg;
+            return (unsigned long long int)a.data.bln < b.data.untg;
         }
         else if (b.type == DBL) {
-            return a.data.bln < b.data.dbl;
+            return (long double)a.data.bln < b.data.dbl;
         }
         else if (b.type == CHR) {
-            return a.data.bln < b.data.chr;
+            return (char)a.data.bln < b.data.chr;
         }
         else if (b.type == UCHR) {
-            return a.data.bln < b.data.uchr;
+            return (unsigned char)a.data.bln < b.data.uchr;
         }
         else if (b.type == BLN) {
             return a.data.bln < b.data.bln;

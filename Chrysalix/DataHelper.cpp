@@ -14,6 +14,7 @@ Var getValue(Var* val, map<wstring, Var>* heap) {
 			return (*heap).at((*val).getWStr());
 		}
 		catch (std::out_of_range& ex) {
+			string temp = ex.what();
 			throw wstring{ L"Переменная " + (*val).getWStr() + L" не определена\n" };
 		}
 	}
@@ -32,6 +33,7 @@ Var getLabel(Var* val, map<wstring, int>* pointers) {
 			return (*pointers).at((*val).getWStr());
 		}
 		catch (std::out_of_range& ex) {
+			string temp = ex.what();
 			throw wstring{ L"Метка " + (*val).getWStr() + L" не определена\n" };
 		}
 	}

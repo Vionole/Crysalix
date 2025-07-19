@@ -96,7 +96,7 @@ func functions[] = {
 void nop(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"NOP";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 0);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 0);
 	}
 	else {
 		//Ничего
@@ -116,7 +116,7 @@ void nop(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void end(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"END";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 	}
 	else {
 		//Ничего
@@ -137,7 +137,7 @@ void end(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void pause(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"PAUSE";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 0);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 0);
 	}
 	else {
 		//Ничего
@@ -159,7 +159,7 @@ void sleep(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"SLEEP";
 		if (prevalidate) {
-			checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+			checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 		}
 	}
 	else {
@@ -170,7 +170,7 @@ void sleep(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		Sleep(getValue(&(*i).parameters[0], &(*m).heap).toUNTG().getUInt());
+		Sleep((DWORD)getValue(&(*i).parameters[0], &(*m).heap).toUNTG().getUInt());
 		++(*m).instruct_number;
 	}
 }
@@ -181,7 +181,7 @@ void sleep(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void var(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"VAR";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -203,7 +203,7 @@ void var(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void print(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"PRINT";
-		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 1);
+		checkParameterCount(MIN, (int)(*i).parameters.size(), m, &name, 0, 1);
 	}
 	else {
 		//Ничего
@@ -227,7 +227,7 @@ void print(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void free(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"FREE";
-		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 1);
+		checkParameterCount(MIN, (int)(*i).parameters.size(), m, &name, 0, 1);
 		for (Var& i : (*i).parameters)
 		{
 			requiredVar(&i, m, &name, i.toSTR().getWStr());
@@ -258,7 +258,7 @@ void free(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void label(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"LABEL";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 		requiredLabel(&(*i).parameters[0], m, &name, L"Единственный");
 		checkExistLabel(&(*i).parameters[0], m);
 	}
@@ -281,7 +281,7 @@ void label(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void jump(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"JUMP";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 	}
 	else {
 		//Ничего
@@ -291,7 +291,7 @@ void jump(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		++(*m).instruct_number;
 	}
 	else {
-		(*m).instruct_number = getLabel(&(*i).parameters[0], &(*m).jmp_pointers).toUNTG().getUInt();
+		(*m).instruct_number = (int)getLabel(&(*i).parameters[0], &(*m).jmp_pointers).toUNTG().getUInt();
 	}
 }
 
@@ -301,7 +301,7 @@ void jump(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void input(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"INPUT";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -325,7 +325,7 @@ void input(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void change(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"CHANGE";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -348,7 +348,7 @@ void to(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"TO";
 		int v[2]{ 2, 3 };
-		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 0, 0, nullptr, v);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 	}
 	else {
@@ -430,7 +430,7 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"CALC";
 		int v[2]{ 2, 4 };
-		checkParameterCount(RANGE, (*i).parameters.size(), m, &name, 0, 0, v);
+		checkParameterCount(RANGE, (int)(*i).parameters.size(), m, &name, 0, 0, v);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 
 	}
@@ -471,7 +471,7 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 				(*m).heap[(*i).parameters[1].getWStr()] -= Var(1);
 			}
 			else if (type == L"FACT" || type == L"fact") {
-				int fact = (*m).heap[(*i).parameters[1].getWStr()].toUNTG().getUInt();
+				int fact = (int)(*m).heap[(*i).parameters[1].getWStr()].toUNTG().getUInt();
 				unsigned long long int result = 1;
 				for (int i = 1; i <= fact; ++i) {
 					result *= i;
@@ -570,7 +570,7 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void newtemp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"NEWTEMP";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 	}
 
 	if (prego) {
@@ -578,8 +578,8 @@ void newtemp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	}
 	else {
 		int start = (*m).tmp_count;
-		(*m).tmp_count += getValue(&(*i).parameters[0], & (*m).heap).toUNTG().getUInt();
-		for (int it = start; it < (*m).tmp_count; ++it) {
+		(*m).tmp_count += (int)getValue(&(*i).parameters[0], & (*m).heap).toUNTG().getUInt();
+		for (unsigned int it = start; it < (*m).tmp_count; ++it) {
 			(*m).heap[L"$" + to_wstring(it)] = Var();
 		}
 		++(*m).instruct_number;
@@ -594,7 +594,7 @@ void forget(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"FORGET";
 		int v[2]{ 0, 1 };
-		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 0, 0, nullptr, v);
 	}
 
 	if (prego) {
@@ -604,14 +604,14 @@ void forget(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		if ((*i).parameters.size() == 0) {
 			int start = (*m).tmp_count - 1;
 			(*m).tmp_count = 0;
-			for (int it = start; it >= (*m).tmp_count; --it) {
+			for (unsigned int it = start; it >= (*m).tmp_count; --it) {
 				(*m).heap.erase(L"$" + to_wstring(it));
 			}
 		}
 		else if ((*i).parameters.size() == 1) {
 			int start = (*m).tmp_count - 1;
-			(*m).tmp_count -= getValue(&(*i).parameters[0], &(*m).heap).toUNTG().getUInt();
-			for (int it = start; it >= (*m).tmp_count; --it) {
+			(*m).tmp_count -= (int)getValue(&(*i).parameters[0], &(*m).heap).toUNTG().getUInt();
+			for (unsigned int it = start; it >= (*m).tmp_count; --it) {
 				(*m).heap.erase(L"$" + to_wstring(it));
 			}
 		}
@@ -626,7 +626,7 @@ void forget(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void tcount(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"TCOUNT";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -649,7 +649,7 @@ void tcount(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void isset(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"ISSET";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 	}
@@ -679,7 +679,7 @@ void typeof(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 
 	if (prevalidate) {
 		wstring name = L"TYPEOF";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -702,7 +702,7 @@ void typeof(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void comp(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"COMP";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 4);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 4);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 	}
 	else {
@@ -749,7 +749,7 @@ void logic(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"LOGIC";
 		int v[2]{ 3, 4 };
-		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 0, 0, nullptr, v);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 
 	}
@@ -820,7 +820,7 @@ void jif(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"JIF";
 		int v[2]{ 1, 2 };
-		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 1, 2, nullptr, v);
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 1, 2, nullptr, v);
 	}
 
 	if (prego) {
@@ -829,7 +829,7 @@ void jif(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	else {
 		bool swtch = getValue(&(*i).parameters[0], &(*m).heap).toBLN().getBool();
 		if (swtch) {
-			(*m).instruct_number = getLabel(&(*i).parameters[1], &(*m).jmp_pointers).toUNTG().getUInt();
+			(*m).instruct_number = (int)getLabel(&(*i).parameters[1], &(*m).jmp_pointers).toUNTG().getUInt();
 		}
 		else {
 			++(*m).instruct_number;
@@ -844,7 +844,7 @@ void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"JIFNOT";
 		int v[2]{ 1, 2 };
-		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 1, 2, nullptr, v);
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 1, 2, nullptr, v);
 	}
 
 	if (prego) {
@@ -856,7 +856,7 @@ void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 			++(*m).instruct_number;
 		}
 		else {
-			(*m).instruct_number = getLabel(&(*i).parameters[1], &(*m).jmp_pointers).toUNTG().getUInt();
+			(*m).instruct_number = (int)getLabel(&(*i).parameters[1], &(*m).jmp_pointers).toUNTG().getUInt();
 		}
 	}
 }
@@ -867,7 +867,7 @@ void jifnot(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"DLABEL";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 		requiredLabel(&(*i).parameters[0], m, &name, L"Единственный");
 	}
 
@@ -886,7 +886,7 @@ void dlabel(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void swap(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"SWAP";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 	}
@@ -916,7 +916,7 @@ void swap(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"ARRAY";
-		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 2);
+		checkParameterCount(MIN, (int)(*i).parameters.size(), m, &name, 0, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -930,7 +930,7 @@ void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		int dimensions = (int)(*i).parameters.size() - 1;
 		Var result = Var();
 		for (int iter = dimensions; iter > 0; --iter) {
-			int dimension = getValue(&(*i).parameters[iter], &(*m).heap).toUNTG().getUInt();
+			int dimension = (int)getValue(&(*i).parameters[iter], &(*m).heap).toUNTG().getUInt();
 			vector<Var> v;
 			Var arr = Var(v);
 			for (int j = 0; j < dimension; ++j) {
@@ -952,7 +952,7 @@ void arr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void vtoarr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"VTOARR";
-		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 2);
+		checkParameterCount(MIN, (int)(*i).parameters.size(), m, &name, 0, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -982,7 +982,7 @@ void vtoarr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void pushb(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"PUSHB";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 
 	}
@@ -1006,7 +1006,7 @@ void popb(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"POPB";
 		int v[2]{ 1, 2 };
-		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 0, 0, nullptr, v);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 		if ((*i).parameters.size() == 2) {
 			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
@@ -1040,7 +1040,7 @@ void popb(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void pushf(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"PUSHF";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -1063,7 +1063,7 @@ void popf(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"POPF";
 		int v[2]{ 1, 2 };
-		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 0, 0, nullptr, v);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 		if ((*i).parameters.size() == 2) {
 			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
@@ -1098,7 +1098,7 @@ void erase(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"ERASE";
 		int v[2]{ 2, 3 };
-		checkParameterCount(VARIANTS, (*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 0, 0, nullptr, v);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 		if ((*i).parameters.size() == 3) {
 			requiredVar(&(*i).parameters[1], m, &name, L"Второй");
@@ -1132,7 +1132,7 @@ void erase(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void insrt(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"INSERT";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 3);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 3);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 	}
 	else {
@@ -1154,7 +1154,7 @@ void insrt(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void clear(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"CLEAR";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 1);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 1);
 		requiredVar(&(*i).parameters[0], m, &name, L"Единственный");
 	}
 	else {
@@ -1176,7 +1176,7 @@ void clear(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"SIZE";
-		checkParameterCount(STRICTED, (*i).parameters.size(), m, &name, 2);
+		checkParameterCount(STRICTED, (int)(*i).parameters.size(), m, &name, 2);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 	}
@@ -1201,7 +1201,7 @@ void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void getval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"GETVAL";
-		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 3);
+		checkParameterCount(MIN, (int)(*i).parameters.size(), m, &name, 0, 3);
 		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 	}
@@ -1217,12 +1217,13 @@ void getval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		int dimensions = (int)(*i).parameters.size() - 2;
 		Var result = (*m).heap[(*i).parameters[1].toSTR().getWStr()];
 		for (int iter = 0; iter  < dimensions; ++iter) {
-			int dimension = getValue(&(*i).parameters[iter + 2], &(*m).heap).toUNTG().getUInt();
+			int dimension = (int)getValue(&(*i).parameters[iter + 2], &(*m).heap).toUNTG().getUInt();
 			try {
 				Var res = result.getArr().at(dimension);
 				result = res;
 			}
 			catch (std::out_of_range& ex) {
+				string temp = ex.what();
 				throw wstring{ L"Индекс " + to_wstring(dimension) + L" не существует\n" };
 			}
 		}
@@ -1239,7 +1240,7 @@ void getval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 void setval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 	if (prevalidate) {
 		wstring name = L"SETVAL";
-		checkParameterCount(MIN, (*i).parameters.size(), m, &name, 0, 3);
+		checkParameterCount(MIN, (int)(*i).parameters.size(), m, &name, 0, 3);
 		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
 	}
 	else {
@@ -1255,7 +1256,7 @@ void setval(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		Var* result = &((*m).heap[(*i).parameters[1].toSTR().getWStr()]);
 
 		for (int iter = 0; iter < dimensions; ++iter) {
-			int dimension = getValue(&(*i).parameters[iter + 2], &(*m).heap).toUNTG().getUInt();
+			int dimension = (int)getValue(&(*i).parameters[iter + 2], &(*m).heap).toUNTG().getUInt();
 			if (iter == dimensions - 1) {
 				(*result)[getValue(&(*i).parameters[iter + 2], &(*m).heap)] = getValue(&(*i).parameters[0], &(*m).heap);
 				break;

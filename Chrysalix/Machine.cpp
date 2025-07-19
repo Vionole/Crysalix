@@ -11,9 +11,9 @@ Machine::Machine(map<wstring, Var> in, bool dbg) {
 }
 
 void Machine::prepare() {
-	this->instruct_count = instructions.size();
+	this->instruct_count = (int)instructions.size();
 	this->instruct_number = 0;
-	for (int i = 0; i < this->instruct_count; ++i) {
+	for (unsigned int i = 0; i < this->instruct_count; ++i) {
 		try {
 			functions[this->instructions[i].opCode](this, &instructions[i], true, true);
 		}
