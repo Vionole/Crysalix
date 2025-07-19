@@ -1371,12 +1371,16 @@ void Var::insert(const wchar_t* str, Var val) {
     }
 }
 
-void Var::merge(Var val) {
+Var Var::merge(Var val) {
     if (this->type == ARR && val.type == ARR) {
-        this->arr.insert(this->arr.end(), val.arr.begin(), val.arr.end());
+        vector<Var> result = this->arr;
+        result.insert(result.end(), val.arr.begin(), val.arr.end());
+        return Var(result);
     }
     else if (this->type == MAP && val.type == MAP) {
-        this->mp.insert(val.mp.begin(), val.mp.end());
+        map<wstring, Var> result = this->mp;
+        result.insert(val.mp.begin(), val.mp.end());
+        return Var(result);
     } 
     else {
         throw wstring{ L"Метод merge() используетя только для типа ARR, MAP" };

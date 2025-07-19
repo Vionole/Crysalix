@@ -48,6 +48,7 @@ void sizearr(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void getval(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void setval(Machine* m, Instruction* i, bool prevalidate, bool prego);
 void slice(Machine* m, Instruction* i, bool prevalidate, bool prego);
+void merge(Machine* m, Instruction* i, bool prevalidate, bool prego);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Массив с функциями - инструкциями
@@ -89,7 +90,8 @@ func functions[] = {
 	&sizearr,
 	&getval,
 	&setval,
-	&slice
+	&slice,
+	&merge
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1321,6 +1323,42 @@ void slice(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		}
 
 		(*m).heap[(*i).parameters[0].toSTR().getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).slice(x, y);
+		++(*m).instruct_number;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MERGE
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void merge(Machine* m, Instruction* i, bool prevalidate, bool prego) {
+	if (prevalidate) {
+		wstring name = L"MERGE";
+		int v[2]{ 2, 3 };
+		checkParameterCount(VARIANTS, (int)(*i).parameters.size(), m, &name, 0, 0, nullptr, v);
+		requiredVar(&(*i).parameters[0], m, &name, L"Первый");
+		requiredVar(&(*i).parameters[1], m, &name, L"Второй");
+		if ((*i).parameters.size() == 3) {
+			requiredVar(&(*i).parameters[2], m, &name, L"Третий");
+		}
+	}
+	else {
+		checkNotExistValue(&(*i).parameters[0], m);
+		checkNotExistValue(&(*i).parameters[1], m);
+		if ((*i).parameters.size() == 3) {
+			checkNotExistValue(&(*i).parameters[2], m);
+		}
+	}
+
+	if (prego) {
+		++(*m).instruct_number;
+	}
+	else {
+		if ((*i).parameters.size() == 2) {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()] = getValue(&(*i).parameters[0], &(*m).heap).merge(getValue(&(*i).parameters[1], &(*m).heap));
+		}
+		else {
+			(*m).heap[(*i).parameters[0].toSTR().getWStr()] = getValue(&(*i).parameters[1], &(*m).heap).merge(getValue(&(*i).parameters[2], &(*m).heap));
+		}
 		++(*m).instruct_number;
 	}
 }

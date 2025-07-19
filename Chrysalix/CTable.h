@@ -44,7 +44,8 @@ enum OP_CODE {
 	SIZEARR,
 	GETVAL,
 	SETVAL,
-    SLICE
+    SLICE,
+    MERGE
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,5 +90,6 @@ struct CTable {
         {L"GETVAL", OP_CODE::GETVAL}, {L"getval", OP_CODE::GETVAL},
         {L"SETVAL", OP_CODE::SETVAL}, {L"setval", OP_CODE::SETVAL},
         {L"SLICE", OP_CODE::SLICE}, {L"slice", OP_CODE::SLICE},
+        {L"MERGE", OP_CODE::MERGE}, {L"merge", OP_CODE::MERGE},
     };
 };
