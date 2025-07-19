@@ -513,9 +513,17 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 				(*m).heap[(*i).parameters[1].getWStr()] *= getValue(&(*i).parameters[2], &(*m).heap);
 			}
 			else if (type == L"/") {
+				Var param = getValue(&(*i).parameters[2], &(*m).heap);
+				if (param == Var(0)) {
+					throw wstring{ L"Деление на 0. Параметр " + (*i).parameters[2].toSTR().getWStr() + L" равен нулю\n"};
+				}
 				(*m).heap[(*i).parameters[1].getWStr()] /= getValue(&(*i).parameters[2], &(*m).heap);
 			}
 			else if (type == L"%") {
+				Var param = getValue(&(*i).parameters[2], &(*m).heap);
+				if (param == Var(0)) {
+					throw wstring{ L"Деление на 0. Параметр " + (*i).parameters[2].toSTR().getWStr() + L" равен нулю\n" };
+				}
 				(*m).heap[(*i).parameters[1].getWStr()] %= getValue(&(*i).parameters[2], &(*m).heap);
 			}
 			else if (type == L"^") {
@@ -540,9 +548,17 @@ void calc(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) * getValue(&(*i).parameters[3], &(*m).heap);
 			}
 			else if (type == L"/") {
+				Var param = getValue(&(*i).parameters[3], &(*m).heap);
+				if (param == Var(0)) {
+					throw wstring{ L"Деление на 0. Параметр " + (*i).parameters[3].toSTR().getWStr() + L" равен нулю\n" };
+				}
 				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) / getValue(&(*i).parameters[3], &(*m).heap);
 			}
 			else if (type == L"%") {
+				Var param = getValue(&(*i).parameters[3], &(*m).heap);
+				if (param == Var(0)) {
+					throw wstring{ L"Деление на 0. Параметр " + (*i).parameters[3].toSTR().getWStr() + L" равен нулю\n" };
+				}
 				(*m).heap[(*i).parameters[1].getWStr()] = getValue(&(*i).parameters[2], &(*m).heap) % getValue(&(*i).parameters[3], &(*m).heap);
 			}
 			else if (type == L"^") {
@@ -604,14 +620,14 @@ void forget(Machine* m, Instruction* i, bool prevalidate, bool prego) {
 		if ((*i).parameters.size() == 0) {
 			int start = (*m).tmp_count - 1;
 			(*m).tmp_count = 0;
-			for (unsigned int it = start; it >= (*m).tmp_count; --it) {
+			for (int it = start; it >= (int)(*m).tmp_count; --it) {
 				(*m).heap.erase(L"$" + to_wstring(it));
 			}
 		}
 		else if ((*i).parameters.size() == 1) {
 			int start = (*m).tmp_count - 1;
 			(*m).tmp_count -= (int)getValue(&(*i).parameters[0], &(*m).heap).toUNTG().getUInt();
-			for (unsigned int it = start; it >= (*m).tmp_count; --it) {
+			for (int it = start; it >= (int)(*m).tmp_count; --it) {
 				(*m).heap.erase(L"$" + to_wstring(it));
 			}
 		}
